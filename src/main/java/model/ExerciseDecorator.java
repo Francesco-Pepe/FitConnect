@@ -2,7 +2,7 @@ package model;
 
 public abstract class ExerciseDecorator implements Exercise {
     protected Exercise wrapperExercise;
-    public ExerciseDecorator(Exercise wrapperExercise){
+    protected ExerciseDecorator(Exercise wrapperExercise){
         this.wrapperExercise=wrapperExercise;
     }
 

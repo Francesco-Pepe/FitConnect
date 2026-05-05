@@ -2,14 +2,17 @@ package model;
 
 public class Athlete {
     private String email;
-    private String nome;
-    private String cognome;
+    private String name;
+    private String surname;
     private PlanRequest request;
     private PersonalTrainer pt;
     private Gender gender;
     private int height;
     private double weight;
 
+    public String getEmail(){
+        return this.email;
+    }
     public double getWeight() {
         return weight;
     }
@@ -50,26 +53,27 @@ public class Athlete {
         this.request = request;
     }
 
-    public String getCognome() {
-        return cognome;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
+    public void setSurname(String cognome) {
+        this.surname = surname;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
-    public Athlete(String nome, String cognome, double peso, int altezza, Gender gender) {
-        this.nome = nome;
-        this.cognome = cognome;
+    public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
+        this.email=email;
+        this.name = name;
+        this.surname = surname;
         this.weight = weight;
         this.height = height;
         this.gender = gender;
