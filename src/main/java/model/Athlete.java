@@ -57,7 +57,7 @@ public class Athlete {
         return surname;
     }
 
-    public void setSurname(String cognome) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
