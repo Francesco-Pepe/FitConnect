@@ -28,7 +28,7 @@ public class ExerciseSerializer {
             else if (current instanceof ForcedRepsDecorator )
                 techniques.put("FORCED_REPS");
 
-            current = ((ExerciseDecorator) current).getWrapperExercise();
+            current = ed.getWrapperExercise();
         }
 
         // current è ora il BaseExercise
