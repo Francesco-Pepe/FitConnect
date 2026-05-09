@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class ExerciseSerializer {
 
-    private ExerciseSerializer(){};
+    private ExerciseSerializer(){}
     // ==========================================
     // Java → JSON
     // ==========================================
@@ -16,16 +16,16 @@ public class ExerciseSerializer {
 
         // sbuccia i decoratori raccogliendo le tecniche applicate
         Exercise current = ex;
-        while (current instanceof ExerciseDecorator exerciseDecorator) {
-            if (current instanceof DropSetDecorator dropSetDecorator)
+        while (current instanceof ExerciseDecorator ) {
+            if (current instanceof DropSetDecorator )
                 techniques.put("DROP_SET");
-            else if (current instanceof RestPauseDecorator restPauseDecorator)
+            else if (current instanceof RestPauseDecorator )
                 techniques.put("REST_PAUSE");
-            else if (current instanceof SlowEccentricDecorator slowEccentricDecorator)
+            else if (current instanceof SlowEccentricDecorator )
                 techniques.put("SLOW_ECCENTRIC");
-            else if (current instanceof IsometricPauseDecorator isometricPauseDecorator)
+            else if (current instanceof IsometricPauseDecorator )
                 techniques.put("ISOMETRIC_PAUSE");
-            else if (current instanceof ForcedRepsDecorator forcedRepsDecorator)
+            else if (current instanceof ForcedRepsDecorator )
                 techniques.put("FORCED_REPS");
 
             current = ((ExerciseDecorator) current).getWrapperExercise();

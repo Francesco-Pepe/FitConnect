@@ -22,12 +22,12 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
 
     @Override
     public void save(PlanRequest request) {
-
+    //nothing to do
     }
 
     @Override
     public void update(PlanRequest request) {
-
+    //nothing to do
     }
 
     @Override
