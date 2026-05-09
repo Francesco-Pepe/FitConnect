@@ -1,4 +1,4 @@
-package dao.TrainingPlan;
+package dao.trainingplan;
 
 import model.*;
 
@@ -65,7 +65,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
                 .filter(p -> p.getCreator().getEmail().equals(ptEmail))
                 .toList();
     }
-
+    @Override
     public void save(TrainingPlan plan) {
         // In RAM il piano è già in memoria dopo addToCache,
         // ma lo aggiungiamo alla lista per coerenza con searchByPersonalTrainer

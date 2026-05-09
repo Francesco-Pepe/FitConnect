@@ -1,4 +1,4 @@
-package dao.PlanRequest;
+package dao.planrequest;
 
 import model.PlanRequest;
 
@@ -12,12 +12,12 @@ public class DBPlanRequestDAO extends PlanRequestDAO{
 
     @Override
     public void save(PlanRequest request) {
-
+        //to implement
     }
 
     @Override
     public void update(PlanRequest request) {
-
+        //to implement
     }
 
     @Override

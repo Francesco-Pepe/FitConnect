@@ -1,4 +1,4 @@
-package dao.Athlete;
+package dao.athlete;
 
 import model.Athlete;
 
@@ -17,6 +17,6 @@ public class DBAthleteDAO extends AthleteDAO{
 
     @Override
     public void update(Athlete a) {
-
+        //to implement
     }
 }

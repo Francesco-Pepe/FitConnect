@@ -1,17 +1,13 @@
 package eng;
 
-import dao.Athlete.AthleteDAO;
-import dao.Athlete.AthleteDAODemo;
-import dao.Athlete.FileAthleteDAO;
-import dao.PersonalTrainer.FilePersonalTrainerDAO;
-import dao.PersonalTrainer.PersonalTrainerDAO;
-import dao.PersonalTrainer.PersonalTrainerDAODemo;
-import dao.PlanRequest.FilePlanRequestDAO;
-import dao.PlanRequest.PlanRequestDAO;
-import dao.PlanRequest.PlanRequestDAODemo;
-import dao.TrainingPlan.FileTrainingPlanDAO;
-import dao.TrainingPlan.TrainingPlanDAO;
-import dao.TrainingPlan.TrainingPlanDAODemo;
+import dao.athlete.AthleteDAO;
+import dao.athlete.AthleteDAODemo;
+import dao.personaltrainer.PersonalTrainerDAO;
+import dao.personaltrainer.PersonalTrainerDAODemo;
+import dao.planrequest.PlanRequestDAO;
+import dao.planrequest.PlanRequestDAODemo;
+import dao.trainingplan.TrainingPlanDAO;
+import dao.trainingplan.TrainingPlanDAODemo;
 
 public class DemoDAOFactory extends DAOFactory {
     private AthleteDAO athleteDAO=null;

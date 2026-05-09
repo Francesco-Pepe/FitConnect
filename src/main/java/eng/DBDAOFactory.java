@@ -1,13 +1,13 @@
 package eng;
 
-import dao.Athlete.AthleteDAO;
-import dao.PersonalTrainer.PersonalTrainerDAO;
-import dao.PlanRequest.DBPlanRequestDAO;
-import dao.PlanRequest.PlanRequestDAO;
-import dao.TrainingPlan.DBTrainingPlanDAO;
-import dao.TrainingPlan.TrainingPlanDAO;
-import dao.PersonalTrainer.DBPersonalTrainerDAO;
-import dao.Athlete.DBAthleteDAO;
+import dao.athlete.AthleteDAO;
+import dao.personaltrainer.PersonalTrainerDAO;
+import dao.planrequest.DBPlanRequestDAO;
+import dao.planrequest.PlanRequestDAO;
+import dao.trainingplan.DBTrainingPlanDAO;
+import dao.trainingplan.TrainingPlanDAO;
+import dao.personaltrainer.DBPersonalTrainerDAO;
+import dao.athlete.DBAthleteDAO;
 /**
  * DBDAOFactory è la factory concreta per la persistenza su database.
  * Attualmente è un placeholder - le implementazioni DB DAO devono ancora essere create.

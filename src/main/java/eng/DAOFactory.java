@@ -1,9 +1,9 @@
 package eng;
 
-import dao.Athlete.AthleteDAO;
-import dao.PersonalTrainer.PersonalTrainerDAO;
-import dao.PlanRequest.PlanRequestDAO;
-import dao.TrainingPlan.TrainingPlanDAO;
+import dao.athlete.AthleteDAO;
+import dao.personaltrainer.PersonalTrainerDAO;
+import dao.planrequest.PlanRequestDAO;
+import dao.trainingplan.TrainingPlanDAO;
 import exception.DAOException;
 
 import java.io.FileInputStream;

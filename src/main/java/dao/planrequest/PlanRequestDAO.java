@@ -1,4 +1,4 @@
-package dao.PlanRequest;
+package dao.planrequest;
 
 import eng.CachedDAO;
 import model.PlanRequest;

@@ -1,4 +1,4 @@
-package dao.PersonalTrainer;
+package dao.personaltrainer;
 
 import model.PersonalTrainer;
 
@@ -17,6 +17,6 @@ public class DBPersonalTrainerDAO extends PersonalTrainerDAO{
 
     @Override
     public void update(PersonalTrainer pt) {
-
+        //to implement
     }
 }

@@ -1,4 +1,4 @@
-package dao.Athlete;
+package dao.athlete;
 
 import model.Athlete;
 import model.Gender;

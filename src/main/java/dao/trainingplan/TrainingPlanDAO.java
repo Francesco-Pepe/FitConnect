@@ -1,4 +1,4 @@
-package dao.TrainingPlan;
+package dao.trainingplan;
 
 import eng.CachedDAO;
 import model.TrainingPlan;
@@ -31,16 +31,14 @@ public abstract class TrainingPlanDAO extends CachedDAO<TrainingPlan> {
         return p;
     }
 
-    public abstract TrainingPlan searchByAthlete(String at_email);
+    public abstract TrainingPlan searchByAthlete(String atEmail);
     public  List<TrainingPlan> fetchByPersonalTrainer(String ptEmail){
         List<TrainingPlan> plans=searchByPersonalTrainer(ptEmail);
         plans.forEach(this::addToCache);
         return plans;
     }
 
-    public void save(TrainingPlan plan){
-
-    }
+    public  abstract void save(TrainingPlan plan);
     public abstract List<TrainingPlan> searchByPersonalTrainer(String ptEmail);
 
 }

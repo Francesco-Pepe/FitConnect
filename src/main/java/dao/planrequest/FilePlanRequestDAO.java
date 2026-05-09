@@ -1,4 +1,4 @@
-package dao.PlanRequest;
+package dao.planrequest;
 
 import eng.DAOFactory;
 import exception.DAOException;
@@ -13,7 +13,9 @@ import java.util.List;
 
 public class FilePlanRequestDAO extends PlanRequestDAO{
     private static final Path FILE_PATH=Path.of("data/requests.json");
-
+    private final String STATUS="status";
+    private final String PT="ptEmail";
+    private final String ATHLETE="email";
     private JSONArray readFile() {
         try {
             if (!Files.exists(FILE_PATH)) {
@@ -52,24 +54,23 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
 
     private PlanRequest buildRequest(JSONObject obj){
         int id=obj.getInt("id");
-        RequestStatus status=RequestStatus.valueOf(obj.getString("status"));
+        RequestStatus status=RequestStatus.valueOf(obj.getString(STATUS));
         FitnessGoal goal=FitnessGoal.valueOf(obj.getString("goal"));
-        String ptEmail=obj.getString("ptEmail");
-        String atEmail=obj.getString("email");
+        String ptEmail=obj.getString(PT);
+        String atEmail=obj.getString(ATHLETE);
         PersonalTrainer pt= DAOFactory.getInstance().getPersonalTrainerDAO().getByEmail(ptEmail);
         Athlete a=DAOFactory.getInstance().getAthleteDAO().fetchByEmail(atEmail);
-        PlanRequest p= new PlanRequest(id,a,pt,goal,status);
-        return  p;
+        return new PlanRequest(id,a,pt,goal,status);
 
     }
 
     private JSONObject serializeRequest(PlanRequest request){
         JSONObject obj=new JSONObject();
         obj.put("id",request.getId());
-        obj.put("status",request.getStatus().name());
+        obj.put(STATUS,request.getStatus().name());
         obj.put("goal",request.getGoal().name());
-        obj.put("ptEmail",request.getPt().getEmail());
-        obj.put("email",request.getClient().getEmail());
+        obj.put(PT,request.getPt().getEmail());
+        obj.put(ATHLETE,request.getClient().getEmail());
         return obj;
     }
 
@@ -115,7 +116,7 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         JSONArray all=readFile();
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if (obj.getString("email").equals(athleteEmail)){
+            if (obj.getString(ATHLETE).equals(athleteEmail)){
                 requests.add(getById(obj.getInt("id")));
             }
         }
@@ -128,10 +129,8 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         JSONArray all=readFile();
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if(obj.getString("ptEmail").equals(trainerEmail)){
-                if (obj.getString("status").equals(RequestStatus.PENDING.name())){
+            if(obj.getString(PT).equals(trainerEmail) && obj.getString(STATUS).equals(RequestStatus.PENDING.name())){
                     pending.add(getById(obj.getInt("id")));
-                }
             }
         }
         return pending;

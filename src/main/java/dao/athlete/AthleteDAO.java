@@ -1,4 +1,4 @@
-package dao.Athlete;
+package dao.athlete;
 
 import eng.CachedDAO;
 import model.Athlete;

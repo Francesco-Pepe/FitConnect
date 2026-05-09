@@ -1,9 +1,7 @@
-package dao.PersonalTrainer;
+package dao.personaltrainer;
 
 import eng.CachedDAO;
-import model.Athlete;
 import model.PersonalTrainer;
-import model.PlanRequest;
 
 import java.util.List;
 

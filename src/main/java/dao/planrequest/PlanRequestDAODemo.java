@@ -1,4 +1,4 @@
-package dao.PlanRequest;
+package dao.planrequest;
 
 import exception.DAOException;
 import model.*;
@@ -12,11 +12,10 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
         if (id<0){
             throw new DAOException("L'id deve essere >0");
         }
-        switch(id){
-            case 1:
+        if (id==1) {
             Athlete a = new Athlete("frank@gmail.com", "Francesco", "Pepe", 78, 178, Gender.MALE);
             PersonalTrainer pt = new PersonalTrainer("trainer@fit.com", "Mario", "Rossi", Gender.MALE);
-            req= new PlanRequest(id, a, pt, FitnessGoal.STRENGHT);
+            req = new PlanRequest(id, a, pt, FitnessGoal.STRENGHT);
         }
         return req;
     }

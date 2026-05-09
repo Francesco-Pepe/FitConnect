@@ -1,6 +1,6 @@
-package dao.PersonalTrainer;
+package dao.personaltrainer;
 
-import dao.Athlete.AthleteDAODemo;
+import dao.athlete.AthleteDAODemo;
 import model.Athlete;
 import model.Gender;
 import model.PersonalTrainer;
