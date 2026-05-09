@@ -1,5 +1,6 @@
 package model;
 
+import java.nio.file.FileStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +10,16 @@ public class PersonalTrainer {
     private String surname;
     private List<PlanRequest> requests;
     private List<Athlete> clients;
+    private Gender gender;
 
 
-    public PersonalTrainer(String email,String name,String surname){
+    public PersonalTrainer(String email,String name,String surname,Gender gender){
         this.email=email;
         this.name=name;
         this.surname=surname;
         this.requests=new ArrayList<>();
         this.clients=new ArrayList<>();
+        this.gender=gender;
     }
 
     public String getEmail() {
@@ -64,5 +67,9 @@ public class PersonalTrainer {
     }
     public void addAthlete(Athlete client){
         this.clients.add(client);
+    }
+
+    public Gender getGender() {
+        return this.gender;
     }
 }

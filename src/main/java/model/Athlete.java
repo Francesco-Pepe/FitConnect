@@ -1,14 +1,37 @@
 package model;
 
+import java.util.List;
+
 public class Athlete {
     private String email;
     private String name;
     private String surname;
-    private PlanRequest request;
+    private List<PlanRequest> request;
+    private TrainingPlan plan;
     private PersonalTrainer pt;
     private Gender gender;
     private int height;
     private double weight;
+
+    public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
+        this.email=email;
+        this.name = name;
+        this.surname = surname;
+        this.weight = weight;
+        this.height = height;
+        this.gender = gender;
+        this.pt = null;
+        this.request=null;
+        this.plan=null;
+    }
+    public TrainingPlan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(TrainingPlan plan) {
+        this.plan = plan;
+    }
+
 
     public String getEmail(){
         return this.email;
@@ -45,12 +68,12 @@ public class Athlete {
         this.pt = pt;
     }
 
-    public PlanRequest getRequest() {
+    public List<PlanRequest> getRequest() {
         return request;
     }
 
-    public void setRequest(PlanRequest request) {
-        this.request = request;
+    public void addRequest(PlanRequest request) {
+        this.request.add(request);
     }
 
     public String getSurname() {
@@ -70,14 +93,4 @@ public class Athlete {
     }
 
 
-    public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
-        this.email=email;
-        this.name = name;
-        this.surname = surname;
-        this.weight = weight;
-        this.height = height;
-        this.gender = gender;
-        this.pt = null;
-        this.request=null;
-    }
 }

@@ -1,8 +1,9 @@
 package model;
 
 public interface Exercise {
+    String getTarget();
+    String getEquipment();
     String getName();
-    String getImageUrl();
     int getSets();
     int getReps();
     String getExecutionDetails();

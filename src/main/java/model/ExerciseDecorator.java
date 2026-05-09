@@ -6,14 +6,23 @@ public abstract class ExerciseDecorator implements Exercise {
         this.wrapperExercise=wrapperExercise;
     }
 
-    @Override
-    public String getName() {
-        return this.wrapperExercise.getName();
+    public Exercise getWrapperExercise() {
+        return this.wrapperExercise;
     }
 
     @Override
-    public String getImageUrl() {
-        return this.wrapperExercise.getImageUrl();
+    public String getTarget(){
+        return this.wrapperExercise.getTarget();
+    }
+
+    @Override
+    public String getEquipment(){
+        return this.wrapperExercise.getEquipment();
+    }
+
+    @Override
+    public String getName() {
+        return this.wrapperExercise.getName();
     }
 
     @Override
