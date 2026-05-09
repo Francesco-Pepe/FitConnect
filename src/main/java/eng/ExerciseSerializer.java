@@ -16,7 +16,7 @@ public class ExerciseSerializer {
 
         // sbuccia i decoratori raccogliendo le tecniche applicate
         Exercise current = ex;
-        while (current instanceof ExerciseDecorator ) {
+        while (current instanceof ExerciseDecorator ed ) {
             if (current instanceof DropSetDecorator )
                 techniques.put("DROP_SET");
             else if (current instanceof RestPauseDecorator )

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
     private static final Path FILE_PATH=Path.of("data/pt.json");
-    private static final String Pt ="email";
+    private static final String PT_EMAIL ="email";
     private JSONArray readFile() {
         try {
             if (!Files.exists(FILE_PATH)) {
@@ -43,7 +43,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
 
 
     public PersonalTrainer buildPt(JSONObject obj){
-        String email= obj.getString(Pt);
+        String email= obj.getString(PT_EMAIL);
         String name=obj.getString("name");
         String surname=obj.getString("surname");
         Gender gender=Gender.valueOf(obj.getString("gender"));
@@ -62,7 +62,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
 
     public JSONObject serializePt(PersonalTrainer pt){
         JSONObject obj=new JSONObject();
-        obj.put(Pt,pt.getEmail());
+        obj.put(PT_EMAIL,pt.getEmail());
         obj.put("name",pt.getName());
         obj.put("surname",pt.getSurname());
         obj.put("gender",pt.getGender().name());
@@ -79,7 +79,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         JSONArray all=readFile();
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(Pt).equals(email)){
+            if (obj.getString(PT_EMAIL).equals(email)){
                 return buildPt(obj);
             }
         }
@@ -92,7 +92,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         List<PersonalTrainer> pts=new ArrayList<>();
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            String email=obj.getString(Pt);
+            String email=obj.getString(PT_EMAIL);
             pts.add(getByEmail(email));
         }
         return pts;
@@ -100,7 +100,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
     public void save(PersonalTrainer pt) {
         JSONArray all = readFile();
         for (int i = 0; i < all.length(); i++) {
-            if (all.getJSONObject(i).getString(Pt).equals(pt.getEmail())) {
+            if (all.getJSONObject(i).getString(PT_EMAIL).equals(pt.getEmail())) {
                 throw new DAOException("PT già esistente: " + pt.getEmail());
             }
         }
@@ -115,7 +115,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         boolean found=false;
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(Pt).equals(pt.getEmail())){
+            if (obj.getString(PT_EMAIL).equals(pt.getEmail())){
                 all.put(i,serializePt(pt));
                 found=true;
                 break;

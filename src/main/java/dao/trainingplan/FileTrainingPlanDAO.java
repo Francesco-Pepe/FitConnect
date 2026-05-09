@@ -19,7 +19,7 @@ import java.util.List;
 
 public class FileTrainingPlanDAO extends TrainingPlanDAO{
     private static final Path FILE_PATH=Path.of("data/plans.json");
-    private static final String Athlete ="athlete";
+    private static final String ATHLETE_EMAIL ="athlete";
     private JSONArray readFile() {
         try {
             if (!Files.exists(FILE_PATH)) {
@@ -44,7 +44,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
 
     private JSONObject serializePlan(TrainingPlan plan){
         JSONObject obj=new JSONObject();
-        obj.put(Athlete,plan.getClient().getEmail());
+        obj.put(ATHLETE_EMAIL,plan.getClient().getEmail());
         obj.put("pt",plan.getCreator().getEmail());
         obj.put("expiration",plan.getExpirationDate().toString());
         obj.put("creation",plan.getCreationDate().toString());
@@ -58,7 +58,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
     }
 
     private TrainingPlan buildPlan(JSONObject obj){
-        Athlete a= DAOFactory.getInstance().getAthleteDAO().fetchByEmail(obj.getString(Athlete));
+        Athlete a= DAOFactory.getInstance().getAthleteDAO().fetchByEmail(obj.getString(ATHLETE_EMAIL));
         PersonalTrainer pt=DAOFactory.getInstance().getPersonalTrainerDAO().getByEmail(obj.getString("pt"));
         LocalDate creation=LocalDate.parse(obj.getString("creation"));
         LocalDate expiration=LocalDate.parse(obj.getString("expiration"));
@@ -83,7 +83,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         }
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(Athlete).equals(plan.getClient().getEmail())){
+            if (obj.getString(ATHLETE_EMAIL).equals(plan.getClient().getEmail())){
                 all.remove(i);
                 writeFile(all);
                 break;
@@ -96,7 +96,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         JSONArray all=readFile();
         for (int i=0;i<all.length();i++){
             JSONObject obj= all.getJSONObject(i);
-            if (obj.getString(Athlete).equals(atEmail)){
+            if (obj.getString(ATHLETE_EMAIL).equals(atEmail)){
                 return buildPlan(obj);
             }
         }
@@ -111,7 +111,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         for (int i=0;i<all.length();i++){
             obj=all.getJSONObject(i);
             if (obj.getString("pt").equals(ptEmail)){
-                plans.add(fetchByAthlete(obj.getString(Athlete)));
+                plans.add(fetchByAthlete(obj.getString(ATHLETE_EMAIL)));
             }
         }
         return plans;
@@ -127,7 +127,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         JSONArray all = readFile();
         boolean found = false;
         for (int i = 0; i < all.length(); i++) {
-            if (all.getJSONObject(i).getString(Athlete)
+            if (all.getJSONObject(i).getString(ATHLETE_EMAIL)
                     .equals(plan.getClient().getEmail())) {
                 all.put(i, serializePlan(plan));
                 found = true;
