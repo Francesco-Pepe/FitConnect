@@ -113,7 +113,7 @@ public class NavigatorGUI extends Navigator{
 
     @Override
     public void viewCreatePlan(){
-        
+
     }
 
     @Override

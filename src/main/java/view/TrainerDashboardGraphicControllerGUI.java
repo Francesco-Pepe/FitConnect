@@ -65,7 +65,13 @@ public class TrainerDashboardGraphicControllerGUI {
             acceptBtn.setStyle("-fx-background-color: #00ba54; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;");
 
             // Gestione del click di accettazione per QUESTO specifico cliente
-            acceptBtn.setOnAction(event -> handleAcceptAction(req));
+            acceptBtn.setOnAction(event -> {
+                try {
+                    handleAcceptAction(req);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             // Pulsante bianco/rosso "Decline"
             Button declineBtn = new Button("✕ Decline");

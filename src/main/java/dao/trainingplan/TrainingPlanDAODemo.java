@@ -20,8 +20,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
         TrainingPlan frankPlan = new TrainingPlan(
                 frank,
                 mario,
-                LocalDate.now().plusMonths(3),
-                "Sempre 10 minuti di riscaldamento prima di iniziare."
+                LocalDate.now().plusMonths(3)
         );
 
         // Esercizio 1: bench press con Drop Set + Rest Pause
