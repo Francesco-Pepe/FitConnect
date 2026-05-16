@@ -1,9 +1,9 @@
 package dao.authentication;
 
 import exception.DAOException;
-import model.Athlete;
+
 import model.Credential;
-import model.PersonalTrainer;
+
 
 /**
  * Implementazione database dell'AuthenticationDAO.

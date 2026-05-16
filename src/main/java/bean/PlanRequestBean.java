@@ -1,8 +1,7 @@
 package bean;
 
 import model.FitnessGoal;
-import model.PlanRequest;
-import model.RequestStatus;
+
 
 public class PlanRequestBean {
     int id;

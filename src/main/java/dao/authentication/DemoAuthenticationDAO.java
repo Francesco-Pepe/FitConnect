@@ -1,11 +1,7 @@
 package dao.authentication;
-
-import eng.DAOFactory;
 import exception.DAOException;
-import model.Athlete;
 import model.Credential;
-import model.Gender;
-import model.PersonalTrainer;
+
 
 /**
  * Implementazione demo dell'AuthenticationDAO.

@@ -1,6 +1,5 @@
 package bean;
 
-import model.TrainingPlan;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -34,6 +34,8 @@ public class AthleteDashboardGraphicControllerGUI {
     Label ptLabel;
     private Parent view;
     private Navigator navigator;
+    public AthleteDashboardGraphicControllerGUI() {
+    }
     public void setGUINavigator(NavigatorGUI navigator){
         this.navigator=navigator;
     }
@@ -46,46 +48,15 @@ public class AthleteDashboardGraphicControllerGUI {
         return this.view;
     }
 
-    public AthleteDashboardGraphicControllerGUI() {
 
-    }
 
 
     public void setAthleteName(String athleteName) {
         this.athleteName.setText("Benvenuto " + athleteName);
     }
 
-    public void requestPlan(ActionEvent e) throws IOException {
-        System.out.println("DEBUG: requestPlan() called");
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RequestPlan.fxml"));
-            System.out.println("DEBUG: FXMLLoader created");
-
-            VBox root = loader.load();
-            System.out.println("DEBUG: FXML loaded");
-
-            RequestPlanGraphicGraphicControllerGUI planController = loader.getController();
-            System.out.println("DEBUG: Controller retrieved: " + planController);
-
-            // Crea un atleta di test per il prototipo
-            // In produzione, questo dovrebbe venire dal sistema di login
-            Athlete testAthlete = new Athlete(
-                    "francesco@test.com",
-                    "Francesco",
-                    "Rossi",
-                    75.5,
-                    180,
-                    Gender.MALE
-            );
-            System.out.println("DEBUG: Test athlete created");
-
-            // Passa l'atleta e lo stage al controller della richiesta
-
-            System.out.println("DEBUG: Scene displayed");
-        } catch (Exception ex) {
-            System.out.println("ERROR in requestPlan: " + ex.getMessage());
-            ex.printStackTrace();
-        }
+    public void requestPlan() throws IOException {
+        navigator.goToPlanRequest();
     }
     public void viewPlan(ActionEvent e) throws IOException {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/ViewPlan.fxml"));

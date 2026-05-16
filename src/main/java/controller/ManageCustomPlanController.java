@@ -95,10 +95,10 @@ public class ManageCustomPlanController {
         return exs;
     }
 
-    private List<Technique> getTecniques(Exercise ex) {
+ /*   private List<Technique> getTecniques(Exercise ex) {
         List<Technique> technique = new ArrayList<>();
         Exercise current = ex;
-        while (current instanceof ExerciseDecorator ed) {
+        while (current instanceof ExerciseDecorator ) {
             if (current instanceof DropSetDecorator)
                 technique.add(Technique.DROP_SET);
             else if (current instanceof RestPauseDecorator)
@@ -112,6 +112,7 @@ public class ManageCustomPlanController {
         }
         return technique;
     }
+*/
 
 // ==========================================
 // LATO PT — vede le richieste pending
@@ -149,39 +150,7 @@ public void declineRequest(PlanRequestBean req){
 // LATO PT — accetta la richiesta e crea il piano
 // ==========================================
 
-public void acceptRequestAndCreatePlan(PlanRequestBean bean) {/*
-    PlanRequest request = requestDAO.getById(bean.getId());
-    if (request == null)
-        throw new DAOException("Richiesta non trovata, id: " + bean.getId());
 
-    if (request.getStatus() != RequestStatus.PENDING)
-        throw new IllegalStateException("La richiesta non è più in stato PENDING");
-
-    Athlete athlete    = request.getClient();
-    PersonalTrainer pt = request.getPt();
-
-    // aggiorna lo stato della richiesta
-    request.setStatus(RequestStatus.ACCEPTED);
-    requestDAO.update(request);
-
-    // crea il piano
-    TrainingPlan plan = new TrainingPlan(athlete, pt, bean.getExpiration());
-
-    // costruisce e aggiunge gli esercizi
-    for (Exercise ex : buildExercises(bean.getExercises())) {
-        plan.addExercise(ex);
-    }
-
-    // aggiorna le relazioni bidirezionali
-    athlete.setPlan(plan);
-    athlete.setPt(pt);
-    pt.addAthlete(athlete);
-
-    // persiste tutto
-    planDAO.save(plan);
-    athleteDAO.update(athlete);
-    ptDAO.update(pt); */
-}
 
 // ==========================================
 // LATO PT — rifiuta la richiesta

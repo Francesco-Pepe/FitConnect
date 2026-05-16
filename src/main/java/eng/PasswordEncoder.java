@@ -2,6 +2,7 @@ package eng;
 
 public class PasswordEncoder {
     public PasswordEncoder(){}
+
     public String hashPassword(String password) {
         StringBuilder encrypted = new StringBuilder();
 
@@ -21,12 +22,6 @@ public class PasswordEncoder {
         return encrypted.toString();
     }
 
-    /**
-     * Verifica se una password corrisponde all'hash
-     * @param password password in plaintext
-     * @param hash hash della password
-     * @return true se la password è corretta
-     */
     public boolean verifyPassword(String password, String hash) {
         String computedHash = hashPassword(password);
         return computedHash.equals(hash);

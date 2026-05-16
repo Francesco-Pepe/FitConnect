@@ -61,7 +61,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         PersonalTrainer pt=DAOFactory.getInstance().getPersonalTrainerDAO().getByEmail(obj.getString("pt"));
         LocalDate creation=LocalDate.parse(obj.getString("creation"));
         LocalDate expiration=LocalDate.parse(obj.getString("expiration"));
-      
+
         JSONArray exercises=obj.getJSONArray("exercises");
         List<Exercise> exList=new ArrayList<>();
         for (int i=0;i<exercises.length();i++){

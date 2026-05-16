@@ -1,9 +1,8 @@
 package dao.authentication;
 
 import exception.DAOException;
-import model.Athlete;
 import model.Credential;
-import model.PersonalTrainer;
+
 
 /**
  * DAO astratto per l'autenticazione di atleti e personal trainer.
