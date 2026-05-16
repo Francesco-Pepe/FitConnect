@@ -11,8 +11,15 @@ public class ExternalApiExerciseDTO {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "API DTO: " + name + " target: " +targetMuscle + " equipment: " +equipment;
+    public String getName() {
+        return name;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+
+    public String getTarget() {
+        return targetMuscle;
     }
 }

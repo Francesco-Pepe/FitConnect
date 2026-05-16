@@ -1,6 +1,7 @@
 package eng;
 
 import dao.athlete.AthleteDAO;
+import dao.authentication.AuthenticationDAO;
 import dao.personaltrainer.PersonalTrainerDAO;
 import dao.planrequest.PlanRequestDAO;
 import dao.trainingplan.TrainingPlanDAO;
@@ -44,6 +45,7 @@ public abstract class DAOFactory {
     public abstract PersonalTrainerDAO getPersonalTrainerDAO();
     public abstract PlanRequestDAO getPlanRequestDAO();
     public abstract TrainingPlanDAO getTrainingPlanDAO();
+    public abstract AuthenticationDAO getAuthenticationDAO();
 
     // Static convenience methods (for backward compatibility)
     // These delegate to the current instance's abstract methods

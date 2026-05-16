@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #f3f4f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AthleteDashboardGraphicControllerGUI">
+    <children>
+        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff; -fx-padding: 15 30 15 30; -fx-border-color: #e5e7eb; -fx-border-width: 0 0 1 0;">
+            <children>
+                <VBox alignment="CENTER_LEFT">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Label style="-fx-background-color: #6366f1; -fx-text-fill: white; -fx-background-radius: 15; -fx-padding: 5 8 5 8; -fx-font-weight: bold; -fx-font-size: 14px;" text="" />
+                                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #111827;" text="FitConnect" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="athleteName" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-padding: 0 0 0 35;" text="Athlete Dashboard" />
+                    </children>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="logoutButton" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #374151; -fx-font-size: 15px;" text="↳ Logout" onAction="#logout">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </HBox>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox maxWidth="1000.0" spacing="25.0" style="-fx-padding: 40 80 40 80;">
+                    <children>
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <Button fx:id="requestButton" mnemonicParsing="false" style="-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 12 25 12 25; -fx-background-radius: 8;" text="↗ Request Training Plan" onAction="#requestPlan">
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 12;" visible="false" managed="false" fx:id="trainingCard">
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" color="#0000001a" height="15.0" radius="7.0" width="15.0" />
+                            </effect>
+                            <children>
+                                <HBox style="-fx-background-color: #8b5cf6; -fx-padding: 20 30 20 30; -fx-background-radius: 12 12 0 0;">
+                                    <children>
+                                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;" text="Your Training Plan" />
+                                    </children>
+                                </HBox>
+                                <VBox spacing="25.0" style="-fx-padding: 30;">
+                                    <children>
+                                        <HBox spacing="20.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f0f9ff; -fx-padding: 15 20 15 20; -fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label style="-fx-font-size: 24px; -fx-text-fill: #3b82f6;" text="◎" />
+                                                        <VBox alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Trainer" />
+                                                                <Label fx:id="ptLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="Sarah Johnson"  />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f0fdf4; -fx-padding: 15 20 15 20; -fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label style="-fx-font-size: 24px; -fx-text-fill: #22c55e;" text="" />
+                                                        <VBox alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Start Date" />
+                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-05-12" fx:id="creationDate" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #fef2f2; -fx-padding: 15 20 15 20; -fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label style="-fx-font-size: 24px; -fx-text-fill: #ef4444;" text="" />
+                                                        <VBox alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Expire Date" />
+                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-07-07"  fx:id="expirationDate"/>
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </HBox>
+                                        <VBox spacing="15.0">
+                                            <children>
+                                                <HBox alignment="BOTTOM_LEFT" style="-fx-padding: 0 0 10 0; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1 0;">
+                                                    <children>
+                                                        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="Weekly Exercises" />
+                                                        <Region HBox.hgrow="ALWAYS" />
+                                                    </children>
+                                                </HBox>
+                                                <VBox fx:id="exercisesListContainer" spacing="12.0">
+                                                    <children>
+                                                        <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8fafc; -fx-padding: 12 20 12 20; -fx-background-radius: 8;">
+                                                            <children>
+                                                                <Region HBox.hgrow="ALWAYS" />
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                                <Button fx:id="viewPlanButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 12; -fx-background-radius: 8;" text="Visualizza tutto il piano" onAction="#viewPlan">
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </Button>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="100.0" right="100.0" />
+                    </VBox.margin>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>

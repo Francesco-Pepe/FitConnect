@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #f8fafc;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TrainerDashboardGraphicControllerGUI">
+    <children>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="1200.0" spacing="12.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets left="40.0" right="40.0" />
+            </padding>
+            <children>
+                <Circle fill="#6345ff" radius="16.0" />
+                <VBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="FitConnect" textFill="#1e293b">
+                            <font><Font name="System Bold" size="18.0" /></font>
+                        </Label>
+                        <Label text="Personal Trainer Dashboard" textFill="#64748b" fx:id="trainerName">
+                            <font><Font size="12.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-cursor: hand;" text="↳ Logout" textFill="#334155">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+
+        <VBox alignment="TOP_CENTER" layoutY="70.0" prefHeight="680.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <padding>
+                <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
+            </padding>
+            <children>
+
+                <ScrollPane fitToWidth="true" maxWidth="1000.0" style="-fx-background-color: transparent; -fx-background: #f8fafc;" VBox.vgrow="ALWAYS">
+                    <content>
+
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 15, 0, 0, 4);">
+                            <children>
+
+                                <HBox alignment="CENTER_LEFT" prefHeight="65.0" style="-fx-background-color: #9333ea; -fx-background-radius: 12 12 0 0;">
+                                    <padding>
+                                        <Insets left="25.0" />
+                                    </padding>
+                                    <children>
+                                        <Label text="Pending Plan Requests" textFill="white">
+                                            <font><Font name="System Bold" size="18.0" /></font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+
+                                <VBox fx:id="requestsContainer" spacing="0.0">
+                                    <children>
+
+                                        <VBox style="-fx-border-color: #f1f5f9; -fx-border-width: 0 0 1 0; -fx-padding: 25;">
+                                            <children>
+                                                <HBox alignment="BASELINE_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label text="John Smith" textFill="#1e293b">
+                                                            <font><Font name="System Bold" size="16.0" /></font>
+                                                        </Label>
+                                                        <Label text="2026-05-08" textFill="#94a3b8">
+                                                            <font><Font size="12.0" /></font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <Label text="Build muscle mass and improve overall strength. Looking for a 3-day split program." textFill="#475569" wrapText="true">
+                                                    <VBox.margin>
+                                                        <Insets bottom="15.0" top="10.0" />
+                                                    </VBox.margin>
+                                                    <font><Font size="14.0" /></font>
+                                                </Label>
+                                                <HBox spacing="12.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#handleAcceptJohn" style="-fx-background-color: #00ba54; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;" text="✓ Accept &amp; Create Plan" textFill="white">
+                                                            <font><Font name="System Bold" size="13.0" /></font>
+                                                        </Button>
+                                                        <Button mnemonicParsing="false" onAction="#handleDeclineJohn" style="-fx-background-color: white; -fx-border-color: #fca5a5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;" text="✕ Decline" textFill="#ef4444">
+                                                            <font><Font name="System Bold" size="13.0" /></font>
+                                                        </Button>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox style="-fx-padding: 25;">
+                                            <children>
+                                                <HBox alignment="BASELINE_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <Label text="Emily Brown" textFill="#1e293b">
+                                                            <font><Font name="System Bold" size="16.0" /></font>
+                                                        </Label>
+                                                        <Label text="2026-05-09" textFill="#94a3b8">
+                                                            <font><Font size="12.0" /></font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <Label text="Weight loss and cardio improvement. Prefer high-intensity workouts 4 times a week." textFill="#475569" wrapText="true">
+                                                    <VBox.margin>
+                                                        <Insets bottom="15.0" top="10.0" />
+                                                    </VBox.margin>
+                                                    <font><Font size="14.0" /></font>
+                                                </Label>
+                                                <HBox spacing="12.0">
+                                                    <children>
+                                                        <Button mnemonicParsing="false" onAction="#handleAcceptEmily" style="-fx-background-color: #00ba54; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;" text="✓ Accept &amp; Create Plan" textFill="white">
+                                                            <font><Font name="System Bold" size="13.0" /></font>
+                                                        </Button>
+                                                        <Button mnemonicParsing="false" onAction="#handleDeclineEmily" style="-fx-background-color: white; -fx-border-color: #fca5a5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;" text="✕ Decline" textFill="#ef4444">
+                                                            <font><Font name="System Bold" size="13.0" /></font>
+                                                        </Button>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -11,15 +11,13 @@ public class TrainingPlan {
 
     private LocalDate creationDate;
     private LocalDate expirationDate; // Utile per sapere quando va rifatta la scheda
-    private String generalNotes;      // Es. "Fai sempre 10 min di riscaldamento"
     private List<Exercise> exercises;
 
-    public TrainingPlan(Athlete client, PersonalTrainer creator, LocalDate expirationDate, String generalNotes) {
+    public TrainingPlan(Athlete client, PersonalTrainer creator, LocalDate expirationDate) {
         this.client = client;
         this.creator = creator;
         this.creationDate = LocalDate.now();
         this.expirationDate = expirationDate;
-        this.generalNotes = generalNotes;
         this.exercises = new ArrayList<>();
     }
 
@@ -40,8 +38,6 @@ public class TrainingPlan {
     public LocalDate getExpirationDate() { return expirationDate; }
     public void setExpirationDate(LocalDate expirationDate) { this.expirationDate = expirationDate; }
 
-    public String getGeneralNotes() { return generalNotes; }
-    public void setGeneralNotes(String generalNotes) { this.generalNotes = generalNotes; }
 
     public List<Exercise> getExercises() { return exercises; }
     public void setExercises(List<Exercise> exercises) { this.exercises = exercises; }

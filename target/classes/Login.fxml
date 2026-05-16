@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #eef2ff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginGraphicControllerGUI">
+    <children>
+        <!-- Contenitore Centrale (Card Bianca) -->
+        <VBox alignment="TOP_CENTER" layoutX="225.0" layoutY="80.0" prefWidth="350.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);" AnchorPane.bottomAnchor="80.0" AnchorPane.topAnchor="80.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+            <children>
+                <!-- Logo e Titolo -->
+                <Circle fill="#6345ff" radius="25.0" />
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label text="FitConnect" textFill="#1f2937">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label text="Connect Athletes &amp; Personal Trainers" textFill="#6b7280">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <!-- Selettore Ruolo (Athlete / Trainer) -->
+                <HBox alignment="CENTER" prefHeight="45.0" style="-fx-background-color: #f3f4f6; -fx-background-radius: 10;">
+                    <padding>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnAthlete" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent; -fx-text-fill: #6b7280;" text=" Athlete" HBox.hgrow="ALWAYS" onAction="#setAthlete">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btnTrainer" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-text-fill: #6345ff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);" text=" Trainer" HBox.hgrow="ALWAYS" onAction="#setPersonalTrainer">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <!-- Form di Login -->
+                <VBox spacing="15.0">
+                    <children>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Email" textFill="#374151">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                                <TextField prefHeight="40.0" promptText="trainer@example.com" style="-fx-background-color: white; -fx-border-color: #d1d5db; -fx-border-radius: 8;" fx:id="email" />
+                            </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Password" textFill="#374151">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                                <PasswordField prefHeight="40.0" promptText="••••••••" style="-fx-background-color: white; -fx-border-color: #d1d5db; -fx-border-radius: 8;" fx:id="password"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- Pulsante Login -->
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #5850ec; -fx-background-radius: 8; -fx-text-fill: white;" text="Login as personal trainer" fx:id="loginButton" onAction="#doLogin">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

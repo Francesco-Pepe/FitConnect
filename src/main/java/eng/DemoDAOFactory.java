@@ -2,6 +2,8 @@ package eng;
 
 import dao.athlete.AthleteDAO;
 import dao.athlete.AthleteDAODemo;
+import dao.authentication.AuthenticationDAO;
+import dao.authentication.DemoAuthenticationDAO;
 import dao.personaltrainer.PersonalTrainerDAO;
 import dao.personaltrainer.PersonalTrainerDAODemo;
 import dao.planrequest.PlanRequestDAO;
@@ -14,6 +16,7 @@ public class DemoDAOFactory extends DAOFactory {
     private  PersonalTrainerDAO personalTrainerDAO=null;
     private  PlanRequestDAO planRequestDAO=null;
     private  TrainingPlanDAO trainingPlanDAO=null;
+    private AuthenticationDAO authenticationDAO=null;
 
     public DemoDAOFactory() {
         super();
@@ -37,7 +40,7 @@ public class DemoDAOFactory extends DAOFactory {
 
     @Override
     public synchronized PlanRequestDAO getPlanRequestDAO() {
-        if (personalTrainerDAO==null){
+        if (planRequestDAO==null){
             this.planRequestDAO=new PlanRequestDAODemo();
         }
         return this.planRequestDAO;
@@ -49,6 +52,14 @@ public class DemoDAOFactory extends DAOFactory {
             this.trainingPlanDAO=new TrainingPlanDAODemo();
         }
         return trainingPlanDAO;
+    }
+
+    @Override
+    public synchronized AuthenticationDAO getAuthenticationDAO() {
+        if (authenticationDAO==null) {
+            this.authenticationDAO = new DemoAuthenticationDAO();
+        }
+        return authenticationDAO;
     }
 }
 

@@ -1,6 +1,8 @@
 package eng;
 
 import dao.athlete.AthleteDAO;
+import dao.authentication.AuthenticationDAO;
+import dao.authentication.DBAuthenticationDAO;
 import dao.personaltrainer.PersonalTrainerDAO;
 import dao.planrequest.DBPlanRequestDAO;
 import dao.planrequest.PlanRequestDAO;
@@ -18,10 +20,12 @@ public class DBDAOFactory extends DAOFactory {
     private  PersonalTrainerDAO personalTrainerDAO=null;
     private  PlanRequestDAO planRequestDAO=null;
     private  TrainingPlanDAO trainingPlanDAO=null;
+    private  AuthenticationDAO authenticationDAO=null;
 
     public DBDAOFactory() {
         super();
     }
+
 
     @Override
     public synchronized AthleteDAO getAthleteDAO() {
@@ -53,6 +57,14 @@ public class DBDAOFactory extends DAOFactory {
             this.trainingPlanDAO=new DBTrainingPlanDAO();
         }
         return trainingPlanDAO;
+    }
+
+    @Override
+    public synchronized AuthenticationDAO getAuthenticationDAO() {
+        if (authenticationDAO==null) {
+            this.authenticationDAO = new DBAuthenticationDAO();
+        }
+        return authenticationDAO;
     }
 }
 

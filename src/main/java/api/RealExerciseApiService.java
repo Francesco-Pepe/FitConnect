@@ -31,7 +31,8 @@ public class RealExerciseApiService implements ExerciseApiService {
 
     @Override
     public ExternalApiExerciseDTO fetchExerciseByName(String name) throws IOException, InterruptedException {
-        String encoded = URLEncoder.encode(name, StandardCharsets.UTF_8);
+        String encoded = URLEncoder.encode(name.toLowerCase().trim(), StandardCharsets.UTF_8)
+                .replace("+", "%20");
         HttpRequest req = buildRequest("/exercises/name/" + encoded + "?limit=1");
         HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
         JSONArray arr = new JSONArray(res.body());
