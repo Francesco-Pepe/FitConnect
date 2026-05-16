@@ -2,7 +2,7 @@ package view;
 
 
 import bean.*;
-import model.TrainingPlan;
+
 
 import java.util.List;
 

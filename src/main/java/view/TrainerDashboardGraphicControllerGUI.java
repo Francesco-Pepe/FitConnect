@@ -25,6 +25,7 @@ public class TrainerDashboardGraphicControllerGUI {
     VBox requestsContainer;
     @FXML
     Label trainerName;
+    private static final String FONT_FAMILY="System";
 
     private void populateRequests(List<PlanRequestBean> requests) {
         requestsContainer.getChildren().clear();
@@ -42,7 +43,7 @@ public class TrainerDashboardGraphicControllerGUI {
             headerBox.setAlignment(Pos.BASELINE_LEFT);
 
             Label nameLabel = new Label(req.getAthlete());
-            nameLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
+            nameLabel.setFont(Font.font(FONT_FAMILY, FontWeight.BOLD, 16));
             nameLabel.setTextFill(Color.web("#1e293b"));
 
 
@@ -50,7 +51,7 @@ public class TrainerDashboardGraphicControllerGUI {
 
             // 3. Descrizione/Obiettivo del cliente
             Label goalLabel = new Label(req.getGoal().toString());
-            goalLabel.setFont(Font.font("System", 14));
+            goalLabel.setFont(Font.font(FONT_FAMILY, 14));
             goalLabel.setTextFill(Color.web("#475569"));
             goalLabel.setWrapText(true); // Permette al testo di andare a capo se lungo
             VBox.setMargin(goalLabel, new Insets(10, 0, 15, 0));
@@ -60,22 +61,16 @@ public class TrainerDashboardGraphicControllerGUI {
 
             // Pulsante verde "Accept & Create Plan"
             Button acceptBtn = new Button("✓ Accept & Create Plan");
-            acceptBtn.setFont(Font.font("System", FontWeight.BOLD, 13));
+            acceptBtn.setFont(Font.font(FONT_FAMILY, FontWeight.BOLD, 13));
             acceptBtn.setTextFill(Color.WHITE);
             acceptBtn.setStyle("-fx-background-color: #00ba54; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;");
 
             // Gestione del click di accettazione per QUESTO specifico cliente
-            acceptBtn.setOnAction(event -> {
-                try {
-                    handleAcceptAction(req);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            acceptBtn.setOnAction(event -> { handleAcceptAction(req);});
 
             // Pulsante bianco/rosso "Decline"
             Button declineBtn = new Button("✕ Decline");
-            declineBtn.setFont(Font.font("System", FontWeight.BOLD, 13));
+            declineBtn.setFont(Font.font(FONT_FAMILY, FontWeight.BOLD, 13));
             declineBtn.setTextFill(Color.web("#ef4444"));
             declineBtn.setStyle("-fx-background-color: white; -fx-border-color: #fca5a5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 16;");
 
@@ -125,7 +120,7 @@ public class TrainerDashboardGraphicControllerGUI {
 
     }
     @FXML
-    private void handleAcceptAction(PlanRequestBean req) throws IOException {
+    private void handleAcceptAction(PlanRequestBean req)  {
         this.navigator.setPlanRequest(req);
         navigator.goToCreatePlan();
     }

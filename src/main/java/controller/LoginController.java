@@ -14,9 +14,7 @@ import model.*;
 
 
 public class LoginController {
-        private PasswordEncoder encoder;
         public LoginController(){
-            this.encoder=new PasswordEncoder();
         }
         public SessionBean logAsAthlete(AthleteBean athlete){
             try {
@@ -26,7 +24,7 @@ public class LoginController {
                 String password=athlete.getPassword();
                 Credential creds = authDAO.getAthleteCredential(email);
                 String hash =creds.getHashPassword();
-                if (encoder.verifyPassword(password,hash)){
+                if (PasswordEncoder.verifyPassword(password,hash)){
                     Athlete a=athleteDAO.fetchByEmail(email);
                     Session newSession= SessionManager.getInstance().createSession(a);
                     athlete.setName(a.getName());
@@ -55,7 +53,7 @@ public class LoginController {
                 String password=pt.getPassword();
                 Credential creds = authDAO.getPersonalTrainerCredential(email);
                 String hash =creds.getHashPassword();
-                if (encoder.verifyPassword(password,hash)){
+                if (PasswordEncoder.verifyPassword(password,hash)){
                     PersonalTrainer p=ptDAO.getByEmail(email);
                     Session newSession=SessionManager.getInstance().createSession(p);
                     pt.setName(p.getName());

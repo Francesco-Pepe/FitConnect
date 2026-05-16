@@ -10,8 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import model.Athlete;
-import model.Gender;
+
 
 import java.io.IOException;
 
@@ -34,8 +33,7 @@ public class AthleteDashboardGraphicControllerGUI {
     Label ptLabel;
     private Parent view;
     private Navigator navigator;
-    public AthleteDashboardGraphicControllerGUI() {
-    }
+
     public void setGUINavigator(NavigatorGUI navigator){
         this.navigator=navigator;
     }
@@ -59,12 +57,10 @@ public class AthleteDashboardGraphicControllerGUI {
         navigator.goToPlanRequest();
     }
     public void viewPlan(ActionEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/ViewPlan.fxml"));
-        javafx.scene.layout.AnchorPane root=loader.load();
-        ViewPlanControllerGUI planControllerGUI=loader.getController();
+        navigator.goToViewPLan();
 
     }
-    public void logout(ActionEvent e) throws IOException {
+    public void logout() throws IOException {
         int id=navigator.getSession().getId();
         ManageCustomPlanController ctrl=new ManageCustomPlanController();
         ctrl.logout(id);

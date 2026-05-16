@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 
 public class LoginGraphicControllerGUI {
@@ -43,12 +42,12 @@ public class LoginGraphicControllerGUI {
 
 
 
-    public void setAthlete(ActionEvent e){
+    public void setAthlete(){
         this.role=Role.ATHLETE;
         setLoginText("athlete");
         setStyle(btnAthlete,btnTrainer);
     }
-    public void setPersonalTrainer(ActionEvent e){
+    public void setPersonalTrainer(){
         this.role=Role.PERSONAL_TRAINER;
         setLoginText("personal trainer");
         setStyle(btnTrainer,btnAthlete);
@@ -62,22 +61,26 @@ public class LoginGraphicControllerGUI {
         inactive.setStyle("-fx-background-color: transparent; -fx-text-fill: #6b7280");
     }
 
-    public SessionBean doLogin(){
+    public void doLogin(){
         LoginController controller=new LoginController();
-        String email=this.email.getText();
-        String password=this.password.getText();
-        if (email.length()==0 || password.length()==0){
+        String userMail=this.email.getText();
+        String userPassword=this.password.getText();
+        if (userMail.isEmpty() || userPassword.isEmpty()){
             throw new InvalidCredentials("Every field should have a lenght >0");
         }
         if (this.role.equals(Role.ATHLETE)){
-            AthleteBean athlete=new AthleteBean(email,password);
+            AthleteBean athlete=new AthleteBean(userMail,userPassword);
             SessionBean session =controller.logAsAthlete(athlete);
-            return session;
+            navigator.setSession(session);
+            navigator.setAthlete(session.getAthlete());
+            navigator.goToAthleteDashboard();
         }
         else {
-            PersonalTrainerBean pt=new PersonalTrainerBean(email,password);
+            PersonalTrainerBean pt=new PersonalTrainerBean(userMail,userPassword);
             SessionBean session=controller.logAsPersonalTrainer(pt);
-            return session;
+            navigator.setSession(session);
+            navigator.setPt(session.getPt());
+            navigator.goToTrainerDashboard();
 
         }
 

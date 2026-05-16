@@ -2,21 +2,18 @@ package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
-import eng.DAOFactory;
+
 import exception.DAOException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import model.Athlete;
+
 import model.FitnessGoal;
-import model.PersonalTrainer;
 
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -45,9 +42,7 @@ public class RequestPlanGraphicGraphicControllerGUI
     /**
      * Costruttore vuoto richiesto da FXML
      */
-    public RequestPlanGraphicGraphicControllerGUI() {
 
-    }
 
     /**
      * Setter per impostare l'atleta e il controller astratto
@@ -61,7 +56,7 @@ public class RequestPlanGraphicGraphicControllerGUI
     public Parent getView(){
         return  this.view;
     }
-
+    private static String ERROR_TEXT="Errore";
 
 
     /**
@@ -122,7 +117,7 @@ public class RequestPlanGraphicGraphicControllerGUI
             // Ottieni il FitnessGoal dal RadioButton selezionato
             Toggle selectedToggle = fitnessGoalGroup.getSelectedToggle();
             if (selectedToggle == null) {
-                showAlert("Attenzione", "Errore",
+                showAlert("Attenzione", ERROR_TEXT,
                     "Seleziona un obiettivo fitness");
                 return;
             }
@@ -132,7 +127,7 @@ public class RequestPlanGraphicGraphicControllerGUI
             FitnessGoal selectedGoal = mapTextToFitnessGoal(goalText);
 
             if (selectedTrainer == null || selectedGoal == null) {
-                showAlert("Attenzione", "Errore",
+                showAlert("Attenzione", ERROR_TEXT,
                     "Seleziona sia un trainer che un obiettivo");
                 return;
             }
@@ -158,7 +153,7 @@ public class RequestPlanGraphicGraphicControllerGUI
             returnToDashboard();
 
         } catch (Exception e) {
-            showAlert("Errore", "Errore nell'invio",
+            showAlert(ERROR_TEXT, "Errore nell'invio",
                 e.getMessage());
         }
     }

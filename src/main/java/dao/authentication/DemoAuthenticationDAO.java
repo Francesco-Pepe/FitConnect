@@ -1,6 +1,14 @@
 package dao.authentication;
+import eng.DBDAOFactory;
+import eng.DemoDAOFactory;
+import eng.FileDAOFactory;
 import exception.DAOException;
 import model.Credential;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 /**
@@ -10,25 +18,24 @@ import model.Credential;
 public class DemoAuthenticationDAO extends AuthenticationDAO {
 
     // Credenziali demo fisse
-    private static final String DEMO_ATHLETE_EMAIL = "demo@athlete.com";
-    private static final String DEMO_ATHLETE_PASSWORD = "CBOBMF";//BANALE
-
-    private static final String DEMO_TRAINER_EMAIL = "demo@trainer.com";
-    private static final String DEMO_TRAINER_PASSWORD = "efnp123"; //demo123
+    private  String athleteEmail ;
+    private  String athletePassword ; //BANALE
+//demo123
 
     @Override
     public Credential getAthleteCredential (String email) throws DAOException {
-        if (email.equals(DEMO_ATHLETE_EMAIL) ) {
-            return new Credential(DEMO_ATHLETE_EMAIL,DEMO_ATHLETE_PASSWORD);
+        getDemoCredential();
+        if (email.equals(athleteEmail) ) {
+            return new Credential(athleteEmail,athletePassword);
 
         }
         throw new DAOException("Atleta non trovato");
     }
     @Override
     public Credential getPersonalTrainerCredential(String email) throws DAOException {
-        if (email.equals(DEMO_TRAINER_EMAIL) ){
+        if (email.equals(athleteEmail) ){
             // Crea o recupera il trainer di demo
-            return new Credential(DEMO_TRAINER_EMAIL,DEMO_TRAINER_PASSWORD);
+            return new Credential(athleteEmail,athletePassword);
             }
 
         throw new DAOException("Credenziali demo trainer errate. Usa demo@trainer.com / demo123");
@@ -42,6 +49,19 @@ public class DemoAuthenticationDAO extends AuthenticationDAO {
     @Override
     public void registerPersonalTrainer(String email, String password) throws DAOException {
         throw new DAOException("Registrazione disabilitata in modalità DEMO");
+    }
+    private void getDemoCredential(){
+        try (InputStream in = new FileInputStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(in);
+
+            this.athleteEmail = prop.getProperty("athlete.email");
+            this.athletePassword= prop.getProperty("athlete.password");
+
+
+        } catch (IOException e) {
+            throw new DAOException("Errore lettura config.properties", e);
+        }
     }
 }
 

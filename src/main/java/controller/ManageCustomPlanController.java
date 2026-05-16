@@ -25,9 +25,10 @@ public class ManageCustomPlanController {
     private final PersonalTrainerDAO ptDAO   = factory.getPersonalTrainerDAO();
     private final PlanRequestDAO requestDAO  = factory.getPlanRequestDAO();
     private final TrainingPlanDAO planDAO    = factory.getTrainingPlanDAO();
-    private final ExerciseApiService api     = new RealExerciseApiService();
+    private  ExerciseApiService api;
 
     public ManageCustomPlanController() throws IOException {
+        this.api=new RealExerciseApiService();
     }
 
     // ==========================================

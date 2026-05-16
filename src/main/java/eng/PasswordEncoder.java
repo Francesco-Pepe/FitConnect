@@ -1,9 +1,9 @@
 package eng;
 
 public class PasswordEncoder {
-    public PasswordEncoder(){}
+    private PasswordEncoder(){}
 
-    public String hashPassword(String password) {
+    public static String hashPassword(String password) {
         StringBuilder encrypted = new StringBuilder();
 
         for (char c : password.toCharArray()) {
@@ -22,7 +22,7 @@ public class PasswordEncoder {
         return encrypted.toString();
     }
 
-    public boolean verifyPassword(String password, String hash) {
+    public  static boolean verifyPassword(String password, String hash) {
         String computedHash = hashPassword(password);
         return computedHash.equals(hash);
     }

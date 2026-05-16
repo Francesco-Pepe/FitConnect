@@ -1,14 +1,14 @@
 package view;
 
 import bean.ExerciseBean;
-import bean.Technique;
+
 import bean.TrainingPlanBean;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -89,9 +89,8 @@ public class ViewPlanControllerGUI {
             infoBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0;");
 
             // AZIONE DEL BOTTONE: Mostra le tecniche speciali al clic
-            infoBtn.setOnAction(event -> {
-                showTechniqueDetails(ex);
-            });
+            infoBtn.setOnAction(event -> showTechniqueDetails(ex)
+            );
 
             // Assembla i componenti nell'HBox
             row.getChildren().addAll(circle, numLabel, detailsLabel, infoBtn);
@@ -102,7 +101,7 @@ public class ViewPlanControllerGUI {
             counter++;
         }
     }
-    public void backToDashboard(ActionEvent e) throws IOException {
+    public void backToDashboard() {
         navigator.goToAthleteDashboard();
     }
     private void showTechniqueDetails(ExerciseBean ex) {
