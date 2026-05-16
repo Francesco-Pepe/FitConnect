@@ -14,8 +14,7 @@ import model.*;
 
 
 public class LoginController {
-        public LoginController(){
-        }
+
         public SessionBean logAsAthlete(AthleteBean athlete){
             try {
                 AuthenticationDAO authDAO = DAOFactory.getInstance().getAuthenticationDAO();

@@ -6,7 +6,7 @@ import bean.TrainingPlanBean;
 import controller.ManageCustomPlanController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -53,10 +53,10 @@ public class AthleteDashboardGraphicControllerGUI {
         this.athleteName.setText("Benvenuto " + athleteName);
     }
 
-    public void requestPlan() throws IOException {
+    public void requestPlan()  {
         navigator.goToPlanRequest();
     }
-    public void viewPlan(ActionEvent e) throws IOException {
+    public void viewPlan()  {
         navigator.goToViewPLan();
 
     }

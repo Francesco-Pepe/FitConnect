@@ -16,10 +16,7 @@ import model.FitnessGoal;
 
 import java.util.List;
 
-/**
- * Controller GUI per la richiesta di piano customizzato
- * Estende RequestPlanController per riutilizzare la logica comune
- */
+
 public class RequestPlanGraphicGraphicControllerGUI
         {
 
@@ -39,14 +36,8 @@ public class RequestPlanGraphicGraphicControllerGUI
     private Parent view;
 
     private Navigator navigator;
-    /**
-     * Costruttore vuoto richiesto da FXML
-     */
+    private static final String ERROR_TEXT="Errore";
 
-
-    /**
-     * Setter per impostare l'atleta e il controller astratto
-     */
     public void setGUINavigator(Navigator n){
         this.navigator=n;
     }
@@ -56,12 +47,9 @@ public class RequestPlanGraphicGraphicControllerGUI
     public Parent getView(){
         return  this.view;
     }
-    private static String ERROR_TEXT="Errore";
 
 
-    /**
-     * Carica la lista dei personal trainer nel ComboBox
-     */
+
     private void loadPersonalTrainers() {
         try {
             ManageCustomPlanController ctrl=new ManageCustomPlanController();
@@ -105,9 +93,6 @@ public class RequestPlanGraphicGraphicControllerGUI
         }
     }
 
-    /**
-     * Handler del pulsante "Send Request"
-     */
     @FXML
     private void handleSendRequest(ActionEvent event) {
         try {

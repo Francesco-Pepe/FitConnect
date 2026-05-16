@@ -3,7 +3,7 @@ package view;
 import bean.ExerciseBean;
 
 import bean.TrainingPlanBean;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 
 import javafx.geometry.Pos;
@@ -20,7 +20,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 
-import java.io.IOException;
 import java.util.List;
 
 public class ViewPlanControllerGUI {
