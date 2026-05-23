@@ -33,7 +33,7 @@ public class CreatePlanGraphicControllerCLI {
             printMenu();
             switch (sc.nextLine().trim()) {
                 case "1" -> navigator.goToAddExercise();
-                case "2" -> { if (confirmAndSave(sc)) return; }
+                case "2" -> { if (!confirmAndSave(sc)) return; }
                 case "0" -> { navigator.goToTrainerDashboard(); return; }
                 default  -> System.out.println("[!] Scelta non valida.\n");
             }
