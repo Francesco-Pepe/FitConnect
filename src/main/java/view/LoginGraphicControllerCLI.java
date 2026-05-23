@@ -23,12 +23,15 @@ public class LoginGraphicControllerCLI {
             System.out.println("  [2] Accedi come Personal Trainer");
             System.out.println("  [0] Esci");
             System.out.print("\n> Scelta: ");
+            boolean done=false;
             switch (sc.nextLine().trim()) {
-                case "1" -> { if (!doLogin(sc, false))  return; }
-                case "2" -> { if (!doLogin(sc, true))  return; }
+                case "1" -> done=doLogin(sc,false);
+                case "2" -> done=doLogin(sc,true);
                 case "0" -> { System.out.println("\nArrivederci!"); System.exit(0); }
                 default  -> System.out.println("[!] Scelta non valida.\n");
             }
+            if (done)
+                return;
         }
     }
 
