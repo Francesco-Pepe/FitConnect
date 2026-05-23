@@ -30,6 +30,7 @@ public class LoginGraphicControllerGUI {
     private Button btnTrainer;
     private Parent view;
     private Navigator navigator;
+    private static final String ERROR_TITLE ="Errore";
 
     public void setView(Parent view){
         this.view=view;
@@ -77,7 +78,7 @@ public class LoginGraphicControllerGUI {
 
                 session = controller.logAsAthlete(athlete);
             }catch (InvalidCredentialsException e){
-                showAlert("Errore","Credenziali non valide","Il login è fallito,riprova");
+                showAlert(ERROR_TITLE,"Credenziali non valide","Il login è fallito,riprova");
                 return;
             }
             navigator.setSession(session);
@@ -90,11 +91,11 @@ public class LoginGraphicControllerGUI {
             try {
                  session = controller.logAsPersonalTrainer(pt);
             }catch (ControllerException e){
-                showAlert("Errore","Login fallito","Riprova ad effettuare il login");
+                showAlert(ERROR_TITLE,"Login fallito","Riprova ad effettuare il login");
                 return;
             }
             catch (InvalidCredentialsException d){
-                showAlert("Errore","Credenziali non valide","Riprovare");
+                showAlert(ERROR_TITLE,"Credenziali non valide","Riprovare");
                 return;
             }
             navigator.setSession(session);

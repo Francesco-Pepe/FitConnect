@@ -31,6 +31,7 @@ public class TrainerDashboardGraphicControllerGUI {
     @FXML
     Label trainerName;
     private static final String FONT_FAMILY="System";
+    private static final String ERROR_TITLE="Error";
 
     private void populateRequests(List<PlanRequestBean> requests) {
         requestsContainer.getChildren().clear();
@@ -105,10 +106,10 @@ public class TrainerDashboardGraphicControllerGUI {
             List<PlanRequestBean> requests = ctrl.getPendingRequests(pt.getEmail());
             populateRequests(requests);
         }catch (UnavailableServiceException e){
-            showAlert("Error","","System currently unavailable,retry later");
+            showAlert(ERROR_TITLE,"","System currently unavailable,retry later");
         }
         catch (ControllerException d){
-            showAlert("Error","Error loading the requests",d.getMessage());
+            showAlert(ERROR_TITLE,"Error loading the requests",d.getMessage());
         }
     }
 
@@ -119,7 +120,7 @@ public class TrainerDashboardGraphicControllerGUI {
             // FIX: naviga al login dopo aver invalidato la sessione
             navigator.goToLogin();
         } catch (UnavailableServiceException e) {
-            showAlert("Error","","Logout error");
+            showAlert(ERROR_TITLE,"","Logout error");
         }
     }
 
@@ -130,7 +131,7 @@ public class TrainerDashboardGraphicControllerGUI {
             // FIX: nasconde la card senza toccare il resto del container
            requestsContainer.getChildren().remove(requestBox);
         } catch (ControllerException | UnavailableServiceException e) {
-            showAlert("Error","","Request not rejected correctly,retry");
+            showAlert(ERROR_TITLE,"","Request not rejected correctly,retry");
         }
     }
 

@@ -27,6 +27,7 @@ import java.util.List;
 public class CreatePlanGraphicControllerGUI {
     private Navigator navigator;
     private Parent view;
+    private static final String FONT_FAMILY="System";
     @FXML
     TextField athleteNameField;
     @FXML
@@ -46,6 +47,7 @@ public class CreatePlanGraphicControllerGUI {
     public void setView(Parent view){
         this.view=view;
     }
+
 
     public void start(){
         setAthleteName();
@@ -101,18 +103,18 @@ public class CreatePlanGraphicControllerGUI {
             HBox.setMargin(textContainer, new Insets(0, 0, 0, 15));
 
             Label titleLabel = new Label(ex.getExerciseName());
-            titleLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
+            titleLabel.setFont(Font.font(FONT_FAMILY, FontWeight.BOLD, 14));
             titleLabel.setTextFill(Color.web("#1e293b"));
 
             Label detailsLabel = new Label(ex.getSets()+" sets x "+ex.getReps()+" reps");
-            detailsLabel.setFont(Font.font("System", 12));
+            detailsLabel.setFont(Font.font(FONT_FAMILY, 12));
             detailsLabel.setTextFill(Color.web("#64748b"));
 
             textContainer.getChildren().addAll(titleLabel, detailsLabel);
 
             // Bottone di Cancellazione (Cestino rosso)
             Button deleteBtn = new Button("🗑");
-            deleteBtn.setFont(Font.font("System", 16.0));
+            deleteBtn.setFont(Font.font(FONT_FAMILY, 16.0));
             deleteBtn.setTextFill(Color.web("#ef4444"));
             deleteBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 

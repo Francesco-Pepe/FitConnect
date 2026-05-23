@@ -22,7 +22,6 @@ import java.util.Scanner;
             printHeader("ATHLETE DASHBOARD");
             System.out.printf("  Benvenuto, %s %s!%n", athlete.getName(), athlete.getSurname());
 
-            // Carica il piano se l'atleta ha un PT assegnato
             boolean hasPlan = false;
             if (athlete.getTrainer() != null) {
                 try {
@@ -32,12 +31,7 @@ import java.util.Scanner;
                         navigator.setPlan(plan);
                         navigator.setTrainerName(athlete.getTrainer());
                         hasPlan = true;
-                        System.out.println("\n  ┌─ Il tuo piano di allenamento ───────────────┐");
-                        System.out.printf( "  │  PT         : %-30s│%n", athlete.getTrainer());
-                        System.out.printf( "  │  Creazione  : %-30s│%n", plan.getCreation());
-                        System.out.printf( "  │  Scadenza   : %-30s│%n", plan.getExpiration());
-                        System.out.printf( "  │  Esercizi   : %-30s│%n", plan.getExercises().size());
-                        System.out.println("  └─────────────────────────────────────────────┘");
+                        printPlan(athlete,plan);
                     }
                 } catch (UnavailableServiceException e) {
                     System.out.println("  [!] Il servizio non è al momento disponibile: " );
@@ -76,6 +70,15 @@ import java.util.Scanner;
             System.out.println("\n╔══════════════════════════════╗");
             System.out.printf( "║  %-28s║%n", "FitConnect — " + title);
             System.out.println("╚══════════════════════════════╝");
+        }
+
+        private void printPlan(AthleteBean athlete,TrainingPlanBean plan){
+            System.out.println("\n  ┌─ Il tuo piano di allenamento ───────────────┐");
+            System.out.printf( "  │  PT         : %-30s│%n",athlete.getTrainer());
+            System.out.printf( "  │  Creazione  : %-30s│%n", plan.getCreation());
+            System.out.printf( "  │  Scadenza   : %-30s│%n", plan.getExpiration());
+            System.out.printf( "  │  Esercizi   : %-30s│%n", plan.getExercises().size());
+            System.out.println("  └─────────────────────────────────────────────┘");
         }
     }
 

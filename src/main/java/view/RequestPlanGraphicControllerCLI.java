@@ -37,22 +37,10 @@ public class RequestPlanGraphicControllerCLI {
         }
 
         if (trainers.isEmpty()) {
-            System.out.println("  Nessun personal trainer disponibile.");
-            System.out.print("  Premi INVIO per tornare... ");
-            sc.nextLine();
-            navigator.goToAthleteDashboard();
+            handleNoTrainers(sc);
             return;
         }
-
-        // Selezione PT
-        System.out.println("  Personal Trainer disponibili:");
-        for (int i = 0; i < trainers.size(); i++) {
-            PersonalTrainerBean pt = trainers.get(i);
-            System.out.printf("    [%d] %s %s (%s)%n", i + 1, pt.getName(), pt.getSurname(), pt.getEmail());
-        }
-        System.out.println("    [0] Annulla");
-        System.out.print("\n> Scelta trainer: ");
-
+        printTrainers(trainers);
         PersonalTrainerBean selectedTrainer = null;
         while (selectedTrainer == null) {
             String input = sc.nextLine().trim();
@@ -108,7 +96,6 @@ public class RequestPlanGraphicControllerCLI {
         } catch (ControllerException e) {
             System.out.println(" Errore invio richiesta: " + e.getMessage());
         }
-
         System.out.print("  Premi INVIO per tornare alla dashboard... ");
         sc.nextLine();
         navigator.goToAthleteDashboard();
@@ -119,5 +106,23 @@ public class RequestPlanGraphicControllerCLI {
         System.out.printf( "║  %-28s║%n", "FitConnect — " + title);
         System.out.println("╚══════════════════════════════╝");
     }
+
+    private void handleNoTrainers(Scanner sc){
+        System.out.println("  Nessun personal trainer disponibile.");
+        System.out.print("  Premi INVIO per tornare... ");
+        sc.nextLine();
+        navigator.goToAthleteDashboard();
+    }
+
+    private void printTrainers(List<PersonalTrainerBean> pts){
+        System.out.println("  Personal Trainer disponibili:");
+        for (int i = 0; i < pts.size(); i++) {
+            PersonalTrainerBean pt = pts.get(i);
+            System.out.printf("    [%d] %s %s (%s)%n", i + 1, pt.getName(), pt.getSurname(), pt.getEmail());
+        }
+        System.out.println("    [0] Annulla");
+        System.out.print("\n> Scelta trainer: ");
+    }
+
 }
 

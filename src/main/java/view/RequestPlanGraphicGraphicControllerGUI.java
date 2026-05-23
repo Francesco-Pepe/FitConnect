@@ -91,7 +91,7 @@ public class RequestPlanGraphicGraphicControllerGUI
             });
 
         } catch (ControllerException e) {
-            showAlert("Errore","Recupero pt fallito","Impossibile recuperare i trainer disponibili,riprovare più tardi");
+            showAlert(ERROR_TEXT,"Recupero pt fallito","Impossibile recuperare i trainer disponibili,riprovare più tardi");
         }
     }
 

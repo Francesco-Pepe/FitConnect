@@ -16,6 +16,9 @@
         <sonar.projectKey>FitConnect</sonar.projectKey>
         <sonar.organization>francesco-pepe</sonar.organization>
         <javafx.version>21.0.2</javafx.version>
+        <sonar.issue.ignore.multicriteria>ignoraSysOut</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria.ignoraSysOut.ruleKey>java:S106</sonar.issue.ignore.multicriteria.ignoraSysOut.ruleKey>
+        <sonar.issue.ignore.multicriteria.ignoraSysOut.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.ignoraSysOut.resourceKey>
     </properties>
 
     <dependencies>

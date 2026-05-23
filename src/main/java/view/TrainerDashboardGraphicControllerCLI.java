@@ -21,43 +21,28 @@ public class TrainerDashboardGraphicControllerCLI {
     public void start(Scanner sc)  {
         PersonalTrainerBean pt = navigator.getPt();
         navigator.setExercises(new ArrayList<>());
-
-        printHeader("TRAINER DASHBOARD");
-        System.out.printf("  Benvenuto, %s %s!%n", pt.getName(), pt.getSurname());
-
+        printWelcome(pt);
         // Carica richieste pendenti
         ManageCustomPlanController ctrl;
+        List<PlanRequestBean> requests;
         try {
             ctrl = new ManageCustomPlanController();
         } catch (UnavailableServiceException e) {
             System.out.println("Impossibile contattare il database degli esercizi,riprovare più tardi");
             return;
         }
-        List<PlanRequestBean> requests;
         try {
             requests = ctrl.getPendingRequests(pt.getEmail());
         } catch (ControllerException e) {
             System.out.println("[!] Errore caricamento richieste: " + e.getMessage());
             requests = new ArrayList<>();
         }
-
         if (requests.isEmpty()) {
             System.out.println("\n  Nessuna richiesta pendente.");
-        } else {
-            System.out.printf("%n  Richieste pendenti (%d):%n", requests.size());
-            System.out.println("  ┌────┬──────────────────────────────┬───────────────────┐");
-            System.out.println("  │ N° │ Atleta                       │ Obiettivo         │");
-            System.out.println("  ├────┼──────────────────────────────┼───────────────────┤");
-            for (int i = 0; i < requests.size(); i++) {
-                PlanRequestBean r = requests.get(i);
-                System.out.printf("  │ %-2d │ %-28s │ %-17s │%n",
-                        i + 1,
-                        truncate(r.getAthlete() != null ? r.getAthlete() : r.getAthleteEmail(), 28),
-                        r.getGoal());
-            }
-            System.out.println("  └────┴──────────────────────────────┴───────────────────┘");
         }
-
+        else {
+            showRequests(requests);
+        }
         System.out.println();
         if (!requests.isEmpty()) {
             System.out.println("  [A<n>] Accetta richiesta n  (es: A1)");
@@ -65,9 +50,7 @@ public class TrainerDashboardGraphicControllerCLI {
         }
         System.out.println("  [0]    Logout");
         System.out.print("\n> Scelta: ");
-
         List<PlanRequestBean> mutableRequests = new ArrayList<>(requests);
-
         while (true) {
             String input = sc.nextLine().trim().toUpperCase();
 
@@ -94,21 +77,13 @@ public class TrainerDashboardGraphicControllerCLI {
                     } else {
                         ctrl.declineRequest(req);
                         mutableRequests.remove(idx);
-                        System.out.printf("  [✓] Richiesta di %s rifiutata.%n",
+                        System.out.printf("  Richiesta di %s rifiutata.%n",
                                 req.getAthlete() != null ? req.getAthlete() : req.getAthleteEmail());
                         // Ri-stampa la tabella aggiornata
                         if (mutableRequests.isEmpty()) {
                             System.out.println("  Nessuna altra richiesta pendente.");
                         } else {
-                            System.out.println("  ┌────┬──────────────────────────────┬───────────────────┐");
-                            for (int i = 0; i < mutableRequests.size(); i++) {
-                                PlanRequestBean r = mutableRequests.get(i);
-                                System.out.printf("  │ %-2d │ %-28s │ %-17s │%n",
-                                        i + 1,
-                                        truncate(r.getAthlete() != null ? r.getAthlete() : r.getAthleteEmail(), 28),
-                                        r.getGoal());
-                            }
-                            System.out.println("  └────┴──────────────────────────────┴───────────────────┘");
+                            showRequests(mutableRequests);
                         }
                         System.out.print("> Scelta: ");
                     }
@@ -133,4 +108,28 @@ public class TrainerDashboardGraphicControllerCLI {
         System.out.printf( "║  %-28s║%n", "FitConnect — " + title);
         System.out.println("╚══════════════════════════════╝");
     }
+
+    private void printWelcome(PersonalTrainerBean pt){
+        printHeader("TRAINER DASHBOARD");
+        System.out.printf("  Benvenuto, %s %s!%n", pt.getName(), pt.getSurname());
+    }
+
+    private void showRequests(List<PlanRequestBean> requests){
+        System.out.printf("%n  Richieste pendenti (%d):%n", requests.size());
+        System.out.println("  ┌────┬──────────────────────────────┬───────────────────┐");
+        System.out.println("  │ N° │ Atleta                       │ Obiettivo         │");
+        System.out.println("  ├────┼──────────────────────────────┼───────────────────┤");
+        for (int i = 0; i < requests.size(); i++) {
+            PlanRequestBean r = requests.get(i);
+            System.out.printf("  │ %-2d │ %-28s │ %-17s │%n",
+                    i + 1,
+                    truncate(r.getAthlete() != null ? r.getAthlete() : r.getAthleteEmail(), 28),
+                    r.getGoal());
+        }
+        System.out.println("  └────┴──────────────────────────────┴───────────────────┘");
+    }
+
+
+
+
 }
