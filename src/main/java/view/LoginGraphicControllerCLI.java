@@ -26,10 +26,16 @@ public class LoginGraphicControllerCLI {
 
             switch (choice) {
                 case "1" -> {
-                    if (doLogin(sc, false)) return;
+                    if (doLogin(sc, false)) {
+                        System.out.println("Login riuscito");
+                        return;
+                    }
                 }
                 case "2" -> {
-                    if (doLogin(sc, true)) return;
+                    if (doLogin(sc, true)) {
+                        System.out.println("Login riuscito");
+                        return;
+                    }
                 }
                 case "0" -> {
                     System.out.println("\nArrivederci!");

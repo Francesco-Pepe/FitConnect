@@ -92,8 +92,8 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
 
             String sqlTech = "INSERT INTO exercise_technique (exercise_id, technique) VALUES (?, ?)";
             try (PreparedStatement psTech = conn().prepareStatement(sqlTech)) {
+                psTech.setInt(1, exerciseId);
                 for (String technique : techniques) {
-                    psTech.setInt(1, exerciseId);
                     psTech.setString(2, technique);
                     psTech.addBatch();
                 }

@@ -7,12 +7,10 @@ import bean.*;
 import java.util.List;
 
 public abstract class Navigator {
-    private boolean started;
     private Context context;
     private Screen currentScreen;
 
     protected Navigator(){
-        this.started=true;
         this.context=new Context();
     }
 

@@ -1,11 +1,8 @@
 package dao.trainingplan;
 
-import eng.DAOFactory;
 import eng.ExerciseSerializer;
 import exception.DAOException;
-import model.Athlete;
 import model.Exercise;
-import model.PersonalTrainer;
 import model.TrainingPlan;
 import org.json.JSONArray;
 import org.json.JSONObject;

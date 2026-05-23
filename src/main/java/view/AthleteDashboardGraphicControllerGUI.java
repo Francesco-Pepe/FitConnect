@@ -7,13 +7,9 @@ import controller.ManageCustomPlanController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
-
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-
-
-import java.io.IOException;
 
 public class AthleteDashboardGraphicControllerGUI {
     @FXML
@@ -69,7 +65,7 @@ public class AthleteDashboardGraphicControllerGUI {
         }
     }
 
-    public void start() throws IOException {
+    public void start()  {
         try {
             ManageCustomPlanController controller = new ManageCustomPlanController();
             SessionBean session = navigator.getSession();

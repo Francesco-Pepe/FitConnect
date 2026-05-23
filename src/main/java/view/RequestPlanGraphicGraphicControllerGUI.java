@@ -2,20 +2,14 @@ package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
-
 import exception.ControllerException;
-import exception.DAOException;
 import exception.UnavailableServiceException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-
 import model.FitnessGoal;
-
-
 import java.util.List;
 
 

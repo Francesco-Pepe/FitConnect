@@ -40,9 +40,15 @@ public class CreatePlanGraphicControllerCLI {
 
             String choice = sc.nextLine().trim();
             switch (choice) {
-                case "1" -> { navigator.goToAddExercise(); }
+                case "1" ->  navigator.goToAddExercise();
                 case "2" -> {
-                    if (savePlan(sc)) return;
+                    if (savePlan(sc)){
+                        System.out.println("\n  [✓] Piano creato con successo!");
+                        System.out.print("  Premi INVIO per tornare alla dashboard... ");
+                        sc.nextLine();
+                        navigator.goToTrainerDashboard();
+                        return;
+                    }
                 }
                 case "0" -> { navigator.goToTrainerDashboard(); return; }
                 default  -> System.out.println("[!] Scelta non valida.\n");
@@ -69,10 +75,6 @@ public class CreatePlanGraphicControllerCLI {
             ManageCustomPlanController ctrl = new ManageCustomPlanController();
             TrainingPlanBean plan = new TrainingPlanBean(startDate, endDate, exercises);
             ctrl.acceptAndCreatePlan(navigator.getPlanRequest(), plan);
-            System.out.println("\n  [✓] Piano creato con successo!");
-            System.out.print("  Premi INVIO per tornare alla dashboard... ");
-            sc.nextLine();
-            navigator.goToTrainerDashboard();
             return true;
         } catch (ControllerException | UnavailableServiceException e ) {
             System.out.println("[!] Errore salvataggio piano: " + e.getMessage());
@@ -88,17 +90,12 @@ public class CreatePlanGraphicControllerCLI {
             if (input.equals("0")) return null;
             try {
                 LocalDate date = LocalDate.parse(input, FMT);
-                if (minDate != null && date.isBefore(minDate)) {
-                    System.out.printf("[!] La data deve essere >= %s. Riprova: ",
-                            minDate.format(FMT));
-                    continue;
-                }
-                if (maxDate != null && date.isAfter(maxDate)) {
-                    System.out.printf("[!] La data deve essere <= %s. Riprova: ",
-                            maxDate.format(FMT));
-                    continue;
-                }
-                return date;
+                boolean tooEarly = minDate != null && date.isBefore(minDate);
+                boolean tooLate  = maxDate != null && date.isAfter(maxDate);
+                if (!tooEarly && !tooLate) return date;
+                System.out.print(tooEarly
+                        ? "[!] La data deve essere >= " + minDate.format(FMT) + ". Riprova: "
+                        : "[!] La data deve essere <= " + maxDate.format(FMT) + ". Riprova: ");
             } catch (DateTimeParseException e) {
                 System.out.print("[!] Formato non valido. Usa dd/MM/yyyy: ");
             }

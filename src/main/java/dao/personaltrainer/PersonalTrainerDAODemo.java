@@ -1,9 +1,8 @@
 package dao.personaltrainer;
 
 import dao.athlete.AthleteDAO;
-import dao.athlete.AthleteDAODemo;
+
 import eng.DAOFactory;
-import model.Athlete;
 import model.Gender;
 import model.PersonalTrainer;
 

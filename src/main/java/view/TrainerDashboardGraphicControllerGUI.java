@@ -4,7 +4,6 @@ import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
 import exception.ControllerException;
-import exception.InvalidCredentialsException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -18,8 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +93,7 @@ public class TrainerDashboardGraphicControllerGUI {
         this.navigator=n;
     }
 
-    public void start() throws IOException {
+    public void start()  {
         PersonalTrainerBean pt = navigator.getPt();
         navigator.setExercises(new ArrayList<>());
         String trainer = pt.getName()+" "+pt.getSurname();

@@ -55,6 +55,8 @@ public class DBConnection {
     }
     public void rollback() {
         try { connection.rollback(); connection.setAutoCommit(true); }
-        catch (SQLException ignored) {}
+        catch (SQLException ignored) {
+            //nothing to do here
+        }
     }
 }

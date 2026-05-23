@@ -1,14 +1,10 @@
 package dao.personaltrainer;
 
-import eng.DAOFactory;
 import exception.DAOException;
-import model.Athlete;
 import model.Gender;
 import model.PersonalTrainer;
-import model.PlanRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

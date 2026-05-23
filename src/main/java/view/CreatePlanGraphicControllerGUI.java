@@ -19,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -119,9 +117,9 @@ public class CreatePlanGraphicControllerGUI {
             deleteBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
             // AZIONE DEL CESTINO: Rimuove l'elemento sia dalla grafica che dall'ArrayList
-            deleteBtn.setOnAction(event -> {
-                deleteExercise(ex);
-            });
+            deleteBtn.setOnAction(event ->
+                deleteExercise(ex)
+            );
             row.getChildren().addAll(circlePane, textContainer, deleteBtn);
             exercisesContainer.getChildren().add(row);
         }
@@ -137,13 +135,10 @@ public class CreatePlanGraphicControllerGUI {
         if (startDatePicker.getValue()==null || expireDatePicker.getValue()==null){
             return false;
         }
-        if (startDatePicker.getValue().isAfter(expireDatePicker.getValue()) || startDatePicker.getValue().isBefore(LocalDate.now())){
-            return  false;
-        }
-        return true;
+        return !startDatePicker.getValue().isAfter(expireDatePicker.getValue()) && !startDatePicker.getValue().isBefore(LocalDate.now());
     }
 
-    public void createPlan() throws IOException {
+    public void createPlan()  {
         List<ExerciseBean> exercises=navigator.getExercises();
         try {
 

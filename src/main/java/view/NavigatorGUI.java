@@ -3,6 +3,7 @@ package view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class NavigatorGUI extends Navigator{
             this.login.start();
             render(this.login.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+            graphicsError("Login");
         }
     }
 
@@ -56,7 +57,7 @@ public class NavigatorGUI extends Navigator{
         this.viewPlan.start();
         render(this.viewPlan.getView());
     } catch (IOException e) {
-        throw new RuntimeException();
+       graphicsError("ViewPlan");
     }
     }
 
@@ -73,7 +74,7 @@ public class NavigatorGUI extends Navigator{
             this.athleteDashboard.start();
             render(this.athleteDashboard.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+            graphicsError("AthleteDashboard");
         }
     }
 
@@ -91,7 +92,7 @@ public class NavigatorGUI extends Navigator{
             this.requestPlan.start();
             render(this.requestPlan.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+           graphicsError("RequestPlan");
         }
 
     }
@@ -108,7 +109,7 @@ public class NavigatorGUI extends Navigator{
             this.trainerDashboard.start();
             render(this.trainerDashboard.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+           graphicsError("TrainerDashboard");
         }
 
     }
@@ -126,7 +127,7 @@ public class NavigatorGUI extends Navigator{
             this.createPlan.start();
             render(this.createPlan.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+           graphicsError("CreatePlan");
         }
     }
 
@@ -143,7 +144,7 @@ public class NavigatorGUI extends Navigator{
             this.addExercise.start();
             render(this.addExercise.getView());
         } catch (IOException e) {
-            throw new RuntimeException();
+            graphicsError("AddExercise");
         }
     }
 
@@ -166,5 +167,12 @@ public class NavigatorGUI extends Navigator{
             this.stage.centerOnScreen();
             this.stage.show();
         }
+    }
+    private void graphicsError (String file){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERRORE DI GRAFICA");
+        alert.setHeaderText(null);
+        alert.setContentText("Il file per il setup grafico di " + file + " non si trova");
+        alert.showAndWait();
     }
 }
