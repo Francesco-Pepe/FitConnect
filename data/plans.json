@@ -1,0 +1,78 @@
+[
+  {
+    "pt": "mario.rossi@fit.com",
+    "exercises": [
+      {
+        "reps": 8,
+        "sets": 4,
+        "techniques": ["DROP_SET"],
+        "name": "Squat",
+        "equipment": "Barbell",
+        "target": "Quadriceps"
+      },
+      {
+        "reps": 10,
+        "sets": 4,
+        "techniques": [],
+        "name": "Bench Press",
+        "equipment": "Barbell",
+        "target": "Chest"
+      },
+      {
+        "reps": 6,
+        "sets": 3,
+        "techniques": ["SLOW_ECCENTRIC"],
+        "name": "Deadlift",
+        "equipment": "Barbell",
+        "target": "Hamstrings"
+      },
+      {
+        "reps": 10,
+        "sets": 3,
+        "techniques": [],
+        "name": "Pull-up",
+        "equipment": "Bodyweight",
+        "target": "Back"
+      },
+      {
+        "reps": 12,
+        "sets": 3,
+        "techniques": ["REST_PAUSE"],
+        "name": "Overhead Press",
+        "equipment": "Dumbbell",
+        "target": "Shoulders"
+      }
+    ],
+    "athlete": "luca.bianchi@fit.com",
+    "expiration": "2026-08-19",
+    "creation": "2026-05-19"
+  },
+  {
+    "pt": "mario.rossi@fit.com",
+    "exercises": [
+      {
+        "reps": 12,
+        "sets": 4,
+        "techniques": [
+          "SLOW_ECCENTRIC",
+          "REST_PAUSE",
+          "DROP_SET"
+        ],
+        "name": "barbell bench press",
+        "equipment": "barbell",
+        "target": "pectorals"
+      },
+      {
+        "reps": 8,
+        "sets": 4,
+        "techniques": [],
+        "name": "barbell bench front squat",
+        "equipment": "barbell",
+        "target": "quads"
+      }
+    ],
+    "athlete": "cristo.re@fit.com",
+    "expiration": "2026-05-29",
+    "creation": "2026-05-21"
+  }
+]

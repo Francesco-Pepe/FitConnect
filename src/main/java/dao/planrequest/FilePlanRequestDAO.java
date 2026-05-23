@@ -58,9 +58,7 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         FitnessGoal goal=FitnessGoal.valueOf(obj.getString("goal"));
         String ptEmail=obj.getString(PT_EMAIL);
         String atEmail=obj.getString(ATHLETE_EMAIL);
-        PersonalTrainer pt= DAOFactory.getInstance().getPersonalTrainerDAO().getByEmail(ptEmail);
-        Athlete a=DAOFactory.getInstance().getAthleteDAO().fetchByEmail(atEmail);
-        return new PlanRequest(id,a,pt,goal,status);
+        return new PlanRequest(id,atEmail,ptEmail,goal,status);
 
     }
 
@@ -69,8 +67,8 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         obj.put("id",request.getId());
         obj.put(REQUEST_STATUS,request.getStatus().name());
         obj.put("goal",request.getGoal().name());
-        obj.put(PT_EMAIL,request.getPt().getEmail());
-        obj.put(ATHLETE_EMAIL,request.getClient().getEmail());
+        obj.put(PT_EMAIL,request.getPtEmail());
+        obj.put(ATHLETE_EMAIL,request.getClientEmail());
         return obj;
     }
 

@@ -3,7 +3,9 @@ import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
 
+import exception.ControllerException;
 import exception.DAOException;
+import exception.UnavailableServiceException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,8 +90,8 @@ public class RequestPlanGraphicGraphicControllerGUI
                 }
             });
 
-        } catch (Exception e) {
-            throw new DAOException("Errore caricamento personal trainer", e);
+        } catch (ControllerException e) {
+            showAlert("Errore","Recupero pt fallito","Impossibile recuperare i trainer disponibili,riprovare più tardi");
         }
     }
 
@@ -137,7 +139,7 @@ public class RequestPlanGraphicGraphicControllerGUI
             // Ritorna al dashboard
             returnToDashboard();
 
-        } catch (Exception e) {
+        } catch (ControllerException  | UnavailableServiceException e) {
             showAlert(ERROR_TEXT, "Errore nell'invio",
                 e.getMessage());
         }

@@ -16,6 +16,14 @@ public class ExerciseBean {
         this.executionDetails=executionDetails;
     }
 
+    //costruttore per bean creato dal pt durante la creazione del piano
+    public ExerciseBean(String name,int sets,int reps,List<Technique> techniques){
+        this.name=name;
+        this.sets=sets;
+        this.reps=reps;
+        this.tecniques=techniques;
+    }
+
     public String getExerciseName(){
         return this.name;
     }

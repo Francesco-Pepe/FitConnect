@@ -13,6 +13,7 @@ public class Context {
     private TrainingPlanBean plan;
     private String trainer;
     private PlanRequestBean request;
+    private List<ExerciseBean> exercises;
     public Context(){}
 
     public Context(AthleteBean athlete){
@@ -79,7 +80,19 @@ public class Context {
         this.session = session;
     }
 
+    public List<ExerciseBean> getExercises() {
+        return exercises;
+    }
 
+    public void addExercise(ExerciseBean exercise) {
+        this.exercises.add(exercise);
+    }
 
+    public void deleteExercise(ExerciseBean exercise){
+        this.exercises.remove(exercise);
+    }
 
+    public void setExercises(List<ExerciseBean> exercises) {
+        this.exercises = exercises;
+    }
 }

@@ -15,6 +15,20 @@ public abstract class Navigator {
         this.started=true;
         this.context=new Context();
     }
+
+    protected void setExercises(List<ExerciseBean> exercises){
+        this.context.setExercises(exercises);
+    }
+    protected List<ExerciseBean> getExercises(){
+        return this.context.getExercises();
+    }
+    protected void addExercise(ExerciseBean exercise){
+        this.context.addExercise(exercise);
+    }
+    protected void deleteExercise(ExerciseBean exercise){
+        this.context.deleteExercise(exercise);
+    }
+
     protected AthleteBean getAthlete(){
         return this.context.getAthlete();
     }
@@ -39,12 +53,14 @@ public abstract class Navigator {
         return context.getTrainer();
     }
 
+    // BUG FIX: non sostituire l'intero Context (si perderebbe la session già impostata)
     protected void setAthlete(AthleteBean a){
-        this.context=new Context(a);
+        this.context.setAthlete(a);
     }
 
+    // BUG FIX: stessa correzione per il flusso trainer
     protected void setPt(PersonalTrainerBean pt){
-        this.context=new Context(pt);
+        this.context.setPt(pt);
     }
 
     protected TrainingPlanBean getPlan(){
@@ -83,6 +99,7 @@ public abstract class Navigator {
             case REQUEST_PLAN -> viewPlanRequest();
             case TRAINER_DASHBOARD -> viewTrainerDashboard();
             case CREATE_PLAN ->viewCreatePlan();
+            case ADD_EXERCISE -> viewAddExercise();
         }
 
     }
@@ -93,6 +110,7 @@ public abstract class Navigator {
     protected void goToPlanRequest(){setCurrentScreen(Screen.REQUEST_PLAN); nextScreen();}
     protected void goToTrainerDashboard(){setCurrentScreen(Screen.TRAINER_DASHBOARD); nextScreen();}
     protected void goToCreatePlan(){setCurrentScreen(Screen.CREATE_PLAN);nextScreen();}
+    protected void goToAddExercise(){setCurrentScreen(Screen.ADD_EXERCISE);nextScreen();}
 
     public abstract void viewCreatePlan();
     public abstract void viewLogin();
@@ -100,7 +118,7 @@ public abstract class Navigator {
     public abstract void viewAthleteDashboard();
     public abstract void viewPlanRequest();
     public abstract  void viewTrainerDashboard();
-
+    public abstract void viewAddExercise();
     public abstract void startUp();
 
 }

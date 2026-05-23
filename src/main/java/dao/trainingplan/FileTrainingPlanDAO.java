@@ -44,8 +44,8 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
 
     private JSONObject serializePlan(TrainingPlan plan){
         JSONObject obj=new JSONObject();
-        obj.put(ATHLETE_EMAIL,plan.getClient().getEmail());
-        obj.put("pt",plan.getCreator().getEmail());
+        obj.put(ATHLETE_EMAIL,plan.getClient());
+        obj.put("pt",plan.getCreator());
         obj.put("expiration",plan.getExpirationDate().toString());
         obj.put("creation",plan.getCreationDate().toString());
         JSONArray exercises=new JSONArray();
@@ -57,8 +57,8 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
     }
 
     private TrainingPlan buildPlan(JSONObject obj){
-        Athlete a= DAOFactory.getInstance().getAthleteDAO().fetchByEmail(obj.getString(ATHLETE_EMAIL));
-        PersonalTrainer pt=DAOFactory.getInstance().getPersonalTrainerDAO().getByEmail(obj.getString("pt"));
+        String athleteEmail=obj.getString(ATHLETE_EMAIL);
+        String ptEmail=obj.getString("pt");
         LocalDate creation=LocalDate.parse(obj.getString("creation"));
         LocalDate expiration=LocalDate.parse(obj.getString("expiration"));
 
@@ -68,7 +68,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
             Exercise ex=ExerciseSerializer.deserialize(exercises.getJSONObject(i));
             exList.add(ex);
         }
-        TrainingPlan p=new TrainingPlan(a,pt,expiration);
+        TrainingPlan p=new TrainingPlan(athleteEmail,ptEmail,expiration);
         p.setCreationDate(creation);
         p.setExercises(exList);
         return p;
@@ -77,12 +77,12 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
     @Override
     public void deleteFromStorage(TrainingPlan plan) {
         JSONArray all=readFile();
-        if (searchByAthlete(plan.getClient().getEmail())==null){
+        if (searchByAthlete(plan.getClient())==null){
             throw new DAOException("Il piano non è presente in memoria");
         }
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(ATHLETE_EMAIL).equals(plan.getClient().getEmail())){
+            if (obj.getString(ATHLETE_EMAIL).equals(plan.getClient())){
                 all.remove(i);
                 writeFile(all);
                 break;
@@ -127,7 +127,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         boolean found = false;
         for (int i = 0; i < all.length(); i++) {
             if (all.getJSONObject(i).getString(ATHLETE_EMAIL)
-                    .equals(plan.getClient().getEmail())) {
+                    .equals(plan.getClient())) {
                 all.put(i, serializePlan(plan));
                 found = true;
                 break;

@@ -14,6 +14,8 @@ public class NavigatorGUI extends Navigator{
     private RequestPlanGraphicGraphicControllerGUI requestPlan;
     private ViewPlanControllerGUI viewPlan;
     private TrainerDashboardGraphicControllerGUI trainerDashboard;
+    private CreatePlanGraphicControllerGUI createPlan;
+    private AddExerciseGraphicControllerGUI addExercise;
 
     public NavigatorGUI(){
         super();
@@ -112,8 +114,37 @@ public class NavigatorGUI extends Navigator{
     }
 
     @Override
-    public void viewCreatePlan(){
-        //to be implemented
+    public void viewCreatePlan() {
+        try {
+            if (this.createPlan == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/CreatePlan.fxml"));
+                Parent root = loader.load();
+                this.createPlan = loader.getController();
+                this.createPlan.setView(root);
+                this.createPlan.setGUINavigator(this);
+            }
+            this.createPlan.start();
+            render(this.createPlan.getView());
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void viewAddExercise() {
+        try {
+            if (this.addExercise == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddExercise.fxml"));
+                Parent root = loader.load();
+                this.addExercise = loader.getController();
+                this.addExercise.setView(root);
+                this.addExercise.setGUINavigator(this);
+            }
+            this.addExercise.start();
+            render(this.addExercise.getView());
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
     @Override

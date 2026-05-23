@@ -6,6 +6,7 @@ module FitConnect {
     requires org.json;
     requires java.net.http;
     requires java.logging;
+    requires java.sql;
 
     exports view to javafx.graphics;
     exports model;

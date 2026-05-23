@@ -3,23 +3,23 @@ package model;
 public class PlanRequest {
     private int id;
     private RequestStatus status;
-    private Athlete client;
-    private PersonalTrainer pt;
+    private String clientEmail;
+    private String ptEmail;
     private FitnessGoal goal;
 
-    public PlanRequest(int id,Athlete client,PersonalTrainer pt,FitnessGoal goal){
+    public PlanRequest(int id,String client,String pt,FitnessGoal goal){
         this.id=id;
         this.status=RequestStatus.PENDING;
-        this.client=client;
-        this.pt=pt;
+        this.clientEmail=client;
+        this.ptEmail=pt;
         this.goal=goal;
     }
 
-    public PlanRequest(int id,Athlete client,PersonalTrainer pt,FitnessGoal goal,RequestStatus status){
+    public PlanRequest(int id,String client,String pt,FitnessGoal goal,RequestStatus status){
         this.id=id;
         this.status=status;
-        this.client=client;
-        this.pt=pt;
+        this.clientEmail=client;
+        this.ptEmail=pt;
         this.goal=goal;
     }
     public int getId(){
@@ -37,28 +37,32 @@ public class PlanRequest {
         this.goal = goal;
     }
 
-    public PersonalTrainer getPt() {
-        return pt;
+    public String getPtEmail() {
+        return ptEmail;
     }
 
-    public void setPt(PersonalTrainer pt) {
-        this.pt = pt;
+    public void setPtEmail(String pt) {
+        this.ptEmail = pt;
     }
 
-    public Athlete getClient() {
-        return client;
+    public String getClientEmail() {
+        return clientEmail;
     }
 
-    public void setClient(Athlete client) {
-        this.client = client;
+    public void setClient(String client) {
+        this.clientEmail = client;
     }
 
     public RequestStatus getStatus() {
         return status;
     }
 
-    public void setStatus(RequestStatus status) {
-        this.status = status;
+
+    public void accept(){
+        this.status=RequestStatus.ACCEPTED;
+    }
+    public void decline(){
+        this.status=RequestStatus.REJECTED;
     }
 
 

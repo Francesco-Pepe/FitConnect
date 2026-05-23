@@ -4,7 +4,8 @@ import bean.AthleteBean;
 import bean.SessionBean;
 import bean.TrainingPlanBean;
 import controller.ManageCustomPlanController;
-import javafx.event.ActionEvent;
+import exception.ControllerException;
+import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
 
 import javafx.scene.Parent;
@@ -46,9 +47,6 @@ public class AthleteDashboardGraphicControllerGUI {
         return this.view;
     }
 
-
-
-
     public void setAthleteName(String athleteName) {
         this.athleteName.setText("Benvenuto " + athleteName);
     }
@@ -60,23 +58,34 @@ public class AthleteDashboardGraphicControllerGUI {
         navigator.goToViewPLan();
 
     }
-    public void logout() throws IOException {
+    public void logout()  {
         int id=navigator.getSession().getId();
-        ManageCustomPlanController ctrl=new ManageCustomPlanController();
-        ctrl.logout(id);
-
+        try {
+            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ctrl.logout(id);
+            navigator.goToLogin();
+        }catch (UnavailableServiceException e){
+            showAlert("Error","",e.getMessage());
+        }
     }
 
     public void start() throws IOException {
-        ManageCustomPlanController controller=new ManageCustomPlanController();
-        SessionBean session=navigator.getSession();
-        AthleteBean athlete=session.getAthlete();
-        setAthleteName(athlete.getName());
-        String pt=athlete.getTrainer();
-        if (pt!=null){
-            TrainingPlanBean plan=controller.getAthletePlan(athlete.getEmail());
-            navigator.setPlan(plan);
-            showTrainingCard(plan,pt);
+        try {
+            ManageCustomPlanController controller = new ManageCustomPlanController();
+            SessionBean session = navigator.getSession();
+            AthleteBean athlete = session.getAthlete();
+            setAthleteName(athlete.getName());
+            String pt = athlete.getTrainer();
+            if (pt != null) {
+                TrainingPlanBean plan = controller.getAthletePlan(athlete.getEmail());
+                navigator.setPlan(plan);
+                showTrainingCard(plan, pt);
+            }
+        }catch (UnavailableServiceException e){
+            showAlert("Errore","ExerciseError","Il servizio non è attualmente disponibile si prega di riprovare più tardi");
+        }
+        catch (ControllerException d){
+            showAlert("Error","",d.getMessage());
         }
 
     }
@@ -88,6 +97,13 @@ public class AthleteDashboardGraphicControllerGUI {
         navigator.setTrainerName(pt);
         trainingCard.setVisible(true);
         trainingCard.setManaged(true);
+    }
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
 

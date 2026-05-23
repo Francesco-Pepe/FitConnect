@@ -18,8 +18,8 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
 
         // Piano di Frank con due esercizi: uno semplice, uno decorato
         TrainingPlan frankPlan = new TrainingPlan(
-                frank,
-                mario,
+                frank.getEmail(),
+                mario.getEmail(),
                 LocalDate.now().plusMonths(3)
         );
 
@@ -37,9 +37,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
         Exercise latPulldown = new BaseExercise("lat pulldown", 10, 3, "cable", "lats");
         latPulldown = new SlowEccentricDecorator(latPulldown);
         frankPlan.addExercise(latPulldown);
-        frank.setPlan(frankPlan);
-        frank.setPt(mario);
-        mario.addAthlete(frank);
+        frank.assignPlan(mario,frankPlan);
         plans.add(frankPlan);
 
         // Sara non ha ancora un piano (caso realistico: richiesta in attesa)
@@ -53,7 +51,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
     @Override
     public TrainingPlan searchByAthlete(String athleteEmail) {
         return plans.stream()
-                .filter(p -> p.getClient().getEmail().equals(athleteEmail))
+                .filter(p -> p.getClient().equals(athleteEmail))
                 .findFirst()
                 .orElse(null);
     }
@@ -61,7 +59,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
     @Override
     public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
         return plans.stream()
-                .filter(p -> p.getCreator().getEmail().equals(ptEmail))
+                .filter(p -> p.getCreator().equals(ptEmail))
                 .toList();
     }
     @Override
@@ -69,7 +67,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
         // In RAM il piano è già in memoria dopo addToCache,
         // ma lo aggiungiamo alla lista per coerenza con searchByPersonalTrainer
         boolean exists = plans.stream()
-                .anyMatch(p -> p.getClient().getEmail().equals(plan.getClient().getEmail()));
+                .anyMatch(p -> p.getClient().equals(plan.getClient()));
         if (!exists) {
             plans.add(plan);
         }
@@ -78,6 +76,6 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
     @Override
     public void deleteFromStorage(TrainingPlan plan) {
         // In RAM basta rimuovere dalla lista — la cache è già pulita dalla classe astratta
-        plans.removeIf(p -> p.getClient().getEmail().equals(plan.getClient().getEmail()));
+        plans.removeIf(p -> p.getClient().equals(plan.getClient()));
     }
 }

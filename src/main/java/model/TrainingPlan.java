@@ -6,14 +6,13 @@ import java.util.List;
 
 public class TrainingPlan {
 
-    private Athlete client;
-    private PersonalTrainer creator;
-
+    private String client;
+    private String creator;
     private LocalDate creationDate;
     private LocalDate expirationDate; // Utile per sapere quando va rifatta la scheda
     private List<Exercise> exercises;
 
-    public TrainingPlan(Athlete client, PersonalTrainer creator, LocalDate expirationDate) {
+    public TrainingPlan(String client, String creator, LocalDate expirationDate) {
         this.client = client;
         this.creator = creator;
         this.creationDate = LocalDate.now();
@@ -26,11 +25,11 @@ public class TrainingPlan {
         this.exercises.add(exercise);
     }
 
-    public Athlete getClient() { return client; }
-    public void setClient(Athlete client) { this.client = client; }
+    public String getClient() { return client; }
+    public void setClient(String client) { this.client = client; }
 
-    public PersonalTrainer getCreator() { return creator; }
-    public void setCreator(PersonalTrainer creator) { this.creator = creator; }
+    public String getCreator() { return creator; }
+    public void setCreator(String creator) { this.creator = creator; }
 
     public LocalDate getCreationDate() { return creationDate; }
     public void setCreationDate(LocalDate creationDate) { this.creationDate = creationDate; }

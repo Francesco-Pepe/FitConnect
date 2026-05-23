@@ -1,12 +1,10 @@
 package model;
 
-import java.util.List;
 
 public class Athlete {
     private String email;
     private String name;
     private String surname;
-    private List<PlanRequest> request;
     private TrainingPlan plan;
     private PersonalTrainer pt;
     private Gender gender;
@@ -21,16 +19,12 @@ public class Athlete {
         this.height = height;
         this.gender = gender;
         this.pt = null;
-        this.request=null;
         this.plan=null;
     }
     public TrainingPlan getPlan() {
         return plan;
     }
 
-    public void setPlan(TrainingPlan plan) {
-        this.plan = plan;
-    }
 
 
     public String getEmail(){
@@ -64,17 +58,7 @@ public class Athlete {
         return pt;
     }
 
-    public void setPt(PersonalTrainer pt) {
-        this.pt = pt;
-    }
 
-    public List<PlanRequest> getRequest() {
-        return request;
-    }
-
-    public void addRequest(PlanRequest request) {
-        this.request.add(request);
-    }
 
     public String getSurname() {
         return surname;
@@ -90,6 +74,11 @@ public class Athlete {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void assignPlan(PersonalTrainer pt,TrainingPlan plan){
+        this.pt=pt;
+        this.plan=plan;
     }
 
 

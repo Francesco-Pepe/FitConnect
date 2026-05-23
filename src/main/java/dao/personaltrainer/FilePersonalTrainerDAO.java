@@ -49,14 +49,6 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         Gender gender=Gender.valueOf(obj.getString("gender"));
         PersonalTrainer pt=new PersonalTrainer(email,name,surname,gender);
         addToCache(pt);
-        if (obj.getString("clients").equals("true")) {
-            List<Athlete> clients = DAOFactory.getInstance().getAthleteDAO().fetchAthleteByTrainer(pt.getEmail());
-            pt.setClients(clients);
-        }
-        if (obj.getString("requests").equals("true")) {
-            List<PlanRequest> reqs = DAOFactory.getInstance().getPlanRequestDAO().fetchPendingByTrainer(pt.getEmail());
-            pt.setRequests(reqs);
-        }
         return pt;
     }
 
@@ -66,9 +58,6 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         obj.put("name",pt.getName());
         obj.put("surname",pt.getSurname());
         obj.put("gender",pt.getGender().name());
-        obj.put("clients",pt.getClients().toArray().length>0 ? "true" : "false");
-        obj.put("requests",pt.getRequests().isEmpty() ? "false": "true");
-
         return obj;
     }
 
@@ -109,21 +98,5 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         addToCache(pt);
     }
 
-    @Override
-    public void update(PersonalTrainer pt) {
-        JSONArray all=readFile();
-        boolean found=false;
-        for (int i=0;i<all.length();i++){
-            JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(PT_EMAIL).equals(pt.getEmail())){
-                all.put(i,serializePt(pt));
-                found=true;
-                break;
-            }
-        }
-        if (!found){
-            throw new DAOException("Pt not found for "+ pt.getEmail());
-        }
-        writeFile(all);
-    }
+
 }

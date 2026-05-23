@@ -26,5 +26,5 @@ public abstract class PersonalTrainerDAO extends CachedDAO<PersonalTrainer> {
     }
     public abstract PersonalTrainer searchPtByEmail(String email);
     public abstract List<PersonalTrainer> fetchAll();
-    public abstract void update(PersonalTrainer pt);
+
 }

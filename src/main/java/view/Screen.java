@@ -6,5 +6,6 @@ public enum Screen {
     REQUEST_PLAN,
     VIEW_PLAN,
     TRAINER_DASHBOARD,
-    CREATE_PLAN
+    CREATE_PLAN,
+    ADD_EXERCISE
 }

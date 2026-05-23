@@ -76,10 +76,10 @@
             </VBox>
 
             <!-- ADDITIONAL NOTES -->
-            <VBox spacing="8.0">
+          <!--  <VBox spacing="8.0">
                 <Label style="-fx-text-fill: #374151; -fx-font-weight: bold;" text="Additional Notes (Optional)" />
                 <TextArea fx:id="notesArea" prefHeight="120.0" promptText="Any additional information, experience level, available equipment..." style="-fx-border-color: #d1d5db; -fx-border-radius: 8;" wrapText="true" />
-            </VBox>
+            </VBox> -->
 
             <!-- ACTIONS -->
             <HBox alignment="CENTER_RIGHT" spacing="15.0">

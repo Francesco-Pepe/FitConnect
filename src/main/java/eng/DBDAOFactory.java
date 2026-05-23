@@ -45,7 +45,7 @@ public class DBDAOFactory extends DAOFactory {
 
     @Override
     public synchronized PlanRequestDAO getPlanRequestDAO() {
-        if (personalTrainerDAO==null){
+        if (planRequestDAO==null){
             this.planRequestDAO=new DBPlanRequestDAO();
         }
         return this.planRequestDAO;

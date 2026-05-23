@@ -1,0 +1,37 @@
+[
+  {
+    "goal": "STRENGHT",
+    "ptEmail": "mario.rossi@fit.com",
+    "id": 1,
+    "email": "luca.bianchi@fit.com",
+    "status": "ACCEPTED"
+  },
+  {
+    "goal": "WEIGHT_LOSS",
+    "ptEmail": "mario.rossi@fit.com",
+    "id": 2,
+    "email": "luca.bianchi@fit.com",
+    "status": "REJECTED"
+  },
+  {
+    "ptEmail": "mario.rossi@fit.com",
+    "goal": "BODY_RECOMPOSITION",
+    "id": 3,
+    "email": "luca.bianchi@fit.com",
+    "status": "ACCEPTED"
+  },
+  {
+    "goal": "BODY_RECOMPOSITION",
+    "ptEmail": "mario.rossi@fit.com",
+    "id": 4,
+    "email": "cristo.re@fit.com",
+    "status": "ACCEPTED"
+  },
+  {
+    "goal": "WEIGHT_LOSS",
+    "ptEmail": "mario.rossi@fit.com",
+    "id": 5,
+    "email": "cristo.re@fit.com",
+    "status": "REJECTED"
+  }
+]

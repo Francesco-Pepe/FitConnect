@@ -5,10 +5,12 @@ import bean.PersonalTrainerBean;
 import bean.Role;
 import bean.SessionBean;
 import controller.LoginController;
-import exception.InvalidCredentials;
+import exception.ControllerException;
+import exception.InvalidCredentialsException;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -66,18 +68,35 @@ public class LoginGraphicControllerGUI {
         String userMail=this.email.getText();
         String userPassword=this.password.getText();
         if (userMail.isEmpty() || userPassword.isEmpty()){
-            throw new InvalidCredentials("Every field should have a lenght >0");
+            throw new InvalidCredentialsException("Every field should have a lenght >0");
         }
         if (this.role.equals(Role.ATHLETE)){
             AthleteBean athlete=new AthleteBean(userMail,userPassword);
-            SessionBean session =controller.logAsAthlete(athlete);
+            SessionBean session=null;
+            try {
+
+                session = controller.logAsAthlete(athlete);
+            }catch (InvalidCredentialsException e){
+                showAlert("Errore","Credenziali non valide","Il login è fallito,riprova");
+                return;
+            }
             navigator.setSession(session);
             navigator.setAthlete(session.getAthlete());
             navigator.goToAthleteDashboard();
         }
         else {
             PersonalTrainerBean pt=new PersonalTrainerBean(userMail,userPassword);
-            SessionBean session=controller.logAsPersonalTrainer(pt);
+            SessionBean session ;
+            try {
+                 session = controller.logAsPersonalTrainer(pt);
+            }catch (ControllerException e){
+                showAlert("Errore","Login fallito","Riprova ad effettuare il login");
+                return;
+            }
+            catch (InvalidCredentialsException d){
+                showAlert("Errore","Credenziali non valide","Riprovare");
+                return;
+            }
             navigator.setSession(session);
             navigator.setPt(session.getPt());
             navigator.goToTrainerDashboard();
@@ -90,4 +109,17 @@ public class LoginGraphicControllerGUI {
         email.clear();
         password.clear();
     }
+
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
+
+
+
 }

@@ -1,0 +1,137 @@
+
+package view;
+import bean.ExerciseBean;
+import bean.PlanRequestBean;
+import bean.TrainingPlanBean;
+import controller.ManageCustomPlanController;
+import exception.ControllerException;
+import exception.UnavailableServiceException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Scanner;
+
+public class CreatePlanGraphicControllerCLI {
+
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Navigator navigator;
+
+    public void setNavigator(Navigator n) {
+        this.navigator = n;
+    }
+
+    public void start(Scanner sc) {
+        PlanRequestBean req = navigator.getPlanRequest();
+
+        printHeader("CREA PIANO");
+        System.out.printf("  Atleta: %s%n",
+                req.getAthlete() != null ? req.getAthlete() : req.getAthleteEmail());
+        System.out.printf("  Obiettivo: %s%n", req.getGoal());
+
+        while (true) {
+            printExerciseTable(navigator.getExercises());
+
+            System.out.println();
+            System.out.println("  [1] Aggiungi esercizio");
+            System.out.println("  [2] Salva piano");
+            System.out.println("  [0] Annulla e torna alla dashboard");
+            System.out.print("\n> Scelta: ");
+
+            String choice = sc.nextLine().trim();
+            switch (choice) {
+                case "1" -> { navigator.goToAddExercise(); }
+                case "2" -> {
+                    if (savePlan(sc)) return;
+                }
+                case "0" -> { navigator.goToTrainerDashboard(); return; }
+                default  -> System.out.println("[!] Scelta non valida.\n");
+            }
+        }
+    }
+
+    private boolean savePlan(Scanner sc) {
+        List<ExerciseBean> exercises = navigator.getExercises();
+        if (exercises.isEmpty()) {
+            System.out.println("[!] Aggiungi almeno un esercizio prima di salvare.\n");
+            return false;
+        }
+
+        // Data inizio
+        LocalDate startDate = readDate(sc, "  Data inizio (dd/MM/yyyy): ", LocalDate.now(), null);
+        if (startDate == null) return false;
+
+        // Data scadenza
+        LocalDate endDate = readDate(sc, "  Data scadenza (dd/MM/yyyy): ", startDate.plusDays(1), null);
+        if (endDate == null) return false;
+
+        try {
+            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            TrainingPlanBean plan = new TrainingPlanBean(startDate, endDate, exercises);
+            ctrl.acceptAndCreatePlan(navigator.getPlanRequest(), plan);
+            System.out.println("\n  [✓] Piano creato con successo!");
+            System.out.print("  Premi INVIO per tornare alla dashboard... ");
+            sc.nextLine();
+            navigator.goToTrainerDashboard();
+            return true;
+        } catch (ControllerException | UnavailableServiceException e ) {
+            System.out.println("[!] Errore salvataggio piano: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** Legge una data valida dalla console. minDate è la data minima accettata. */
+    private LocalDate readDate(Scanner sc, String prompt, LocalDate minDate, LocalDate maxDate) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim();
+            if (input.equals("0")) return null;
+            try {
+                LocalDate date = LocalDate.parse(input, FMT);
+                if (minDate != null && date.isBefore(minDate)) {
+                    System.out.printf("[!] La data deve essere >= %s. Riprova: ",
+                            minDate.format(FMT));
+                    continue;
+                }
+                if (maxDate != null && date.isAfter(maxDate)) {
+                    System.out.printf("[!] La data deve essere <= %s. Riprova: ",
+                            maxDate.format(FMT));
+                    continue;
+                }
+                return date;
+            } catch (DateTimeParseException e) {
+                System.out.print("[!] Formato non valido. Usa dd/MM/yyyy: ");
+            }
+        }
+    }
+
+    private void printExerciseTable(List<ExerciseBean> exercises) {
+        if (exercises.isEmpty()) {
+            System.out.println("\n  Nessun esercizio aggiunto.");
+            return;
+        }
+        System.out.printf("%n  Esercizi aggiunti (%d):%n", exercises.size());
+        System.out.println("  ┌────┬──────────────────────────┬───────────┐");
+        System.out.println("  │ N° │ Esercizio                │ Set x Rep │");
+        System.out.println("  ├────┼──────────────────────────┼───────────┤");
+        int i = 1;
+        for (ExerciseBean ex : exercises) {
+            System.out.printf("  │ %-2d │ %-24s │ %-9s │%n",
+                    i++,
+                    truncate(ex.getExerciseName(), 24),
+                    ex.getSets() + " x " + ex.getReps());
+        }
+        System.out.println("  └────┴──────────────────────────┴───────────┘");
+    }
+
+    private static String truncate(String s, int max) {
+        if (s == null) return "";
+        return s.length() <= max ? s : s.substring(0, max - 1) + "…";
+    }
+
+    private static void printHeader(String title) {
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.printf( "║  %-28s║%n", "FitConnect — " + title);
+        System.out.println("╚══════════════════════════════╝");
+    }
+}

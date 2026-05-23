@@ -1,6 +1,8 @@
 package dao.personaltrainer;
 
+import dao.athlete.AthleteDAO;
 import dao.athlete.AthleteDAODemo;
+import eng.DAOFactory;
 import model.Athlete;
 import model.Gender;
 import model.PersonalTrainer;
@@ -10,7 +12,7 @@ import java.util.List;
 public class PersonalTrainerDAODemo extends PersonalTrainerDAO {
 
     // CORREZIONE 1: Inizializziamo il DAO!
-    private final AthleteDAODemo dao = new AthleteDAODemo();//usa DAOFactory!!!!
+    private final AthleteDAO dao = DAOFactory.getInstance().getAthleteDAO();//usa DAOFactory!!!!
 
     @Override
     public PersonalTrainer searchPtByEmail(String email){
@@ -19,10 +21,6 @@ public class PersonalTrainerDAODemo extends PersonalTrainerDAO {
             p = new PersonalTrainer(email, "Mario", "Rossi", Gender.MALE);
 
             // Ora questo funziona perfettamente
-            List<Athlete> a = dao.fetchAthleteByTrainer(email);
-            for (Athlete l : a){
-                p.addAthlete(l);
-            }
         }
         return p;
     }
@@ -35,8 +33,5 @@ public class PersonalTrainerDAODemo extends PersonalTrainerDAO {
         return mario != null ? List.of(mario) : List.of();
     }
 
-    @Override
-    public void update(PersonalTrainer pt){
-        // nothing to do here, we are in ram
-    }
+
 }

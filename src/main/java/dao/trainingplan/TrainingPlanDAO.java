@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class TrainingPlanDAO extends CachedDAO<TrainingPlan> {
     @Override
     public String fetchKey(TrainingPlan plan){
-        return plan.getClient().getEmail();
+        return plan.getClient();
     }
 
     public  void delete(TrainingPlan plan){

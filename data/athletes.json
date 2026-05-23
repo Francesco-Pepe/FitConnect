@@ -1,0 +1,22 @@
+[
+  {
+    "ptEmail": "mario.rossi@fit.com",
+    "gender": "MALE",
+    "surname": "Bianchi",
+    "name": "Luca",
+    "weight": 78.5,
+    "hasPlan": true,
+    "email": "luca.bianchi@fit.com",
+    "height": 180
+  },
+  {
+    "ptEmail": "mario.rossi@fit.com",
+    "gender": "MALE",
+    "surname": "Re",
+    "name": "Cristo",
+    "weight": 78.5,
+    "hasPlan": true,
+    "email": "cristo.re@fit.com",
+    "height": 180
+  }
+]

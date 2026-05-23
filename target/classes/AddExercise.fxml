@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #f8fafc;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddExerciseGraphicControllerGUI">
+    <children>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="1200.0" spacing="12.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets left="40.0" right="40.0" />
+            </padding>
+            <children>
+                <Circle fill="#6345ff" radius="16.0" />
+                <VBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="FitConnect" textFill="#1e293b">
+                            <font><Font name="System Bold" size="18.0" /></font>
+                        </Label>
+                        <Label text="Add Exercise" textFill="#64748b">
+                            <font><Font size="12.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#backToPlan" style="-fx-background-color: transparent; -fx-cursor: hand;" text="← Back to Plan" textFill="#334155">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+
+        <VBox alignment="CENTER" layoutY="70.0" prefHeight="680.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+            <children>
+
+                <VBox maxWidth="600.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 15, 0, 0, 5); -fx-padding: 40;">
+                    <children>
+
+                        <Label text="Add New Exercise" textFill="#0f172a">
+                            <font><Font name="System Bold" size="22.0" /></font>
+                        </Label>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Exercise Name" textFill="#475569">
+                                    <font><Font name="System Bold" size="13.0" /></font>
+                                </Label>
+                                <TextField fx:id="exerciseNameField" prefHeight="45.0" promptText="e.g., Bench Press, Squats, Pull-ups" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;" />
+                            </children>
+                        </VBox>
+
+                        <HBox spacing="15.0">
+                            <children>
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Sets" textFill="#475569">
+                                            <font><Font name="System Bold" size="13.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="setsField" prefHeight="45.0" promptText="e.g., 4" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Reps" textFill="#475569">
+                                            <font><Font name="System Bold" size="13.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="repsField" prefHeight="45.0" promptText="e.g., 8" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 12;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label text="Techniques (Optional)" textFill="#475569">
+                                    <font><Font name="System Bold" size="13.0" /></font>
+                                </Label>
+
+                                <GridPane hgap="15.0" vgap="12.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <CheckBox fx:id="dropsetCheck" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" text="Dropset" textFill="#1e293b" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 15; -fx-cursor: hand;" />
+
+                                        <CheckBox fx:id="forcedRepsCheck" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" text="Forced Reps" textFill="#1e293b" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 15; -fx-cursor: hand;" />
+
+                                        <CheckBox fx:id="isometricCheck" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" text="Isometric Pause" textFill="#1e293b" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 15; -fx-cursor: hand;" />
+
+                                        <CheckBox fx:id="restPauseCheck" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" text="Rest Pause" textFill="#1e293b" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 15; -fx-cursor: hand;" />
+
+                                        <CheckBox fx:id="slowEccentricCheck" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" text="Slow Eccentric" textFill="#1e293b" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0 15; -fx-cursor: hand;" />
+                                    </children>
+                                </GridPane>
+
+                                <Label text="Select advanced techniques to apply to this exercise" textFill="#94a3b8">
+                                    <font><Font size="11.0" /></font>
+                                    <VBox.margin>
+                                        <Insets top="2.0" />
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <HBox spacing="15.0" style="-fx-border-color: #e2e8f0; -fx-border-width: 1 0 0 0; -fx-padding: 20 0 0 0;">
+                            <children>
+                                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#addExercise" prefHeight="48.0" style="-fx-background-color: #6345ff; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Add Exercise" textFill="white" HBox.hgrow="ALWAYS">
+                                    <font><Font name="System Bold" size="14.0" /></font>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#backToPlan" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-cursor: hand;" text="Cancel" textFill="#334155">
+                                    <font><Font name="System Bold" size="14.0" /></font>
+                                </Button>
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

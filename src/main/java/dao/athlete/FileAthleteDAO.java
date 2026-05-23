@@ -126,25 +126,18 @@ public class FileAthleteDAO extends AthleteDAO {
                 Gender.valueOf(obj.getString("gender"))
         );
 
-        // 2. aggiungi subito in cache PRIMA di chiamare gli altri DAO
-        //    questo evita loop infiniti se PersonalTrainerDAO richiama AthleteDAO
-        addToCache(athlete);
 
-        // 3. collega il PT se presente
+        // 3. collega il PT se presente(se c'è pt c'è il piano)
         String ptEmail = obj.optString(PT_EMAIL, "");
         if (!ptEmail.isEmpty()) {
             PersonalTrainerDAO ptDAO = DAOFactory.getInstance().getPersonalTrainerDAO();
             PersonalTrainer pt = ptDAO.getByEmail(ptEmail);
-            athlete.setPt(pt);
-        }
-
-        // 4. collega il piano se esiste
-        if (obj.optBoolean("hasPlan", false)) {
             TrainingPlanDAO planDAO = DAOFactory.getInstance().getTrainingPlanDAO();
             TrainingPlan plan = planDAO.fetchByAthlete(athlete.getEmail());
-            athlete.setPlan(plan);
+            athlete.assignPlan(pt,plan);
         }
 
+        addToCache(athlete);
         return athlete;
     }
 

@@ -42,7 +42,7 @@
                                 </Button>
                             </children>
                         </HBox>
-                        <VBox style="-fx-background-color: white; -fx-background-radius: 12;">
+                        <VBox style="-fx-background-color: white; -fx-background-radius: 12;" visible="false" managed="false" fx:id="trainingCard">
                             <effect>
                                 <DropShadow blurType="GAUSSIAN" color="#0000001a" height="15.0" radius="7.0" width="15.0" />
                             </effect>
@@ -62,7 +62,7 @@
                                                         <VBox alignment="CENTER_LEFT">
                                                             <children>
                                                                 <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Trainer" />
-                                                                <Label fx:id="ptLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="Sarah Johnson" />
+                                                                <Label fx:id="ptLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="Sarah Johnson"  />
                                                             </children>
                                                         </VBox>
                                                     </children>
@@ -73,7 +73,7 @@
                                                         <VBox alignment="CENTER_LEFT">
                                                             <children>
                                                                 <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Start Date" />
-                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-05-12" />
+                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-05-12" fx:id="creationDate" />
                                                             </children>
                                                         </VBox>
                                                     </children>
@@ -84,7 +84,7 @@
                                                         <VBox alignment="CENTER_LEFT">
                                                             <children>
                                                                 <Label style="-fx-font-size: 12px; -fx-text-fill: #64748b;" text="Expire Date" />
-                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-07-07" />
+                                                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" text="2026-07-07"  fx:id="expirationDate"/>
                                                             </children>
                                                         </VBox>
                                                     </children>

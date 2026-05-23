@@ -10,6 +10,7 @@ import eng.DAOFactory;
 import eng.PasswordEncoder;
 import exception.ControllerException;
 import exception.DAOException;
+import exception.InvalidCredentialsException;
 import model.*;
 
 
@@ -38,7 +39,7 @@ public class LoginController {
                 }
 
             }catch (DAOException e){
-                throw new ControllerException("Credentials not valid",e.getCause());
+                throw new InvalidCredentialsException("Credentials not valid");
             }
             throw new ControllerException("login fallito");
         }
@@ -62,7 +63,7 @@ public class LoginController {
                 }
 
             }catch (DAOException e){
-                throw new ControllerException("Credentials not valid",e.getCause());
+                throw new InvalidCredentialsException("Credentials not valid");
             }
             throw new ControllerException("login fallito");
 

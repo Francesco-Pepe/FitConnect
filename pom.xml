@@ -25,6 +25,13 @@
             <version>20240303</version>
         </dependency>
 
+        <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>8.3.0</version>
+        </dependency>
+
+
         <!-- JavaFX 21 -->
         <dependency>
             <groupId>org.openjfx</groupId>
