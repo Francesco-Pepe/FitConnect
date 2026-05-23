@@ -90,7 +90,7 @@ public class RequestPlanGraphicGraphicControllerGUI
                 }
             });
 
-        } catch (ControllerException e) {
+        } catch (UnavailableServiceException | ControllerException e) {
             showAlert(ERROR_TEXT,"Recupero pt fallito","Impossibile recuperare i trainer disponibili,riprovare più tardi");
         }
     }

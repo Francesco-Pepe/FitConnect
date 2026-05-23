@@ -81,6 +81,10 @@ public class LoginGraphicControllerGUI {
                 showAlert(ERROR_TITLE,"Credenziali non valide","Il login è fallito,riprova");
                 return;
             }
+            catch (ControllerException e){
+                showAlert(ERROR_TITLE,"Login error",e.getMessage());
+                return;
+            }
             navigator.setSession(session);
             navigator.setAthlete(session.getAthlete());
             navigator.goToAthleteDashboard();

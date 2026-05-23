@@ -2,6 +2,7 @@ package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
+import exception.BusinessException;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import model.FitnessGoal;
@@ -19,18 +20,17 @@ public class RequestPlanGraphicControllerCLI {
     public void start(Scanner sc)  {
         printHeader("RICHIEDI PIANO");
         ManageCustomPlanController ctrl;
+        List<PersonalTrainerBean> trainers;
         // Carica lista PT
         try {
              ctrl = new ManageCustomPlanController();
+             trainers = ctrl.retrievePT();
         }catch (UnavailableServiceException e){
             System.out.println("Impossibile comunicare con il database degli esercizi,riprovare più tardi");
             navigator.goToAthleteDashboard();
             return;
         }
-        List<PersonalTrainerBean> trainers;
-        try {
-            trainers = ctrl.retrievePT();
-        } catch (ControllerException e) {
+         catch (ControllerException e) {
             System.out.println("[!] Impossibile caricare i personal trainer: ");
             navigator.goToAthleteDashboard();
             return;
@@ -41,47 +41,13 @@ public class RequestPlanGraphicControllerCLI {
             return;
         }
         printTrainers(trainers);
-        PersonalTrainerBean selectedTrainer = null;
-        while (selectedTrainer == null) {
-            String input = sc.nextLine().trim();
-            if ("0".equals(input)) {
-                navigator.goToAthleteDashboard();
-                return;
-            }
-            try {
-                int idx = Integer.parseInt(input) - 1;
-                if (idx >= 0 && idx < trainers.size()) {
-                    selectedTrainer = trainers.get(idx);
-                } else {
-                    System.out.print("[!] Numero fuori range. Riprova: ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.print("[!] Inserisci un numero valido: ");
-            }
+        PersonalTrainerBean selectedTrainer = selectTrainer(sc,trainers);
+        if (selectedTrainer==null){
+            navigator.goToAthleteDashboard();
+            return;
         }
-
-        // Selezione obiettivo
-        System.out.println("\n  Obiettivo fitness:");
         FitnessGoal[] goals = FitnessGoal.values();
-        for (int i = 0; i < goals.length; i++) {
-            System.out.printf("    [%d] %s%n", i + 1, goals[i]);
-        }
-        System.out.print("\n> Scelta obiettivo: ");
-
-        FitnessGoal selectedGoal = null;
-        while (selectedGoal == null) {
-            String input = sc.nextLine().trim();
-            try {
-                int idx = Integer.parseInt(input) - 1;
-                if (idx >= 0 && idx < goals.length) {
-                    selectedGoal = goals[idx];
-                } else {
-                    System.out.print("[!] Numero fuori range. Riprova: ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.print("[!] Inserisci un numero valido: ");
-            }
-        }
+        FitnessGoal selectedGoal = selectGoal(sc,goals);
 
         // Invio richiesta
         try {
@@ -93,7 +59,7 @@ public class RequestPlanGraphicControllerCLI {
             ctrl.sendPlanRequest(request);
             System.out.printf("%n  Richiesta inviata a %s %s!%n",
                     selectedTrainer.getName(), selectedTrainer.getSurname());
-        } catch (ControllerException e) {
+        } catch (BusinessException | ControllerException e) {
             System.out.println(" Errore invio richiesta: " + e.getMessage());
         }
         System.out.print("  Premi INVIO per tornare alla dashboard... ");
@@ -124,5 +90,48 @@ public class RequestPlanGraphicControllerCLI {
         System.out.print("\n> Scelta trainer: ");
     }
 
-}
+    private void printGoals(FitnessGoal[] goals){
+        System.out.println("\n  Obiettivo fitness:");
+
+        for (int i = 0; i < goals.length; i++) {
+            System.out.printf("    [%d] %s%n", i + 1, goals[i]);
+        }
+        System.out.print("\n> Scelta obiettivo: ");
+
+    }
+
+
+    private PersonalTrainerBean selectTrainer(Scanner sc, List<PersonalTrainerBean> trainers) {
+        while (true) {
+            String input = sc.nextLine().trim();
+            if ("0".equals(input)) return null;
+            try {
+                int idx = Integer.parseInt(input) - 1;
+                if (idx >= 0 && idx < trainers.size()) return trainers.get(idx);
+                else System.out.print("[!] Numero fuori range. Riprova: ");
+            } catch (NumberFormatException e) {
+                System.out.print("[!] Inserisci un numero valido: ");
+            }
+        }
+    }
+
+    private FitnessGoal selectGoal(Scanner sc, FitnessGoal[] goals) {
+        printGoals(goals);
+        while (true) {
+            String input = sc.nextLine().trim();
+            try {
+                int idx = Integer.parseInt(input) - 1;
+                if (idx >= 0 && idx < goals.length) return goals[idx];
+                else System.out.print("[!] Numero fuori range. Riprova: ");
+            } catch (NumberFormatException e) {
+                System.out.print("[!] Inserisci un numero valido: ");
+            }
+        }
+    }
+
+
+
+    }
+
+
 

@@ -4,6 +4,7 @@ import bean.AthleteBean;
 import bean.SessionBean;
 import bean.TrainingPlanBean;
 import controller.ManageCustomPlanController;
+import exception.ControllerException;
 import exception.UnavailableServiceException;
 import java.util.Scanner;
 
@@ -18,14 +19,12 @@ import java.util.Scanner;
         public void start(Scanner sc) {
             SessionBean session = navigator.getSession();
             AthleteBean athlete = session.getAthlete();
-
-            printHeader("ATHLETE DASHBOARD");
-            System.out.printf("  Benvenuto, %s %s!%n", athlete.getName(), athlete.getSurname());
-
+            welcomeAthlete(athlete);
             boolean hasPlan = false;
+            ManageCustomPlanController ctrl=null;
             if (athlete.getTrainer() != null) {
                 try {
-                    ManageCustomPlanController ctrl = new ManageCustomPlanController();
+                     ctrl = new ManageCustomPlanController();
                     TrainingPlanBean plan = ctrl.getAthletePlan(athlete.getEmail());
                     if (plan != null) {
                         navigator.setPlan(plan);
@@ -35,6 +34,9 @@ import java.util.Scanner;
                     }
                 } catch (UnavailableServiceException e) {
                     System.out.println("  [!] Il servizio non è al momento disponibile: " );
+                }
+                catch (ControllerException e){
+                    System.out.println("Impossibile caricare il piano" +e.getMessage());
                 }
             }
 
@@ -54,12 +56,15 @@ import java.util.Scanner;
                     case "2" -> { navigator.goToPlanRequest(); return; }
                     case "0" -> {
                         try {
-                            new ManageCustomPlanController().logout(session.getId());
+                            if(ctrl!=null) ctrl.logout(session.getId());
+                            navigator.goToLogin();
+                            return;
                         } catch (UnavailableServiceException e) {
                             System.out.println("[!] Servizio non disponibile " );
+                            navigator.goToLogin();
+                            return;
                         }
-                        navigator.goToLogin();
-                        return;
+
                     }
                     default -> System.out.print("[!] Scelta non valida: ");
                 }
@@ -79,6 +84,12 @@ import java.util.Scanner;
             System.out.printf( "  │  Scadenza   : %-30s│%n", plan.getExpiration());
             System.out.printf( "  │  Esercizi   : %-30s│%n", plan.getExercises().size());
             System.out.println("  └─────────────────────────────────────────────┘");
+        }
+
+        private void welcomeAthlete(AthleteBean athlete){
+            printHeader("ATHLETE DASHBOARD");
+            System.out.printf("  Benvenuto, %s %s!%n", athlete.getName(), athlete.getSurname());
+
         }
     }
 
