@@ -15,8 +15,11 @@ import exception.ControllerException;
 import exception.DAOException;
 import exception.UnavailableServiceException;
 import model.*;
-
+import view.AthleteBoundary;
+import view.TrainerBoundary;
+import bean.PlanRequestBean;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +70,9 @@ public class ManageCustomPlanController {
         // id=0: verrà assegnato dal DAO nella save()
         PlanRequest request = new PlanRequest(0, bean.getAthleteEmail(), bean.getPtEmail(), bean.getGoal());
         requestDAO.save(request); // save assegna l'id corretto
-
+        NotificaBean notify=new NotificaBean(bean.getAthlete(), bean.getPtEmail(), LocalDateTime.now(),Event.NEW_REQUEST);
+        TrainerBoundary trainerBoundary=new TrainerBoundary();
+        trainerBoundary.sendNotification(notify);
 
 
     }
@@ -179,7 +184,9 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         requestDAO.update(req);
         planDAO.save(newPlan);      // ← Salva il piano PRIMA dell'atleta
         athleteDAO.update(athlete);  // ← Ora l'atleta può referenziare il piano
-
+        NotificaBean notify=new NotificaBean(request.getAthlete(), newPlan.getCreator(), LocalDateTime.now(),Event.PLAN_CREATED);
+        AthleteBoundary athleteBoundary=new AthleteBoundary();
+        athleteBoundary.sendNotification(notify);
 
     } catch (DAOException e) {
         throw new ControllerException("Errore accettazione piano", e);
