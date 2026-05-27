@@ -5,7 +5,7 @@ import model.*;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-public class TestExerciseSerializer {
+ class TestExerciseSerializer {
 
     private BaseExercise baseExercise() {
         return new BaseExercise("bench press", 12, 4, "barbell", "chest");

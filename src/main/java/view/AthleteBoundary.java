@@ -12,9 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class AthleteBoundary {
-    private final String NOTIFICATION_TITLE="ATHLETES'S BOUNDARY";
-    private final String DATE_FORMAT="dd/MM/yyyy HH:mm";
-    private final String HOUR_NOTIFY="Hour: ";
+    private static final String NOTIFICATION_TITLE="ATHLETES'S BOUNDARY";
+    private  static final String DATE_FORMAT="dd/MM/yyyy HH:mm";
+    private  static final String HOUR_NOTIFY="Hour: ";
     public void sendNotification(NotificaBean n){
         try (InputStream in = new FileInputStream("config.properties")) {
             Properties prop = new Properties();
