@@ -34,8 +34,7 @@ public class DBAthleteDAO extends AthleteDAO {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Athlete a = buildAthlete(rs);
-                    return a;
+                    return buildAthlete(rs);
                 }
             }
         } catch (SQLException e) {

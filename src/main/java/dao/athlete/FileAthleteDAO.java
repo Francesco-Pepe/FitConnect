@@ -25,8 +25,7 @@ public class FileAthleteDAO extends AthleteDAO {
         for (int i = 0; i < all.length(); i++) {
             JSONObject obj = all.getJSONObject(i);
             if (obj.getString(ATHLETE_EMAIL).equals(email)) {
-                Athlete a= buildAthlete(obj);
-                return a;
+                return buildAthlete(obj);
             }
         }
         return null; // atleta non trovato

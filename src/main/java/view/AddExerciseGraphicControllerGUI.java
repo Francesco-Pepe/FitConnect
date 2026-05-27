@@ -1,7 +1,7 @@
 package view;
 
 import bean.ExerciseBean;
-import bean.Enum.Technique;
+import bean.enums.Technique;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;

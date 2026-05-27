@@ -1,4 +1,6 @@
- import eng.ExerciseSerializer;
+package TestSerializer;
+
+import eng.ExerciseSerializer;
 import model.*;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;

@@ -111,8 +111,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     //will overwrite current rs,but only one plan in database for an athlete
-                    TrainingPlan plan = buildPlan(rs,fetchExercises(rs.getInt("id")));
-                    return plan;
+                    return buildPlan(rs,fetchExercises(rs.getInt("id")));
                 }
                 return null;
             }
@@ -124,7 +123,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     @Override
     public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
         //to be implemented for another uc
-        return null;
+        return List.of();
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlanRequestDAODemo extends PlanRequestDAO{
-    private static int id_counter=1;
+    private static final int ID_COUNTER =1;
     @Override
     protected PlanRequest searchRequestById(int id) {
         PlanRequest req=null;
@@ -45,6 +45,6 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
     }
     @Override
     public int getMaxId(){
-        return id_counter++;
+        return ID_COUNTER;
     }
 }

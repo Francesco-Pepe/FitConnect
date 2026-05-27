@@ -43,8 +43,8 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         String name=obj.getString("name");
         String surname=obj.getString("surname");
         Gender gender=Gender.valueOf(obj.getString("gender"));
-        PersonalTrainer pt=new PersonalTrainer(email,name,surname,gender);
-        return pt;
+        return new PersonalTrainer(email,name,surname,gender);
+
     }
 
     public JSONObject serializePt(PersonalTrainer pt){

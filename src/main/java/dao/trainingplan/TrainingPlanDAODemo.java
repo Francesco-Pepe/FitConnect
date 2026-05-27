@@ -8,10 +8,6 @@ import java.util.List;
 public class TrainingPlanDAODemo extends TrainingPlanDAO {
 
     private final List<TrainingPlan> plans = new ArrayList<>();
-    public TrainingPlanDAODemo() {
-    }
-
-
     @Override
     public TrainingPlan searchByAthlete(String athleteEmail) {
         return null;
@@ -20,7 +16,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
     @Override
     public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
         //not used,to be implemented for another uc
-        return null;
+        return List.of();
     }
     @Override
     public void save(TrainingPlan plan) {

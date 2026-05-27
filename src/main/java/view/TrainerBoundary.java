@@ -1,6 +1,6 @@
 package view;
 
-import bean.Enum.Event;
+import bean.enums.Event;
 import bean.NotificaBean;
 import eng.SupportedUI;
 import javafx.scene.control.Alert;

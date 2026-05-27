@@ -65,8 +65,8 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
             Exercise ex=ExerciseSerializer.deserialize(exercises.getJSONObject(i));
             exList.add(ex);
         }
-        TrainingPlan p=new TrainingPlan(athleteEmail,ptEmail,creation,expiration,exList);
-        return p;
+        return new TrainingPlan(athleteEmail,ptEmail,creation,expiration,exList);
+
     }
 
     @Override

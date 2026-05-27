@@ -1,6 +1,6 @@
 package bean;
 
-import bean.Enum.Technique;
+import bean.enums.Technique;
 
 import java.util.List;
 

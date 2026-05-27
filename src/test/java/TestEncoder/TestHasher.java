@@ -1,8 +1,9 @@
+package TestEncoder;
 
 import eng.PasswordEncoder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-public class TestHasher {
+ class TestHasher {
     @Test
     void testEncoder(){
         String password="abcd";
@@ -11,6 +12,7 @@ public class TestHasher {
         assertEquals(real,hash);
 
     }
+    @Test
     void testIgnoringNonAlpha(){
         String password="123";
         String hash=PasswordEncoder.hashPassword(password);

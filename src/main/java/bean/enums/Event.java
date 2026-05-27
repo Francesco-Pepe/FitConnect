@@ -1,4 +1,4 @@
-package bean.Enum;
+package bean.enums;
 
 public enum Event {
     PLAN_CREATED,

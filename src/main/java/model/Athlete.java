@@ -14,7 +14,7 @@ public class Athlete {
     public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
         this(email,name,surname,weight,height,gender,null,null);
     }
-
+    @SuppressWarnings("java:S107")//max number of parameters for a method
     public Athlete(String email,String name, String surname, double weight, int height, Gender gender,PersonalTrainer pt,TrainingPlan plan) {
         this.email=email;
         this.name = name;

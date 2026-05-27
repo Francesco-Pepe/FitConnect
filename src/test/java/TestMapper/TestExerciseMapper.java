@@ -1,3 +1,5 @@
+package TestMapper;
+
 import api.ExternalApiExerciseDTO;
 import eng.ExerciseMapper;
 import model.BaseExercise;

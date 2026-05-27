@@ -44,7 +44,7 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
             if (obj.getInt("id")==id){
-                PlanRequest req= buildRequest(obj);
+                return buildRequest(obj);
             }
         }
         return null;

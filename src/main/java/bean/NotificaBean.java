@@ -1,6 +1,6 @@
 package bean;
 
-import bean.Enum.Event;
+import bean.enums.Event;
 
 import java.time.LocalDateTime;
 
