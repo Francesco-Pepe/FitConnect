@@ -12,11 +12,14 @@ module FitConnect {
     exports model;
     exports controller;
     exports dao.authentication;
+    exports api;       // ← aggiunto
+    exports eng;       // ← aggiunto
 
     opens view to javafx.fxml, javafx.graphics;
     opens controller to javafx.fxml;
     opens bean to javafx.fxml;
     opens model to javafx.fxml;
     opens bean.Enum to javafx.fxml;
+    opens api;         // ← aggiunto (per reflection di JUnit)
+    opens eng;         // ← aggiunto (per reflection di JUnit)
 }
-
