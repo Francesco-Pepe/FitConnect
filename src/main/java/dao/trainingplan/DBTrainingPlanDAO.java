@@ -33,8 +33,6 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
                 if (!keys.next()) throw new DAOException("Nessun ID generato per training_plan");
                 planId = keys.getInt(1);
             }
-
-            // Salva ogni esercizio con le sue tecniche
             for (Exercise ex : plan.getExercises()) {
                 saveExercise(planId, ex);
             }
@@ -57,7 +55,6 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     }
 
     private void saveExercise(int planId, Exercise ex) throws SQLException {
-        // Sbuccia i decorator per arrivare al BaseExercise
         Exercise current = ex;
         List<String> techniques = new ArrayList<>();
         while (current instanceof ExerciseDecorator ed) {
@@ -113,8 +110,8 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
             ps.setString(1, athleteEmail);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    TrainingPlan plan = mapPlanRow(rs);
-                    plan.setExercises(fetchExercises(rs.getInt("id")));
+                    //will overwrite current rs,but only one plan in database for an athlete
+                    TrainingPlan plan = buildPlan(rs,fetchExercises(rs.getInt("id")));
                     return plan;
                 }
                 return null;
@@ -126,31 +123,13 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
 
     @Override
     public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
-        String sql = """
-            SELECT id, creation_date, expiration_date,athlete_email,pt_email
-            FROM training_plan tp
-            WHERE tp.pt_email = ?
-            """;
-        List<TrainingPlan> result = new ArrayList<>();
-        try (PreparedStatement ps = conn().prepareStatement(sql)) {
-            ps.setString(1, ptEmail);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    TrainingPlan plan = mapPlanRow(rs);
-                    plan.setExercises(fetchExercises(rs.getInt("id")));
-                    addToCache(plan);
-                    result.add(plan);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Errore DB searchByPersonalTrainer", e);
-        }
-        return result;
+        //to be implemented for another uc
+        return null;
     }
 
     @Override
     public void deleteFromStorage(TrainingPlan plan) {
-        // Le FK con ON DELETE CASCADE eliminano automaticamente esercizi e tecniche
+
         String sql = "DELETE FROM training_plan WHERE athlete_email = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, plan.getClient());
@@ -207,10 +186,13 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
         }
         return ex;
     }
-
-    private TrainingPlan mapPlanRow(ResultSet rs) throws SQLException {
-        TrainingPlan plan = new TrainingPlan(rs.getString("athlete_email"), rs.getString("pt_email"), rs.getDate("expiration_date").toLocalDate());
-        plan.setCreationDate(rs.getDate("creation_date").toLocalDate());
-        return plan;
+    private TrainingPlan buildPlan(ResultSet rs, List<Exercise> exercises) throws SQLException {
+        return new TrainingPlan(
+                rs.getString("athlete_email"),
+                rs.getString("pt_email"),
+                rs.getDate("creation_date").toLocalDate(),
+                rs.getDate("expiration_date").toLocalDate(),
+                exercises
+        );
     }
 }

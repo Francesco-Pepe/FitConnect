@@ -46,17 +46,5 @@ public class DBConnection {
         return this.connection;
     }
 
-    public void beginTransaction() throws SQLException {
-        connection.setAutoCommit(false);
-    }
-    public void commit() throws SQLException {
-        connection.commit();
-        connection.setAutoCommit(true);
-    }
-    public void rollback() {
-        try { connection.rollback(); connection.setAutoCommit(true); }
-        catch (SQLException ignored) {
-            //nothing to do here
-        }
-    }
+
 }

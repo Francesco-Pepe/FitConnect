@@ -2,6 +2,7 @@ package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
+import exception.BusinessException;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import javafx.collections.FXCollections;
@@ -136,6 +137,9 @@ public class RequestPlanGraphicGraphicControllerGUI
         } catch (ControllerException  | UnavailableServiceException e) {
             showAlert(ERROR_TEXT, "Errore nell'invio",
                 e.getMessage());
+        }
+        catch (BusinessException e){
+            showAlert(ERROR_TEXT,"Business viiolation",e.getMessage());
         }
     }
     public void start(){

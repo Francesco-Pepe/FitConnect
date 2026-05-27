@@ -5,7 +5,7 @@ public class SessionBean {
 
     private AthleteBean athlete;
     private PersonalTrainerBean pt;
-    private int id;
+    private final int id;
 
     public SessionBean(AthleteBean athlete,int id){
         this.athlete=athlete;

@@ -34,6 +34,7 @@ public class LoginController {
                         String ptSurname=a.getPt().getSurname();
                         athlete.setTrainer(ptName+ " " +ptSurname);
                     }
+                    athlete.clearPassword();
                    return new SessionBean(athlete, newSession.getToken());
 
                 }
@@ -41,7 +42,7 @@ public class LoginController {
             }catch (DAOException e){
                 throw new InvalidCredentialsException("Credentials not valid");
             }
-            throw new ControllerException("login fallito");
+            throw new ControllerException("Login failed");
         }
 
         public SessionBean logAsPersonalTrainer(PersonalTrainerBean pt){
@@ -54,10 +55,11 @@ public class LoginController {
                 Credential creds = authDAO.getPersonalTrainerCredential(email);
                 String hash =creds.getHashPassword();
                 if (PasswordEncoder.verifyPassword(password,hash)){
-                    PersonalTrainer p=ptDAO.getByEmail(email);
+                    PersonalTrainer p=ptDAO.fetchPtByEmail(email);
                     Session newSession=SessionManager.getInstance().createSession(p);
                     pt.setName(p.getName());
                     pt.setSurname(p.getSurname());
+                    pt.clearPassword();
                     return new SessionBean(pt, newSession.getToken());
 
                 }
@@ -65,7 +67,7 @@ public class LoginController {
             }catch (DAOException e){
                 throw new InvalidCredentialsException("Credentials not valid");
             }
-            throw new ControllerException("login fallito");
+            throw new ControllerException("Login failed");
 
         }
 

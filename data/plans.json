@@ -74,5 +74,29 @@
     "athlete": "cristo.re@fit.com",
     "expiration": "2026-05-29",
     "creation": "2026-05-21"
+  },
+  {
+    "pt": "mario.rossi@fit.com",
+    "exercises": [
+      {
+        "reps": 8,
+        "sets": 4,
+        "techniques": ["ISOMETRIC_PAUSE"],
+        "name": "barbell bench press",
+        "equipment": "barbell",
+        "target": "pectorals"
+      },
+      {
+        "reps": 10,
+        "sets": 4,
+        "techniques": ["FORCED_REPS"],
+        "name": "cable one arm decline chest fly",
+        "equipment": "cable",
+        "target": "pectorals"
+      }
+    ],
+    "athlete": "valerio@fit.com",
+    "expiration": "2027-05-26",
+    "creation": "2026-05-26"
   }
 ]

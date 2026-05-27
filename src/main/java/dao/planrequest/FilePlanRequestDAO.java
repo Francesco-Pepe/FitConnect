@@ -18,23 +18,22 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
     private JSONArray readFile() {
         try {
             if (!Files.exists(FILE_PATH)) {
-                // se il file non esiste ancora, restituisce un array vuoto
                 Files.createDirectories(FILE_PATH.getParent());
                 return new JSONArray();
             }
             String content = Files.readString(FILE_PATH);
             return new JSONArray(content);
         } catch (IOException e) {
-            throw new DAOException("Errore lettura richieste", e);
+            throw new DAOException("Error reading requests file", e);
         }
     }
 
     private void writeFile(JSONArray data) {
             try {
                 Files.createDirectories(FILE_PATH.getParent());
-                Files.writeString(FILE_PATH, data.toString(2)); // 2 = indentazione leggibile
+                Files.writeString(FILE_PATH, data.toString(2));
             } catch (IOException e) {
-                throw new DAOException("Errore scrittura file richieste", e);
+                throw new DAOException("Error writing requests file", e);
             }
         }
 
@@ -45,7 +44,7 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
             if (obj.getInt("id")==id){
-                return buildRequest(obj);
+                PlanRequest req= buildRequest(obj);
             }
         }
         return null;
@@ -58,7 +57,6 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         String ptEmail=obj.getString(PT_EMAIL);
         String atEmail=obj.getString(ATHLETE_EMAIL);
         return new PlanRequest(id,atEmail,ptEmail,goal,status);
-
     }
 
     private JSONObject serializeRequest(PlanRequest request){
@@ -75,15 +73,6 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
     @Override
     public void save(PlanRequest request) {
         JSONArray all=readFile();
-        int maxId=0;
-        for (int i=0;i<all.length();i++){
-            JSONObject obj=all.getJSONObject(i);
-            int id=obj.getInt("id");
-            if (id>maxId){
-                maxId= id;
-            }
-        }
-        request.setId(maxId+1);
         all.put(serializeRequest(request));
         writeFile(all);
         addToCache(request);
@@ -114,7 +103,7 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
             if (obj.getString(ATHLETE_EMAIL).equals(athleteEmail)){
-                requests.add(getById(obj.getInt("id")));
+                requests.add(getById(obj.getInt("id")));//add to cache done by getById
             }
         }
         return requests;
@@ -131,5 +120,18 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
             }
         }
         return pending;
+    }
+    @Override
+    public int getMaxId(){
+        JSONArray all=readFile();
+        int maxId=0;
+        for (int i=0;i<all.length();i++){
+            JSONObject obj=all.getJSONObject(i);
+            int id=obj.getInt("id");
+            if (id>maxId){
+                maxId= id;
+            }
+        }
+        return maxId+1;
     }
 }

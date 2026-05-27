@@ -33,5 +33,12 @@
     "id": 5,
     "email": "cristo.re@fit.com",
     "status": "REJECTED"
+  },
+  {
+    "goal": "WEIGHT_LOSS",
+    "ptEmail": "mario.rossi@fit.com",
+    "id": 6,
+    "email": "valerio@fit.com",
+    "status": "ACCEPTED"
   }
 ]

@@ -1,6 +1,6 @@
 package view;
 
-import bean.Event;
+import bean.Enum.Event;
 import bean.NotificaBean;
 import eng.SupportedUI;
 import javafx.scene.control.Alert;
@@ -30,6 +30,50 @@ public class AthleteBoundary {
         } catch (IOException e) {
             showMessage(n);
         }
+    }
+    public void sendRejection(NotificaBean n){
+        try (InputStream in = new FileInputStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(in);
+
+            String grafica = prop.getProperty("ui.type");
+
+            if (grafica != null) {
+                SupportedUI version = SupportedUI.valueOf(grafica.toUpperCase());
+                if(version.equals(SupportedUI.GUI)){
+                    this.showRejectPopUp(n);
+                } else {
+                    this.showRejection(n);
+                }
+            }
+        } catch (IOException e) {
+            showMessage(n);
+        }
+    }
+    private void showRejection(NotificaBean n) {
+        System.out.println("ATHLETE'S BOUNDARY");
+        String messaggio = " The trainer: " + n.getMittente() + "\n";
+        String messaggio2 = "";
+        if(n.getEvent() == Event.PLAN_CREATED) {
+            messaggio2 = "Plan rejected from " + n.getMittente() +"\n";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        messaggio2 += "Ora: "+ n.getMomentoInvio().format(formatter);
+        System.out.println(messaggio+messaggio2);
+    }
+    private void showRejectPopUp(NotificaBean n) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Icona "i" blu
+        alert.setTitle("ATHLETE'S BOUNDARY");
+        alert.setHeaderText(null);
+        String messaggio = "To: " + n.getDestinatario() + "\n";
+        String messaggio2 = "The trainer "+n.getMittente()+" has rejected the plan request";
+        if(n.getEvent() == Event.PLAN_CREATED) {
+            messaggio2 = "You can now send another request" + n.getDestinatario() + "\n";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        messaggio2 += "Ora: "+ n.getMomentoInvio().format(formatter);
+        alert.setContentText(messaggio+messaggio2);
+        alert.showAndWait();
     }
 
     private void showMessage(NotificaBean n) {

@@ -18,5 +18,15 @@
     "hasPlan": true,
     "email": "cristo.re@fit.com",
     "height": 180
+  },
+  {
+    "ptEmail": "mario.rossi@fit.com",
+    "gender": "MALE",
+    "surname": "Lundini",
+    "name": "Valerio",
+    "weight": 78.5,
+    "hasPlan": true,
+    "email": "valerio@fit.com",
+    "height": 180
   }
 ]

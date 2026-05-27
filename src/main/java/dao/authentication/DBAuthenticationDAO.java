@@ -26,10 +26,10 @@ public class DBAuthenticationDAO extends AuthenticationDAO {
                 if (rs.next()) {
                     return new Credential(rs.getString("email"), rs.getString("hash_password"));
                 }
-                throw new DAOException("Credenziali atleta non trovate per: " + email);
+                throw new DAOException("Credentials  not found for: " + email);
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB getAthleteCredential", e);
+            throw new DAOException("Error DB getAthleteCredential", e);
         }
     }
 
@@ -42,10 +42,10 @@ public class DBAuthenticationDAO extends AuthenticationDAO {
                 if (rs.next()) {
                     return new Credential(rs.getString("email"), rs.getString("hash_password"));
                 }
-                throw new DAOException("Credenziali trainer non trovate per: " + email);
+                throw new DAOException("Credentials  not found for: " + email);
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB getPersonalTrainerCredential", e);
+            throw new DAOException("Error DB getPersonalTrainerCredential", e);
         }
     }
 
@@ -57,7 +57,7 @@ public class DBAuthenticationDAO extends AuthenticationDAO {
             ps.setString(2, PasswordEncoder.hashPassword(password));
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Errore DB registerAthlete", e);
+            throw new DAOException("Error DB registerAthlete", e);
         }
     }
 

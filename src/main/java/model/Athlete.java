@@ -12,15 +12,20 @@ public class Athlete {
     private double weight;
 
     public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
+        this(email,name,surname,weight,height,gender,null,null);
+    }
+
+    public Athlete(String email,String name, String surname, double weight, int height, Gender gender,PersonalTrainer pt,TrainingPlan plan) {
         this.email=email;
         this.name = name;
         this.surname = surname;
         this.weight = weight;
         this.height = height;
         this.gender = gender;
-        this.pt = null;
-        this.plan=null;
+        this.pt = pt;
+        this.plan=plan;
     }
+
     public TrainingPlan getPlan() {
         return plan;
     }

@@ -1,9 +1,10 @@
 package controller;
-
 import api.ExerciseApiService;
 import api.ExternalApiExerciseDTO;
 import api.RealExerciseApiService;
 import bean.*;
+import bean.Enum.Event;
+import bean.Enum.Technique;
 import dao.athlete.AthleteDAO;
 import dao.personaltrainer.PersonalTrainerDAO;
 import dao.planrequest.PlanRequestDAO;
@@ -30,7 +31,7 @@ public class ManageCustomPlanController {
     private final PersonalTrainerDAO ptDAO   = factory.getPersonalTrainerDAO();
     private final PlanRequestDAO requestDAO  = factory.getPlanRequestDAO();
     private final TrainingPlanDAO planDAO    = factory.getTrainingPlanDAO();
-    private  ExerciseApiService api;
+    private final ExerciseApiService api;
 
     public ManageCustomPlanController() {
         try {
@@ -41,77 +42,52 @@ public class ManageCustomPlanController {
 
     }
 
-    // ==========================================
-    // LATO ATLETA — invia una richiesta al PT
-    // ==========================================
-
+    //ATHLETE
     public void sendPlanRequest(PlanRequestBean bean) {
         Athlete athlete;
         try {
             athlete = athleteDAO.fetchByEmail(bean.getAthleteEmail());
         }catch (DAOException d){
-            throw new ControllerException("Errore nel recupero dell'atleta");
+            throw new ControllerException("Error retrieving the athlete");
         }
         if (athlete == null)
-            throw new ControllerException("Atleta non trovato: " + bean.getAthleteEmail());
+            throw new ControllerException("Athlete not found: " + bean.getAthleteEmail());
 
         if (athlete.getPlan() != null)
-            throw new BusinessException("L'atleta ha già un piano attivo");
+            throw new BusinessException("The athlete already has  an active plan");
         List<PlanRequest> requests=requestDAO.fetchByAthlete(bean.getAthleteEmail());
         if (!requests.isEmpty()) {
             for (PlanRequest req : requests) {
                 if (req.getStatus().equals(RequestStatus.PENDING)) {
-                    throw new BusinessException("L'atleta ha già una richiesta in sospeso");
+                    throw new BusinessException("The athlete already has a request pending");
                 }
-
             }
         }
-
-        // id=0: verrà assegnato dal DAO nella save()
-        PlanRequest request = new PlanRequest(0, bean.getAthleteEmail(), bean.getPtEmail(), bean.getGoal());
-        requestDAO.save(request); // save assegna l'id corretto
-        NotificaBean notify=new NotificaBean(bean.getAthlete(), bean.getPtEmail(), LocalDateTime.now(),Event.NEW_REQUEST);
+        PlanRequest request = new PlanRequest(requestDAO.getMaxId(), bean.getAthleteEmail(), bean.getPtEmail(), bean.getGoal());
+        requestDAO.save(request);
+        NotificaBean notify=new NotificaBean(bean.getAthlete(), bean.getPtEmail(), LocalDateTime.now(), Event.NEW_REQUEST);
         TrainerBoundary trainerBoundary=new TrainerBoundary();
         trainerBoundary.sendNotification(notify);
 
-
     }
 
-    // ==========================================
-    // LATO ATLETA — vede le proprie richieste
-    // ==========================================
 
-    public List<PlanRequest> getAthleteRequests(String athleteEmail) {
-        Athlete athlete;
-        try {
-            athlete = athleteDAO.fetchByEmail(athleteEmail);
-        }catch (DAOException d){
-            throw new ControllerException("Errore nel recupero dell'atleta");
-        }
-        if (athlete == null)
-            throw new ControllerException("Atleta non trovato: " + athleteEmail);
-        return requestDAO.fetchByAthlete(athleteEmail);
-    }
-
-    // ==========================================
-    // LATO ATLETA — vede il proprio piano
-    // ==========================================
-
+    //To communicate with view
     public TrainingPlanBean getAthletePlan(String athleteEmail) {
         TrainingPlan plan;
         try {
             plan = planDAO.fetchByAthlete(athleteEmail);
         }catch (DAOException e){
-            throw new ControllerException("Errore nel recupero del piano");
+            throw new ControllerException("Error retrieving training plan");
         }
         if (plan == null)
-            throw new ControllerException("Piano per atleta non trovato: " + athleteEmail);
+            throw new ControllerException("No plan found for: " + athleteEmail);
         List <Exercise> exercises=plan.getExercises();
         List <ExerciseBean> ex=showExercises(exercises);
         return new TrainingPlanBean(plan.getCreationDate(),plan.getExpirationDate(),ex);
-
     }
 
+    //helper for presenting the plan exercises to the view
     private List<ExerciseBean> showExercises(List<Exercise> exercises) {
         List<ExerciseBean> exs = new ArrayList<>();
         ExerciseBean ex;
@@ -122,26 +98,23 @@ public class ManageCustomPlanController {
         return exs;
     }
 
-// ==========================================
-// LATO PT — vede le richieste pending
-// ==========================================
-
+//PERSONAL TRAINER
 public List<PlanRequestBean> getPendingRequests(String ptEmail) {
     PersonalTrainer pt;
     List<PlanRequest> requests;
     try {
-        pt = ptDAO.getByEmail(ptEmail);
+        pt = ptDAO.fetchPtByEmail(ptEmail);
         requests= requestDAO.fetchPendingByTrainer(ptEmail);
     } catch (DAOException d) {
-        throw new ControllerException("Errore nel recupero delle richieste");
+        throw new ControllerException("Error retrieving the requests");
     }
     if (pt == null)
-        throw new ControllerException("Personal Trainer non trovato: " + ptEmail);
+        throw new ControllerException("Personal Trainer not found: " + ptEmail);
 
     List<PlanRequestBean> beans=new ArrayList<>();
     for (PlanRequest req:requests){
         Athlete a=athleteDAO.fetchByEmail(req.getClientEmail());
-        //non possono esserci errori,la richiesta viewe necessariamente da un atleta presente nel sistema
+        //non possono esserci errori,la richiesta viene necessariamente da un atleta presente nel sistema
         String athlete=a.getName()+" "+a.getSurname();
         PlanRequestBean bean=new PlanRequestBean(req.getClientEmail(),req.getPtEmail(),req.getGoal());
         bean.setAthlete(athlete);
@@ -151,13 +124,8 @@ public List<PlanRequestBean> getPendingRequests(String ptEmail) {
     return beans;
 }
 
-
-// ==========================================
-// LATO PT — accetta la richiesta e crea il piano
-// ==========================================
 public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) {
     try {
-        // 1. Validazione e recupero dati
         PlanRequest req = requestDAO.getById(request.getId());
         //impossibile avere un id non esistente,i bean vengono creati da model presenti in persistenza
         if (req == null) throw new ControllerException("Richiesta non trovata: " + request.getId());
@@ -166,20 +134,15 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         //sicuro della validità dei dati
         if (athlete == null) throw new ControllerException("Atleta non trovato");
         //sicuro della validità
-        PersonalTrainer pt = ptDAO.getByEmail(request.getPtEmail());
+        PersonalTrainer pt = ptDAO.fetchPtByEmail(request.getPtEmail());
         if (pt == null) throw new ControllerException("PT non trovato");
-
-        // 2. Costruisci il piano
         List<Exercise> exercises = buildExercises(plan.getExercises());
         TrainingPlan newPlan = new TrainingPlan(request.getAthleteEmail(), request.getPtEmail(), plan.getExpiration());
         newPlan.setCreationDate(plan.getCreation());
         newPlan.setExercises(exercises);
-
         // 3. Aggiorna relazioni
         athlete.assignPlan(pt,newPlan);
-
         req.accept();
-
         // 4. Salva TUTTO (ordine importante!)
         requestDAO.update(req);
         planDAO.save(newPlan);      // ← Salva il piano PRIMA dell'atleta
@@ -206,16 +169,13 @@ public void declineRequest(PlanRequestBean req){
         PlanRequest request = requestDAO.getById(req.getId());
         request.decline();
         requestDAO.update(request);
-
+        NotificaBean notify=new NotificaBean(req.getPtEmail(),req.getAthleteEmail(),LocalDateTime.now(),Event.REQUEST_REJECTED);
+        AthleteBoundary athlete=new AthleteBoundary();
+        athlete.sendRejection(notify);
     }catch (DAOException d){
         throw new ControllerException("errore nel recupero della richiesta",d);
     }
-
 }
-
-// ==========================================
-// PRIVATO — costruisce gli esercizi dal bean
-// ==========================================
 
 private List<Exercise> buildExercises(List<ExerciseBean> exerciseBeans) {
     List<Exercise> result = new ArrayList<>();
@@ -250,8 +210,6 @@ private Exercise applyDecorators(Exercise exercise, List<Technique> techniques) 
 
 public List<PersonalTrainerBean> retrievePT(){
     try {
-
-
         List<PersonalTrainer> pts = ptDAO.fetchAll();
         List<PersonalTrainerBean> ptBeans = new ArrayList<>();
         for (PersonalTrainer p : pts) {

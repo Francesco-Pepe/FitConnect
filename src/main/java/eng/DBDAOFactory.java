@@ -10,10 +10,7 @@ import dao.trainingplan.DBTrainingPlanDAO;
 import dao.trainingplan.TrainingPlanDAO;
 import dao.personaltrainer.DBPersonalTrainerDAO;
 import dao.athlete.DBAthleteDAO;
-/**
- * DBDAOFactory è la factory concreta per la persistenza su database.
- * Attualmente è un placeholder - le implementazioni DB DAO devono ancora essere create.
- */
+
 public class DBDAOFactory extends DAOFactory {
 
     private AthleteDAO athleteDAO=null;

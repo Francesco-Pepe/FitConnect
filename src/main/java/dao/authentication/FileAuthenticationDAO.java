@@ -4,7 +4,6 @@ import exception.DAOException;
 import model.Credential;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,7 +39,7 @@ public class FileAuthenticationDAO extends AuthenticationDAO {
             }
         }
 
-        throw new DAOException("Atleta non trovato: " + email);
+        throw new DAOException("Athlete not found: " + email);
     }
 
     @Override

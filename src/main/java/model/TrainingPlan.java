@@ -13,11 +13,15 @@ public class TrainingPlan {
     private List<Exercise> exercises;
 
     public TrainingPlan(String client, String creator, LocalDate expirationDate) {
-        this.client = client;
-        this.creator = creator;
-        this.creationDate = LocalDate.now();
-        this.expirationDate = expirationDate;
-        this.exercises = new ArrayList<>();
+        this(client,creator,LocalDate.now(),expirationDate,new ArrayList<>());
+    }
+
+    public TrainingPlan(String client,String creator,LocalDate creationDate,LocalDate expirationDate,List<Exercise> exercises){
+        this.client=client;
+        this.creator=creator;
+        this.creationDate=creationDate;
+        this.expirationDate=expirationDate;
+        this.exercises=exercises;
     }
 
     // 5. Metodo di business specifico per aggiungere un esercizio

@@ -10,7 +10,7 @@ public abstract class PersonalTrainerDAO extends CachedDAO<PersonalTrainer> {
     public String fetchKey(PersonalTrainer pt){
         return pt.getEmail();
     }
-    public PersonalTrainer getByEmail(String email){
+    public PersonalTrainer fetchPtByEmail(String email){
         PersonalTrainer p;
         if (inCache(email)){
             p=fetchFromCache(email);

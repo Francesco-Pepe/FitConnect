@@ -19,7 +19,6 @@ public class AthleteDAODemo extends AthleteDAO{
                     new Athlete("sara@gmail.com", "Sara", "Bianchi", 62, 168, Gender.FEMALE)
             );
         }
-
         // Se accede un altro PT, per la demo non ha atleti assegnati
         return List.of();
     }

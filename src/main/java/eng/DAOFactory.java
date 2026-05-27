@@ -23,9 +23,7 @@ public abstract class DAOFactory {
             try (InputStream in = new FileInputStream("config.properties")) {
                 Properties prop = new Properties();
                 prop.load(in);
-
                 String persistenceType = prop.getProperty("persistence.type", "FILESYSTEM").toUpperCase();
-
                 instance = switch (persistenceType) {
                     case "FILESYSTEM" -> new FileDAOFactory();
                     case "DATABASE" -> new DBDAOFactory();
@@ -39,7 +37,6 @@ public abstract class DAOFactory {
         return instance;
     }
 
-    // Abstract methods
 
     public abstract AthleteDAO getAthleteDAO();
     public abstract PersonalTrainerDAO getPersonalTrainerDAO();
@@ -47,7 +44,6 @@ public abstract class DAOFactory {
     public abstract TrainingPlanDAO getTrainingPlanDAO();
     public abstract AuthenticationDAO getAuthenticationDAO();
 
-    // Static convenience methods (for backward compatibility)
-    // These delegate to the current instance's abstract methods
+
 
 }

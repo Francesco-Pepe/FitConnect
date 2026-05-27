@@ -2,7 +2,7 @@ package view;
 
 import bean.AthleteBean;
 import bean.PersonalTrainerBean;
-import bean.Role;
+import bean.Enum.Role;
 import bean.SessionBean;
 import controller.LoginController;
 import exception.ControllerException;

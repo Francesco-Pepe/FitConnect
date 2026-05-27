@@ -1,5 +1,7 @@
 package bean;
 
+import bean.Enum.Technique;
+
 import java.util.List;
 
 public class ExerciseBean {
@@ -44,7 +46,4 @@ public class ExerciseBean {
         return tecniques;
     }
 
-    public void setTechniques(List<Technique> tecniques) {
-        this.tecniques = tecniques;
-    }
 }

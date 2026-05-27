@@ -65,9 +65,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
             Exercise ex=ExerciseSerializer.deserialize(exercises.getJSONObject(i));
             exList.add(ex);
         }
-        TrainingPlan p=new TrainingPlan(athleteEmail,ptEmail,expiration);
-        p.setCreationDate(creation);
-        p.setExercises(exList);
+        TrainingPlan p=new TrainingPlan(athleteEmail,ptEmail,creation,expiration,exList);
         return p;
     }
 
@@ -117,7 +115,6 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         JSONArray all = readFile();
         all.put(serializePlan(plan));
         writeFile(all);
-        addToCache(plan);
     }
     public void update(TrainingPlan plan) {
         JSONArray all = readFile();

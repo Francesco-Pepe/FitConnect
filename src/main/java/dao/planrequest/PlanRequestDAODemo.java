@@ -3,9 +3,11 @@ package dao.planrequest;
 import exception.DAOException;
 import model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlanRequestDAODemo extends PlanRequestDAO{
+    private static int id_counter=1;
     @Override
     protected PlanRequest searchRequestById(int id) {
         PlanRequest req=null;
@@ -22,7 +24,7 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
 
     @Override
     public void save(PlanRequest request) {
-    //nothing to do
+    addToCache(request);
     }
 
     @Override
@@ -37,6 +39,12 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
 
     @Override
     public List<PlanRequest> fetchPendingByTrainer(String trainerEmail) {
-        return List.of();
+        List<PlanRequest> reqs=new ArrayList<>();
+        reqs.add(fetchFromCache("1"));
+        return reqs;
+    }
+    @Override
+    public int getMaxId(){
+        return id_counter++;
     }
 }

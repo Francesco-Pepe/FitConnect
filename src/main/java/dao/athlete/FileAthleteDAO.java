@@ -19,17 +19,14 @@ public class FileAthleteDAO extends AthleteDAO {
     // Tutti gli atleti stanno in un unico file
     private static final Path FILE_PATH = Path.of("data/athletes.json");
 
-    // ==========================================
-    // LETTURA — metodi astratti da implementare
-    // ==========================================
-
     @Override
     public Athlete searchAthleteByEmail(String email) {
         JSONArray all = readFile();
         for (int i = 0; i < all.length(); i++) {
             JSONObject obj = all.getJSONObject(i);
             if (obj.getString(ATHLETE_EMAIL).equals(email)) {
-                return buildAthlete(obj);
+                Athlete a= buildAthlete(obj);
+                return a;
             }
         }
         return null; // atleta non trovato
@@ -50,21 +47,18 @@ public class FileAthleteDAO extends AthleteDAO {
         return result;
     }
 
-    // ==========================================
-    // SCRITTURA
-    // ==========================================
 
-    // Salva un nuovo atleta — usato alla registrazione
+    //For registration,not implement yet
+    //Note:the athlete file should be compliant with the credential file
     public void save(Athlete athlete) {
         JSONArray all = readFile();
 
-        // controlla che non esista già
+        // existence check
         for (int i = 0; i < all.length(); i++) {
             if (all.getJSONObject(i).getString(ATHLETE_EMAIL).equals(athlete.getEmail())) {
                 throw new DAOException("Atleta già esistente: " + athlete.getEmail());
             }
         }
-
         all.put(serializeAthlete(athlete));
         writeFile(all);
         addToCache(athlete);
@@ -77,7 +71,7 @@ public class FileAthleteDAO extends AthleteDAO {
 
         for (int i = 0; i < all.length(); i++) {
             if (all.getJSONObject(i).getString(ATHLETE_EMAIL).equals(athlete.getEmail())) {
-                all.put(i, serializeAthlete(athlete)); // sostituisce il vecchio oggetto
+                all.put(i, serializeAthlete(athlete));
                 found = true;
                 break;
             }
@@ -91,9 +85,6 @@ public class FileAthleteDAO extends AthleteDAO {
         // la cache ha già l'oggetto aggiornato (è lo stesso riferimento in RAM)
     }
 
-    // ==========================================
-    // SERIALIZZAZIONE — oggetto Java → JSON
-    // ==========================================
 
     private JSONObject serializeAthlete(Athlete a) {
         JSONObject obj = new JSONObject();
@@ -103,52 +94,41 @@ public class FileAthleteDAO extends AthleteDAO {
         obj.put("weight",  a.getWeight());
         obj.put("height",  a.getHeight());
         obj.put("gender",  a.getGender().name()); // salva "MALE" o "FEMALE"
-
-        // salviamo solo le chiavi delle relazioni, non gli oggetti interi
         obj.put(PT_EMAIL,   a.getPt()   != null ? a.getPt().getEmail()            : JSONObject.NULL);
-        obj.put("hasPlan",   a.getPlan() != null); // basta sapere se esiste, lo carica TrainingPlanDAO
+        obj.put("hasPlan",   a.getPlan() != null);
 
         return obj;
     }
 
-    // ==========================================
-    // DESERIALIZZAZIONE — JSON → oggetto Java
-    // ==========================================
-
     private Athlete buildAthlete(JSONObject obj) {
-        // 1. costruisci l'atleta con i dati semplici
-        Athlete athlete = new Athlete(
-                obj.getString(ATHLETE_EMAIL),
+        String email   = obj.getString(ATHLETE_EMAIL);
+        String ptEmail = obj.optString(PT_EMAIL, "");
+
+        PersonalTrainer pt   = null;
+        TrainingPlan    plan = null;
+
+        if (!ptEmail.isEmpty()) {
+            PersonalTrainerDAO ptDAO   = DAOFactory.getInstance().getPersonalTrainerDAO();
+            TrainingPlanDAO    planDAO = DAOFactory.getInstance().getTrainingPlanDAO();
+            pt   = ptDAO.fetchPtByEmail(ptEmail);
+            plan = planDAO.fetchByAthlete(email);
+        }
+        return new Athlete(
+                email,
                 obj.getString("name"),
                 obj.getString("surname"),
                 obj.getDouble("weight"),
                 obj.getInt("height"),
-                Gender.valueOf(obj.getString("gender"))
+                Gender.valueOf(obj.getString("gender")),
+                pt,    // può essere null
+                plan   // può essere null
         );
-
-
-        // 3. collega il PT se presente(se c'è pt c'è il piano)
-        String ptEmail = obj.optString(PT_EMAIL, "");
-        if (!ptEmail.isEmpty()) {
-            PersonalTrainerDAO ptDAO = DAOFactory.getInstance().getPersonalTrainerDAO();
-            PersonalTrainer pt = ptDAO.getByEmail(ptEmail);
-            TrainingPlanDAO planDAO = DAOFactory.getInstance().getTrainingPlanDAO();
-            TrainingPlan plan = planDAO.fetchByAthlete(athlete.getEmail());
-            athlete.assignPlan(pt,plan);
-        }
-
-        addToCache(athlete);
-        return athlete;
     }
 
-    // ==========================================
-    // UTILITY — lettura e scrittura file
-    // ==========================================
 
     private JSONArray readFile() {
         try {
             if (!Files.exists(FILE_PATH)) {
-                // se il file non esiste ancora, restituisce un array vuoto
                 Files.createDirectories(FILE_PATH.getParent());
                 return new JSONArray();
             }

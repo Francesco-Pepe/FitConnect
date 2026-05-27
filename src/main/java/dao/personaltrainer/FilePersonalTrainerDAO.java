@@ -24,7 +24,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
             String content = Files.readString(FILE_PATH);
             return new JSONArray(content);
         } catch (IOException e) {
-            throw new DAOException("Errore lettura file pt", e);
+            throw new DAOException("Error reading pt file", e);
         }
     }
 
@@ -33,7 +33,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
             Files.createDirectories(FILE_PATH.getParent());
             Files.writeString(FILE_PATH, data.toString(2)); // 2 = indentazione leggibile
         } catch (IOException e) {
-            throw new DAOException("Errore scrittura file pt", e);
+            throw new DAOException("Error writing pt file", e);
         }
     }
 
@@ -44,7 +44,6 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         String surname=obj.getString("surname");
         Gender gender=Gender.valueOf(obj.getString("gender"));
         PersonalTrainer pt=new PersonalTrainer(email,name,surname,gender);
-        addToCache(pt);
         return pt;
     }
 
@@ -65,7 +64,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
             if (obj.getString(PT_EMAIL).equals(email)){
-                return buildPt(obj);
+                return buildPt(obj);//added in cache in the buildPt method
             }
         }
         return null;
@@ -78,7 +77,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         for (int i=0;i<all.length();i++){
             JSONObject obj=all.getJSONObject(i);
             String email=obj.getString(PT_EMAIL);
-            pts.add(getByEmail(email));
+            pts.add(fetchPtByEmail(email));
         }
         return pts;
     }
@@ -86,7 +85,7 @@ public class FilePersonalTrainerDAO extends PersonalTrainerDAO{
         JSONArray all = readFile();
         for (int i = 0; i < all.length(); i++) {
             if (all.getJSONObject(i).getString(PT_EMAIL).equals(pt.getEmail())) {
-                throw new DAOException("PT già esistente: " + pt.getEmail());
+                throw new DAOException("PT already present: " + pt.getEmail());
             }
         }
         all.put(serializePt(pt));

@@ -26,6 +26,9 @@ public abstract class AthleteDAO extends CachedDAO<Athlete> {
     }
 
     public abstract Athlete searchAthleteByEmail(String email);
+
+    //for the trainer to see his athletes and their current plan,for another UC,implemented soon(i hope)
     public abstract List<Athlete> fetchAthleteByTrainer(String ptEmail);
+
     public abstract void update(Athlete a);
 }

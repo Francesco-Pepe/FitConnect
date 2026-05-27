@@ -3,7 +3,6 @@ package dao.planrequest;
 import eng.DBConnection;
 import exception.DAOException;
 import model.*;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
     }
 
     @Override
-    protected PlanRequest searchRequestById(int id) {
+    public PlanRequest searchRequestById(int id) {
         String sql = """
             SELECT id,goal,status,athlete_email,pt_email
             FROM plan_request pr
@@ -34,7 +33,7 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
                 return null;
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB searchRequestById", e);
+            throw new DAOException("Error DB searchRequestById", e);
         }
     }
 
@@ -44,21 +43,15 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
             INSERT INTO plan_request (athlete_email, pt_email, goal, status)
             VALUES (?, ?, ?, ?)
             """;
-        try (PreparedStatement ps = conn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, request.getClientEmail());
             ps.setString(2, request.getPtEmail());
             ps.setString(3, request.getGoal().name());
             ps.setString(4, request.getStatus().name());
             ps.executeUpdate();
-            // Recupera l'id generato dal DB e lo assegna all'oggetto
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) {
-                    request.setId(keys.getInt(1));
-                    addToCache(request);
-                }
-            }
+            addToCache(request);
         } catch (SQLException e) {
-            throw new DAOException("Errore DB save plan_request", e);
+            throw new DAOException("Error DB save plan_request", e);
         }
     }
 
@@ -69,9 +62,8 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
             ps.setString(1, request.getStatus().name());
             ps.setInt(2, request.getId());
             ps.executeUpdate();
-            addToCache(request);
         } catch (SQLException e) {
-            throw new DAOException("Errore DB update plan_request", e);
+            throw new DAOException("Error DB update plan_request", e);
         }
     }
 
@@ -95,23 +87,22 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
         return fetchList(sql, trainerEmail);
     }
 
-    // helper condiviso per le query che ritornano una lista
     private List<PlanRequest> fetchList(String sql, String param) {
         List<PlanRequest> result = new ArrayList<>();
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, param);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    result.add(mapRow(rs));
+                    result.add(buildRequest(rs));
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB fetchList plan_request", e);
+            throw new DAOException("Error DB fetchList plan_request", e);
         }
         return result;
     }
 
-    private PlanRequest mapRow(ResultSet rs) throws SQLException {
+    private PlanRequest buildRequest(ResultSet rs) throws SQLException {
         return new PlanRequest(
                 rs.getInt("id"),
                 rs.getString("athlete_email"),
@@ -120,4 +111,15 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
                 RequestStatus.valueOf(rs.getString("status"))
         );
     }
-}
+
+    @Override
+    public int getMaxId() {
+        try (Connection conn = DBConnection.getInstance().getConnection();
+                 Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery("SELECT MAX(id) FROM plan_request")) {
+                    return rs.next() ? rs.getInt(1) + 1 : 1;
+        } catch (SQLException e) {
+            throw new DAOException("Error retrieving ID", e);
+            }
+        }
+    }

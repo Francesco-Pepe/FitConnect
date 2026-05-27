@@ -1,8 +1,4 @@
 package eng;
-
-
-
-
 import view.Navigator;
 import view.NavigatorCLI;
 import view.NavigatorGUI;

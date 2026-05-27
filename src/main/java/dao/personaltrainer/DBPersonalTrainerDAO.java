@@ -26,14 +26,13 @@ public class DBPersonalTrainerDAO extends PersonalTrainerDAO {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    pt=mapRow(rs);
-                    addToCache(pt);
+                    pt= buildTrainer(rs);
                     return pt;
                 }
                 return pt;
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB searchPtByEmail", e);
+            throw new DAOException("Error DB searchPtByEmail", e);
         }
     }
 
@@ -44,17 +43,20 @@ public class DBPersonalTrainerDAO extends PersonalTrainerDAO {
         try (PreparedStatement ps = conn().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                result.add(mapRow(rs));
+                result.add(buildTrainer(rs));
+            }
+            for (PersonalTrainer pt:result){
+                addToCache(pt);
             }
         } catch (SQLException e) {
-            throw new DAOException("Errore DB fetchAll personal trainer", e);
+            throw new DAOException("Error DB fetchAll personal trainer", e);
         }
         return result;
     }
 
 
 
-    private PersonalTrainer mapRow(ResultSet rs) throws SQLException {
+    private PersonalTrainer buildTrainer(ResultSet rs) throws SQLException {
         return new PersonalTrainer(
                 rs.getString("email"),
                 rs.getString("name"),

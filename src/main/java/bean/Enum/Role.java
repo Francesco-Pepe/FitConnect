@@ -1,4 +1,4 @@
-package bean;
+package bean.Enum;
 
 public enum Role {
     ATHLETE,

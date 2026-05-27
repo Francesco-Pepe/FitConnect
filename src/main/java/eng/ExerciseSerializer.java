@@ -6,10 +6,6 @@ import org.json.JSONObject;
 public class ExerciseSerializer {
 
     private ExerciseSerializer(){}
-    // ==========================================
-    // Java → JSON
-    // ==========================================
-
     public static JSONObject serialize(Exercise ex) {
         JSONObject obj = new JSONObject();
         JSONArray techniques = new JSONArray();
@@ -42,9 +38,6 @@ public class ExerciseSerializer {
         return obj;
     }
 
-    // ==========================================
-    // JSON → Java
-    // ==========================================
 
     public static Exercise deserialize(JSONObject obj) {
         // prima ricostruisci il BaseExercise
@@ -56,7 +49,6 @@ public class ExerciseSerializer {
                 obj.getString("target")
         );
 
-        // poi riapplica i decoratori nell'ordine in cui erano stati salvati
         JSONArray techniques = obj.getJSONArray("techniques");
         for (int i = 0; i < techniques.length(); i++) {
             exercise = switch (techniques.getString(i)) {

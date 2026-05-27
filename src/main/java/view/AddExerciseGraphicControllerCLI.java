@@ -1,7 +1,7 @@
 package view;
 
 import bean.ExerciseBean;
-import bean.Technique;
+import bean.Enum.Technique;
 
 import java.util.ArrayList;
 import java.util.List;

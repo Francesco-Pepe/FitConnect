@@ -1,5 +1,7 @@
 package bean;
 
+import bean.Enum.Event;
+
 import java.time.LocalDateTime;
 
 public class NotificaBean {

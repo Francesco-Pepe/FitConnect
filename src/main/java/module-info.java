@@ -17,5 +17,6 @@ module FitConnect {
     opens controller to javafx.fxml;
     opens bean to javafx.fxml;
     opens model to javafx.fxml;
+    opens bean.Enum to javafx.fxml;
 }
 
