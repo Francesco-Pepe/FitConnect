@@ -3,9 +3,9 @@ package model;
 public class PlanRequest {
     private int id;
     private RequestStatus status;
-    private String clientEmail;
-    private String ptEmail;
-    private FitnessGoal goal;
+    private final String clientEmail;
+    private final String ptEmail;
+    private final FitnessGoal goal;
 
     public PlanRequest(int id,String client,String pt,FitnessGoal goal){
         this.id=id;
@@ -33,24 +33,15 @@ public class PlanRequest {
         return goal;
     }
 
-    public void setGoal(FitnessGoal goal) {
-        this.goal = goal;
-    }
+
 
     public String getPtEmail() {
         return ptEmail;
     }
 
-    public void setPtEmail(String pt) {
-        this.ptEmail = pt;
-    }
 
     public String getClientEmail() {
         return clientEmail;
-    }
-
-    public void setClient(String client) {
-        this.clientEmail = client;
     }
 
     public RequestStatus getStatus() {

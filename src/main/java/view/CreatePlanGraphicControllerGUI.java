@@ -68,25 +68,18 @@ public class CreatePlanGraphicControllerGUI {
         List<ExerciseBean> exercises=navigator.getExercises();
         populateExercise(exercises);
     }
-    /**
-     * Aggiunge un esercizio sia alla lista dati che al contenitore grafico FXML.
-     */
+
     public void populateExercise(List<ExerciseBean> exercises) {
-        // 1. Crea l'oggetto dato e aggiungilo all'ArrayList
         exercisesContainer.getChildren().clear();
-        // 2. Calcola il numero progressivo attuale dell'esercizio
         int exerciseNumber = 1;
         if (exercises.isEmpty()){
             return;
         }
         for (ExerciseBean ex : exercises) {
-            // 3. COSTRUZIONE GRAFICA DELLA RIGA (HBox)
             HBox row = new HBox();
             row.setAlignment(Pos.CENTER_LEFT);
             row.setPrefHeight(60.0);
             row.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-padding: 0 20;");
-
-            // Icona Circolare col Numero Progressivo
             StackPane circlePane = new StackPane();
             Circle circle = new Circle(12.0, Color.web("#6345ff"));
             Label numLabel = new Label(String.valueOf(exerciseNumber++));
@@ -94,7 +87,6 @@ public class CreatePlanGraphicControllerGUI {
             numLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 11;");
             circlePane.getChildren().addAll(circle, numLabel);
 
-            // Box Testuale (Nome Esercizio + Ripetizioni/Serie)
             VBox textContainer = new VBox(2.0);
             textContainer.setAlignment(Pos.CENTER_LEFT);
             HBox.setHgrow(textContainer, Priority.ALWAYS); // Spinge il cestino a destra
@@ -109,14 +101,11 @@ public class CreatePlanGraphicControllerGUI {
             detailsLabel.setTextFill(Color.web("#64748b"));
 
             textContainer.getChildren().addAll(titleLabel, detailsLabel);
-
-            // Bottone di Cancellazione (Cestino rosso)
-            Button deleteBtn = new Button("🗑");
+            Button deleteBtn = new Button("X");
             deleteBtn.setFont(Font.font(FONT_FAMILY, 16.0));
             deleteBtn.setTextFill(Color.web("#ef4444"));
             deleteBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
-            // AZIONE DEL CESTINO: Rimuove l'elemento sia dalla grafica che dall'ArrayList
             deleteBtn.setOnAction(event ->
                 deleteExercise(ex)
             );
@@ -151,10 +140,10 @@ public class CreatePlanGraphicControllerGUI {
                 showAlert("Success", "Plan created", "The training plan has been succesfully created!");
                 navigator.goToTrainerDashboard();
             } else {
-                showAlert("Errore", "Dati non validi", "I campi non possono essere vuoti");
+                showAlert("Errore", "Data not valid", "The fields cannot be empty");
             }
         }catch (ControllerException  | UnavailableServiceException e){
-            showAlert("Error","Plan creation has failed","retry");
+            showAlert("Error","Plan creation has failed","Try later");
         }
 
     }

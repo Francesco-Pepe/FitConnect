@@ -33,7 +33,7 @@ public class AddExerciseGraphicControllerCLI {
         ExerciseBean ex = new ExerciseBean(name, sets, reps, techniques);
         navigator.addExercise(ex);
 
-        System.out.printf("%n  [✓] Esercizio \"%s\" aggiunto (%d set x %d reps).%n", name, sets, reps);
+        System.out.printf("%n   Esercizio \"%s\" aggiunto (%d set x %d reps).%n", name, sets, reps);
         System.out.print("  Premi INVIO per tornare al piano... ");
         sc.nextLine();
 
@@ -71,7 +71,7 @@ public class AddExerciseGraphicControllerCLI {
             String v = sc.nextLine().trim();
             if (v.equals("0")) return null;
             if (!v.isEmpty()) return v;
-            System.out.print("[!] Il campo non può essere vuoto. ");
+            System.out.print(" Il campo non può essere vuoto. ");
         }
     }
 
@@ -82,9 +82,9 @@ public class AddExerciseGraphicControllerCLI {
             try {
                 int n = Integer.parseInt(v);
                 if (n > 0) return n;
-                System.out.print("[!] Inserisci un numero > 0. ");
+                System.out.print(" Inserisci un numero > 0. ");
             } catch (NumberFormatException e) {
-                System.out.print("[!] Valore non valido. ");
+                System.out.print(" Valore non valido. ");
             }
         }
     }

@@ -14,19 +14,13 @@ import model.FitnessGoal;
 import java.util.List;
 
 
-public class RequestPlanGraphicGraphicControllerGUI
-        {
-
+public class RequestPlanGraphicGraphicControllerGUI {
     @FXML
     private ComboBox<PersonalTrainerBean> trainerComboBox;
-
     @FXML
     private ToggleGroup fitnessGoalGroup;
-
-
     @FXML
     private Button sendRequestBtn;
-
     @FXML
     private Button cancelBtn;
 
@@ -146,26 +140,18 @@ public class RequestPlanGraphicGraphicControllerGUI
         loadPersonalTrainers();
     }
 
-    /**
-     * Handler del pulsante "Cancel"
-     */
+
     @FXML
     private void handleCancel(ActionEvent event) {
         returnToDashboard();
     }
 
-    /**
-     * Ritorna alla dashboard dell'atleta
-     */
     @FXML
     private void returnToDashboard() {
        this.navigator.goToAthleteDashboard();
 
     }
 
-    /**
-     * Mappa il testo del RadioButton al FitnessGoal enum
-     */
     private FitnessGoal mapTextToFitnessGoal(String text) {
         return switch(text) {
             case "Weight Loss" -> FitnessGoal.WEIGHT_LOSS;
@@ -175,9 +161,6 @@ public class RequestPlanGraphicGraphicControllerGUI
         };
     }
 
-    /**
-     * Helper per mostrare alert
-     */
     private void showAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -186,6 +169,6 @@ public class RequestPlanGraphicGraphicControllerGUI
         alert.showAndWait();
     }
 
-    // ===== Implementazione metodi astratti (non usati nella GUI) =====
+
 
 }

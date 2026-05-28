@@ -15,7 +15,8 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
             throw new DAOException("L'id deve essere >0");
         }
         if (id==1) {
-            Athlete a = new Athlete("frank@gmail.com", "Francesco", "Pepe", 78, 178, Gender.MALE);
+            PhysicalTraits traits=new PhysicalTraits(78,178,Gender.MALE);
+            Athlete a = new Athlete("frank@gmail.com", "Francesco", "Pepe",traits);
             PersonalTrainer pt = new PersonalTrainer("trainer@fit.com", "Mario", "Rossi", Gender.MALE);
             req = new PlanRequest(id, a.getEmail(), pt.getEmail(), FitnessGoal.STRENGHT);
         }

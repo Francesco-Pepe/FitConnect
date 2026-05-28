@@ -10,6 +10,7 @@ module FitConnect {
 
     exports view to javafx.graphics;
     exports model;
+    exports bean;
     exports controller;
     exports dao.authentication;
     exports api;       // ← aggiunto
@@ -21,5 +22,7 @@ module FitConnect {
     opens model to javafx.fxml;
     opens bean.enums to javafx.fxml;
     opens api;         // ← aggiunto (per reflection di JUnit)
-    opens eng;         // ← aggiunto (per reflection di JUnit)
+    opens eng;
+    exports view.boundary to javafx.graphics;
+    opens view.boundary to javafx.fxml, javafx.graphics;         // ← aggiunto (per reflection di JUnit)
 }

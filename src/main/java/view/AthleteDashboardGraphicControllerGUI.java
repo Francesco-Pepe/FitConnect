@@ -78,7 +78,7 @@ public class AthleteDashboardGraphicControllerGUI {
                 showTrainingCard(plan, pt);
             }
         }catch (UnavailableServiceException e){
-            showAlert("Errore","ExerciseError","Il servizio non è attualmente disponibile si prega di riprovare più tardi");
+            showAlert("Errore","ExerciseError","Service currently unavailable,retry later");
         }
         catch (ControllerException d){
             showAlert("Error","",d.getMessage());

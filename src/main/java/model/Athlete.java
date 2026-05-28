@@ -1,27 +1,27 @@
 package model;
 
-
 public class Athlete {
-    private String email;
-    private String name;
-    private String surname;
+    private final String email;
+    private final String name;
+    private final String surname;
     private TrainingPlan plan;
     private PersonalTrainer pt;
     private Gender gender;
     private int height;
     private double weight;
 
-    public Athlete(String email,String name, String surname, double weight, int height, Gender gender) {
-        this(email,name,surname,weight,height,gender,null,null);
+    public Athlete(String email,String name, String surname, PhysicalTraits traits) {
+        this(email,name,surname,traits,null,null);
     }
-    @SuppressWarnings("java:S107")//max number of parameters for a method
-    public Athlete(String email,String name, String surname, double weight, int height, Gender gender,PersonalTrainer pt,TrainingPlan plan) {
+
+    //physicaltraits to bypass sonar smell for 8 parameter method
+    public Athlete(String email,String name, String surname, PhysicalTraits traits,PersonalTrainer pt,TrainingPlan plan) {
         this.email=email;
         this.name = name;
         this.surname = surname;
-        this.weight = weight;
-        this.height = height;
-        this.gender = gender;
+        this.weight = traits.getWeight();
+        this.height = traits.getHeight();
+        this.gender = traits.getGender();
         this.pt = pt;
         this.plan=plan;
     }
@@ -69,17 +69,11 @@ public class Athlete {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void assignPlan(PersonalTrainer pt,TrainingPlan plan){
         this.pt=pt;

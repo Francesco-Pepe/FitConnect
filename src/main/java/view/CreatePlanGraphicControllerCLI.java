@@ -35,8 +35,9 @@ public class CreatePlanGraphicControllerCLI {
             switch (sc.nextLine().trim()) {
                 case "1" -> navigator.goToAddExercise();
                 case "2"  ->done=confirmAndSave(sc);
+                case "3" ->removeExercise(sc);
                 case "0" -> { navigator.goToTrainerDashboard(); return; }
-                default  -> System.out.println("[!] Scelta non valida.\n");
+                default  -> System.out.println(" Scelta non valida.\n");
             }
             if (done)
                 return;
@@ -45,7 +46,7 @@ public class CreatePlanGraphicControllerCLI {
 
     private boolean confirmAndSave(Scanner sc) {
         if (!savePlan(sc)) return false;
-        System.out.println("\n  [✓] Piano creato con successo!");
+        System.out.println("\n  Piano creato con successo!");
         System.out.print("  Premi INVIO per tornare alla dashboard... ");
         sc.nextLine();
         navigator.goToTrainerDashboard();
@@ -55,7 +56,7 @@ public class CreatePlanGraphicControllerCLI {
     private boolean savePlan(Scanner sc) {
         List<ExerciseBean> exercises = navigator.getExercises();
         if (exercises.isEmpty()) {
-            System.out.println("[!] Aggiungi almeno un esercizio prima di salvare.\n");
+            System.out.println(" Aggiungi almeno un esercizio prima di salvare.\n");
             return false;
         }
         LocalDate startDate = readDate(sc, "  Data inizio (dd/MM/yyyy): ", LocalDate.now(), null);
@@ -67,7 +68,7 @@ public class CreatePlanGraphicControllerCLI {
             ctrl.acceptAndCreatePlan(navigator.getPlanRequest(), new TrainingPlanBean(startDate, endDate, exercises));
             return true;
         } catch (ControllerException | UnavailableServiceException e) {
-            System.out.println("[!] Errore salvataggio piano: " + e.getMessage());
+            System.out.println(" Errore salvataggio piano: " + e.getMessage());
             return false;
         }
     }
@@ -86,7 +87,7 @@ public class CreatePlanGraphicControllerCLI {
                         ? "[!] La data deve essere >= " + minDate.format(FMT) + ". Riprova: "
                         : "[!] La data deve essere <= " + maxDate.format(FMT) + ". Riprova: ");
             } catch (DateTimeParseException e) {
-                System.out.print("[!] Formato non valido. Usa dd/MM/yyyy: ");
+                System.out.print(" Formato non valido. Usa dd/MM/yyyy: ");
             }
         }
     }
@@ -95,6 +96,7 @@ public class CreatePlanGraphicControllerCLI {
         System.out.println();
         System.out.println("  [1] Aggiungi esercizio");
         System.out.println("  [2] Salva piano");
+        System.out.println("  [3] Rimuovi esercizio");
         System.out.println("  [0] Annulla e torna alla dashboard");
         System.out.print("\n> Scelta: ");
     }
@@ -128,4 +130,31 @@ public class CreatePlanGraphicControllerCLI {
         System.out.printf( "║  %-28s║%n", "FitConnect — " + title);
         System.out.println("╚══════════════════════════════╝");
     }
+
+    private void removeExercise(Scanner sc) {
+        while (true) {
+            List<ExerciseBean> exercises=navigator.getExercises();
+            printExerciseTable(exercises);
+            System.out.println("Seleziona esercizio da rimuovere:(0 per ritornare a crea piano)");
+            int choice=readValidIndex(sc,exercises);
+            if (choice==0){
+                return;
+            }
+            navigator.deleteExercise(exercises.get(choice-1));
+        }
+    }
+    private int readValidIndex(Scanner sc,List<ExerciseBean> exercises) {
+            while (true) {
+                String v = sc.nextLine().trim();
+                try {
+                    int n = Integer.parseInt(v);
+                    //exercise indexing starts from 1
+                    if (n >= 0 && n<exercises.size()+1) return n;
+                    System.out.print(" Inserisci un numero >= 0 e < di "+exercises.size());
+                } catch (NumberFormatException e) {
+                    System.out.print(" Valore non valido. ");
+                }
+            }
+    }
+
 }

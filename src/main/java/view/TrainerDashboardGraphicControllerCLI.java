@@ -5,7 +5,6 @@ import bean.PlanRequestBean;
 import controller.ManageCustomPlanController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -42,7 +41,7 @@ public class TrainerDashboardGraphicControllerCLI {
         try {
             return ctrl.getPendingRequests(email);
         } catch (ControllerException e) {
-            System.out.println("[!] Errore caricamento richieste: " + e.getMessage());
+            System.out.println(" Errore caricamento richieste: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -64,7 +63,7 @@ public class TrainerDashboardGraphicControllerCLI {
             if (input.length() >= 2 && (input.startsWith("A") || input.startsWith("D"))) {
                 handleAction(input, ctrl, requests);
             } else {
-                System.out.print("[!] Scelta non valida: ");
+                System.out.print(" Scelta non valida: ");
             }
         }
     }
@@ -74,7 +73,7 @@ public class TrainerDashboardGraphicControllerCLI {
         try {
             int idx = Integer.parseInt(input.substring(1)) - 1;
             if (idx < 0 || idx >= requests.size()) {
-                System.out.print("[!] Numero fuori range. Riprova: ");
+                System.out.print(" Numero fuori range. Riprova: ");
                 return;
             }
             PlanRequestBean req = requests.get(idx);
@@ -91,15 +90,12 @@ public class TrainerDashboardGraphicControllerCLI {
                 System.out.print("> Scelta: ");
             }
         } catch (NumberFormatException e) {
-            System.out.print("[!] Formato non valido (es: A1, D2). Riprova: ");
+            System.out.print(" Formato non valido (es: A1, D2). Riprova: ");
         } catch (ControllerException e) {
             System.out.print(e.getMessage() + " Riprova: ");
         }
     }
 
-    // ==========================================
-    // UI helpers
-    // ==========================================
 
     private static String truncate(String s, int max) {
         if (s == null) return "";

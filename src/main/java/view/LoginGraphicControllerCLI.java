@@ -28,7 +28,7 @@ public class LoginGraphicControllerCLI {
                 case "1" -> done=doLogin(sc,false);
                 case "2" -> done=doLogin(sc,true);
                 case "0" -> { System.out.println("\nArrivederci!"); System.exit(0); }
-                default  -> System.out.println("[!] Scelta non valida.\n");
+                default  -> System.out.println(" Scelta non valida.\n");
             }
             if (done)
                 return;
@@ -41,7 +41,7 @@ public class LoginGraphicControllerCLI {
         System.out.print("  Password : ");
         String password = sc.nextLine().trim();
         if (email.isEmpty() || password.isEmpty()) {
-            System.out.println("[!] Email e password non possono essere vuoti.\n");
+            System.out.println(" Email e password non possono essere vuoti.\n");
             return false;
         }
         try {
@@ -49,7 +49,7 @@ public class LoginGraphicControllerCLI {
             if (isTrainer) loginAsTrainer(ctrl, email, password);
             else           loginAsAthlete(ctrl, email, password);
         } catch (ControllerException e) {
-            System.out.println("[!] Login non riuscito. Riprova.\n");
+            System.out.println(" Login non riuscito. Riprova.\n");
             return false;
         } catch (InvalidCredentialsException e) {
             System.out.println("Credenziali non valide.\n");

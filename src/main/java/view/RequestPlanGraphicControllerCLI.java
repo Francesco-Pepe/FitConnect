@@ -31,7 +31,7 @@ public class RequestPlanGraphicControllerCLI {
             return;
         }
          catch (ControllerException e) {
-            System.out.println("[!] Impossibile caricare i personal trainer: ");
+            System.out.println("Impossibile caricare i personal trainer: ");
             navigator.goToAthleteDashboard();
             return;
         }

@@ -38,7 +38,7 @@ public class AthleteDashboardGraphicControllerCLI {
             }
             return ctrl;
         } catch (UnavailableServiceException e) {
-            System.out.println("  [!] Il servizio non è al momento disponibile.");
+            System.out.println("  Il servizio non è al momento disponibile.");
         } catch (ControllerException e) {
             System.out.println("  Impossibile caricare il piano: " + e.getMessage());
         }

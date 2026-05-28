@@ -112,13 +112,16 @@ public class FileAthleteDAO extends AthleteDAO {
             pt   = ptDAO.fetchPtByEmail(ptEmail);
             plan = planDAO.fetchByAthlete(email);
         }
+        PhysicalTraits traits=new PhysicalTraits(
+                obj.getDouble("weight"),
+                obj.getInt("height"),
+                Gender.valueOf(obj.getString("gender"))
+        );
         return new Athlete(
                 email,
                 obj.getString("name"),
                 obj.getString("surname"),
-                obj.getDouble("weight"),
-                obj.getInt("height"),
-                Gender.valueOf(obj.getString("gender")),
+                traits,
                 pt,    // può essere null
                 plan   // può essere null
         );

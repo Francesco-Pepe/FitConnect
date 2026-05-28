@@ -5,10 +5,7 @@ import dao.trainingplan.TrainingPlanDAO;
 import eng.DAOFactory;
 import eng.DBConnection;
 import exception.DAOException;
-import model.Athlete;
-import model.Gender;
-import model.PersonalTrainer;
-import model.TrainingPlan;
+import model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,14 +76,14 @@ public class DBAthleteDAO extends AthleteDAO {
             pt   = ptDAO.fetchPtByEmail(ptEmail);
             plan = planDAO.fetchByAthlete(email);
         }
-
+        PhysicalTraits traits=new PhysicalTraits( rs.getDouble("weight"),
+                rs.getInt("height"),
+                Gender.valueOf(rs.getString("gender")));
         return new Athlete(
                 email,
                 rs.getString("name"),
                 rs.getString("surname"),
-                rs.getDouble("weight"),
-                rs.getInt("height"),
-                Gender.valueOf(rs.getString("gender")),
+                traits,
                 pt,
                 plan
         );

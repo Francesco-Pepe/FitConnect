@@ -1,4 +1,4 @@
-package view;
+package view.boundary;
 
 import bean.enums.Event;
 import bean.NotificaBean;
@@ -71,7 +71,7 @@ public class AthleteBoundary {
         String messaggio = "To: " + n.getDestinatario() + "\n";
         String messaggio2 = "The trainer "+n.getMittente()+" has rejected the plan request";
         if(n.getEvent() == Event.PLAN_CREATED) {
-            messaggio2 = "You can now send another request" + n.getDestinatario() + "\n";
+            messaggio2 = "You can now send another request " + n.getDestinatario() + "\n";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         messaggio2 += HOUR_NOTIFY+ n.getMomentoInvio().format(formatter);

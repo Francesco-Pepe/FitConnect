@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 public class LoginGraphicControllerGUI {
     @FXML
     private Button btnAthlete;
-    private Role role=Role.ATHLETE;
+    private Role role=Role.PERSONAL_TRAINER;
     @FXML
     private Button loginButton;
     @FXML
@@ -78,7 +78,7 @@ public class LoginGraphicControllerGUI {
 
                 session = controller.logAsAthlete(athlete);
             }catch (InvalidCredentialsException e){
-                showAlert(ERROR_TITLE,"Credenziali non valide","Il login è fallito,riprova");
+                showAlert(ERROR_TITLE,"Credenziali non valide","Riprova");
                 return;
             }
             catch (ControllerException e){
@@ -99,7 +99,7 @@ public class LoginGraphicControllerGUI {
                 return;
             }
             catch (InvalidCredentialsException d){
-                showAlert(ERROR_TITLE,"Credenziali non valide","Riprovare");
+                showAlert(ERROR_TITLE,"Credenziali non valide","Riprova");
                 return;
             }
             navigator.setSession(session);

@@ -42,7 +42,6 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
     private JSONObject serializePlan(TrainingPlan plan){
         JSONObject obj=new JSONObject();
         obj.put(ATHLETE_EMAIL,plan.getClient());
-        obj.put("pt",plan.getCreator());
         obj.put("expiration",plan.getExpirationDate().toString());
         obj.put("creation",plan.getCreationDate().toString());
         JSONArray exercises=new JSONArray();
@@ -55,7 +54,6 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
 
     private TrainingPlan buildPlan(JSONObject obj){
         String athleteEmail=obj.getString(ATHLETE_EMAIL);
-        String ptEmail=obj.getString("pt");
         LocalDate creation=LocalDate.parse(obj.getString("creation"));
         LocalDate expiration=LocalDate.parse(obj.getString("expiration"));
 
@@ -65,7 +63,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
             Exercise ex=ExerciseSerializer.deserialize(exercises.getJSONObject(i));
             exList.add(ex);
         }
-        return new TrainingPlan(athleteEmail,ptEmail,creation,expiration,exList);
+        return new TrainingPlan(athleteEmail,creation,expiration,exList);
 
     }
 

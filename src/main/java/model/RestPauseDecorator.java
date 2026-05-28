@@ -1,13 +1,22 @@
 package model;
 
 public class RestPauseDecorator extends ExerciseDecorator{
+    private int seconds;
     public RestPauseDecorator(Exercise wrapperExercise) {
         super(wrapperExercise);
+        this.seconds=15;
+    }
+
+    protected void setSeconds(int seconds){
+        this.seconds=seconds;
+    }
+    protected String applyRestPause(String input){
+        return input+" [Technique: Rest-Pause (rest "+seconds+" seconds after failure, then perform max additional reps)]";
     }
 
     @Override
     public String getExecutionDetails() {
-        return this.wrapperExercise.getExecutionDetails() +
-                " -> [Technique: Rest-Pause (rest 15 seconds after failure, then perform max additional reps)]";
+        String oldDetails=super.getExecutionDetails();
+        return  applyRestPause(oldDetails);
     }
 }

@@ -16,53 +16,48 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
 
     @Override
     public void save(TrainingPlan plan) {
+        Connection c = conn();
         String sqlPlan = """
-            INSERT INTO training_plan (athlete_email, pt_email, creation_date, expiration_date)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO training_plan (athlete_email, creation_date, expiration_date)
+            VALUES (?, ?, ?)
             """;
-        try (PreparedStatement ps = conn().prepareStatement(sqlPlan, Statement.RETURN_GENERATED_KEYS)) {
-            conn().setAutoCommit(false);
-            ps.setString(1, plan.getClient());
-            ps.setString(2, plan.getCreator());
-            ps.setDate(3, Date.valueOf(plan.getCreationDate()));
-            ps.setDate(4, Date.valueOf(plan.getExpirationDate()));
-            ps.executeUpdate();
+        try {
+            c.setAutoCommit(false);
+            try (PreparedStatement ps = c.prepareStatement(sqlPlan, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, plan.getClient());
+                ps.setDate(2, Date.valueOf(plan.getCreationDate()));
+                ps.setDate(3, Date.valueOf(plan.getExpirationDate()));
+                ps.executeUpdate();
 
-            int planId;
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (!keys.next()) throw new DAOException("Nessun ID generato per training_plan");
-                planId = keys.getInt(1);
+                int planId;
+                try (ResultSet keys = ps.getGeneratedKeys()) {
+                    if (!keys.next()) throw new DAOException("Nessun ID generato per training_plan");
+                    planId = keys.getInt(1);
+                }
+                // dovendo modificare 3 tabelle è necessario compiere le varie azioni atomicamente
+                for (Exercise ex : plan.getExercises()) {
+                    saveExercise(c, planId, ex);
+                }
             }
-            for (Exercise ex : plan.getExercises()) {
-                saveExercise(planId, ex);
-            }
-            //dovendo modificare 3 tabelle è necessario compiere le varie azioni atomicamente
-            conn().commit();
+            c.commit();
             addToCache(plan);
         } catch (SQLException e) {
-            try {
-                conn().rollback();
-            } catch (SQLException ex) {
-                //ignore
-            }
+            try { c.rollback(); } catch (SQLException ex) { /* ignore */ }
             throw new DAOException("Errore DB save training_plan", e);
-        }
-        finally {
-            try {conn().setAutoCommit(true);} catch (SQLException e) {
-                //ignore
-            }
+        } finally {
+            try { c.setAutoCommit(true); } catch (SQLException e) { /* ignore */ }
         }
     }
 
-    private void saveExercise(int planId, Exercise ex) throws SQLException {
+    private void saveExercise(Connection c, int planId, Exercise ex) throws SQLException {
         Exercise current = ex;
         List<String> techniques = new ArrayList<>();
         while (current instanceof ExerciseDecorator ed) {
-            if (current instanceof DropSetDecorator)       techniques.add("DROP_SET");
-            else if (current instanceof RestPauseDecorator)     techniques.add("REST_PAUSE");
-            else if (current instanceof SlowEccentricDecorator) techniques.add("SLOW_ECCENTRIC");
-            else if (current instanceof IsometricPauseDecorator)techniques.add("ISOMETRIC_PAUSE");
-            else if (current instanceof ForcedRepsDecorator)    techniques.add("FORCED_REPS");
+            if      (current instanceof DropSetDecorator)        techniques.add("DROP_SET");
+            else if (current instanceof RestPauseDecorator)      techniques.add("REST_PAUSE");
+            else if (current instanceof SlowEccentricDecorator)  techniques.add("SLOW_ECCENTRIC");
+            else if (current instanceof IsometricPauseDecorator) techniques.add("ISOMETRIC_PAUSE");
+            else if (current instanceof ForcedRepsDecorator)     techniques.add("FORCED_REPS");
             current = ed.getWrapperExercise();
         }
 
@@ -70,7 +65,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
             INSERT INTO plan_exercise (plan_id, name, target, equipment, sets, reps)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
-        try (PreparedStatement ps = conn().prepareStatement(sqlEx, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = c.prepareStatement(sqlEx, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, planId);
             ps.setString(2, current.getName());
             ps.setString(3, current.getTarget());
@@ -88,7 +83,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
             }
 
             String sqlTech = "INSERT INTO exercise_technique (exercise_id, technique) VALUES (?, ?)";
-            try (PreparedStatement psTech = conn().prepareStatement(sqlTech)) {
+            try (PreparedStatement psTech = c.prepareStatement(sqlTech)) {
                 psTech.setInt(1, exerciseId);
                 for (String technique : techniques) {
                     psTech.setString(2, technique);
@@ -101,17 +96,18 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
 
     @Override
     public TrainingPlan searchByAthlete(String athleteEmail) {
+        Connection c = conn();
         String sql = """
-            SELECT id,creation_date,expiration_date,athlete_email,pt_email
+            SELECT id, creation_date, expiration_date, athlete_email
             FROM training_plan tp
             WHERE tp.athlete_email = ?
             """;
-        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, athleteEmail);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    //will overwrite current rs,but only one plan in database for an athlete
-                    return buildPlan(rs,fetchExercises(rs.getInt("id")));
+                    // will overwrite current rs, but only one plan in database for an athlete
+                    return buildPlan(rs, fetchExercises(c, rs.getInt("id")));
                 }
                 return null;
             }
@@ -122,15 +118,15 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
 
     @Override
     public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
-        //to be implemented for another uc
+        // to be implemented for another uc
         return List.of();
     }
 
     @Override
     public void deleteFromStorage(TrainingPlan plan) {
-
+        Connection c = conn();
         String sql = "DELETE FROM training_plan WHERE athlete_email = ?";
-        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, plan.getClient());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -139,14 +135,14 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     }
 
     // Carica gli esercizi (con tecniche) dato un plan_id
-    private List<Exercise> fetchExercises(int planId) throws SQLException {
+    private List<Exercise> fetchExercises(Connection c, int planId) throws SQLException {
         String sql = """
             SELECT pe.id, pe.name, pe.target, pe.equipment, pe.sets, pe.reps
             FROM plan_exercise pe
             WHERE pe.plan_id = ?
             """;
         List<Exercise> exercises = new ArrayList<>();
-        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, planId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -157,7 +153,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
                             rs.getString("equipment"),
                             rs.getString("target")
                     );
-                    ex = applyTechniques(ex, rs.getInt("id"));
+                    ex = applyTechniques(c, ex, rs.getInt("id"));
                     exercises.add(ex);
                 }
             }
@@ -166,18 +162,18 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     }
 
     // Riapplica i decorator nell'ordine in cui sono stati salvati
-    private Exercise applyTechniques(Exercise ex, int exerciseId) throws SQLException {
+    private Exercise applyTechniques(Connection c, Exercise ex, int exerciseId) throws SQLException {
         String sql = "SELECT technique FROM exercise_technique WHERE exercise_id = ?";
-        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, exerciseId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ex = switch (rs.getString("technique")) {
-                        case "DROP_SET"         -> new DropSetDecorator(ex);
-                        case "REST_PAUSE"        -> new RestPauseDecorator(ex);
-                        case "SLOW_ECCENTRIC"    -> new SlowEccentricDecorator(ex);
-                        case "ISOMETRIC_PAUSE"   -> new IsometricPauseDecorator(ex);
-                        case "FORCED_REPS"       -> new ForcedRepsDecorator(ex);
+                        case "DROP_SET"          -> new DropSetDecorator(ex);
+                        case "REST_PAUSE"         -> new RestPauseDecorator(ex);
+                        case "SLOW_ECCENTRIC"     -> new SlowEccentricDecorator(ex);
+                        case "ISOMETRIC_PAUSE"    -> new IsometricPauseDecorator(ex);
+                        case "FORCED_REPS"        -> new ForcedRepsDecorator(ex);
                         default -> ex;
                     };
                 }
@@ -185,10 +181,10 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
         }
         return ex;
     }
+
     private TrainingPlan buildPlan(ResultSet rs, List<Exercise> exercises) throws SQLException {
         return new TrainingPlan(
                 rs.getString("athlete_email"),
-                rs.getString("pt_email"),
                 rs.getDate("creation_date").toLocalDate(),
                 rs.getDate("expiration_date").toLocalDate(),
                 exercises

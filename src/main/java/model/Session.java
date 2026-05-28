@@ -6,24 +6,6 @@ public class Session {
     private int token;
     private Athlete currentAthlete;
     private PersonalTrainer currentPT;
-    private TrainingPlan currentTrainingPlan;
-    private PlanRequest currentPlanRequest;
-
-    public PlanRequest getCurrentPlanRequest() {
-        return currentPlanRequest;
-    }
-
-    public void setCurrentPlanRequest(PlanRequest currentPlanRequest) {
-        this.currentPlanRequest = currentPlanRequest;
-    }
-
-    public TrainingPlan getCurrentTrainingPlan() {
-        return currentTrainingPlan;
-    }
-
-    public void setCurrentTrainingPlan(TrainingPlan currentTrainingPlan) {
-        this.currentTrainingPlan = currentTrainingPlan;
-    }
 
     public PersonalTrainer getCurrentPT() {
         return currentPT;

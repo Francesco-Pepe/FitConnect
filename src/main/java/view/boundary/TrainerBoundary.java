@@ -1,4 +1,4 @@
-package view;
+package view.boundary;
 
 import bean.enums.Event;
 import bean.NotificaBean;

@@ -16,8 +16,8 @@ import exception.ControllerException;
 import exception.DAOException;
 import exception.UnavailableServiceException;
 import model.*;
-import view.AthleteBoundary;
-import view.TrainerBoundary;
+import view.boundary.AthleteBoundary;
+import view.boundary.TrainerBoundary;
 import bean.PlanRequestBean;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -137,9 +137,7 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         PersonalTrainer pt = ptDAO.fetchPtByEmail(request.getPtEmail());
         if (pt == null) throw new ControllerException("PT non trovato");
         List<Exercise> exercises = buildExercises(plan.getExercises());
-        TrainingPlan newPlan = new TrainingPlan(request.getAthleteEmail(), request.getPtEmail(), plan.getExpiration());
-        newPlan.setCreationDate(plan.getCreation());
-        newPlan.setExercises(exercises);
+        TrainingPlan newPlan = new TrainingPlan(request.getAthleteEmail(),plan.getCreation(), plan.getExpiration(),exercises);
         // 3. Aggiorna relazioni
         athlete.assignPlan(pt,newPlan);
         req.accept();
@@ -147,7 +145,7 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         requestDAO.update(req);
         planDAO.save(newPlan);      // ← Salva il piano PRIMA dell'atleta
         athleteDAO.update(athlete);  // ← Ora l'atleta può referenziare il piano
-        NotificaBean notify=new NotificaBean(request.getAthlete(), newPlan.getCreator(), LocalDateTime.now(),Event.PLAN_CREATED);
+        NotificaBean notify=new NotificaBean(request.getAthlete(), request.getPtEmail(), LocalDateTime.now(),Event.PLAN_CREATED);
         AthleteBoundary athleteBoundary=new AthleteBoundary();
         athleteBoundary.sendNotification(notify);
 
@@ -202,7 +200,7 @@ private Exercise applyDecorators(Exercise exercise, List<Technique> techniques) 
             case Technique.SLOW_ECCENTRIC  -> new SlowEccentricDecorator(exercise);
             case Technique.FORCED_REPS     -> new ForcedRepsDecorator(exercise);
             case Technique.ISOMETRIC_PAUSE -> new IsometricPauseDecorator(exercise);
-            default -> exercise;
+
         };
     }
     return exercise;
