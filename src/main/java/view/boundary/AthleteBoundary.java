@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-public class AthleteBoundary {
+public class AthleteBoundary  {
     private static final String NOTIFICATION_TITLE="ATHLETES'S BOUNDARY";
     private  static final String DATE_FORMAT="dd/MM/yyyy HH:mm";
     private  static final String HOUR_NOTIFY="Hour: ";

@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class AddExerciseGraphicControllerCLI {
-
+public class AddExerciseGraphicControllerCLI  {
     private Navigator navigator;
-
     public void setNavigator(Navigator n) {
         this.navigator = n;
     }

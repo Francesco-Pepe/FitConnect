@@ -65,7 +65,8 @@ public class ManageCustomPlanController {
         }
         PlanRequest request = new PlanRequest(requestDAO.getMaxId(), bean.getAthleteEmail(), bean.getPtEmail(), bean.getGoal());
         requestDAO.save(request);
-        NotificaBean notify=new NotificaBean(bean.getAthlete(), bean.getPtEmail(), LocalDateTime.now(), Event.NEW_REQUEST);
+        String athleteName=athlete.getName()+ " " +athlete.getSurname();
+        NotificaBean notify=new NotificaBean(athleteName, bean.getPtEmail(), LocalDateTime.now(), Event.NEW_REQUEST);
         TrainerBoundary trainerBoundary=new TrainerBoundary();
         trainerBoundary.sendNotification(notify);
 
