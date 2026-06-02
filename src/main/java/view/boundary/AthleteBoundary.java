@@ -57,7 +57,7 @@ public class AthleteBoundary  {
         System.out.println(NOTIFICATION_TITLE);
         String messaggio = " The trainer: " + n.getMittente() + "\n";
         String messaggio2 = "";
-        if(n.getEvent() == Event.PLAN_CREATED) {
+        if(n.getEvent() == Event.REQUEST_REJECTED) {
             messaggio2 = "Plan rejected from " + n.getMittente() +"\n";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
@@ -70,7 +70,7 @@ public class AthleteBoundary  {
         alert.setHeaderText(null);
         String messaggio = "To: " + n.getDestinatario() + "\n";
         String messaggio2 = "The trainer "+n.getMittente()+" has rejected the plan request";
-        if(n.getEvent() == Event.PLAN_CREATED) {
+        if(n.getEvent() == Event.REQUEST_REJECTED) {
             messaggio2 = "You can now send another request " + n.getDestinatario() + "\n";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);

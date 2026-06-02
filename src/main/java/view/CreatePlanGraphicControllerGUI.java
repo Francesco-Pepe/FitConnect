@@ -50,6 +50,8 @@ public class CreatePlanGraphicControllerGUI {
     public void start(){
         setAthleteName();
         populateExercise(navigator.getExercises());
+        startDatePicker.setValue(null);
+        expireDatePicker.setValue(null);
     }
 
 
@@ -126,7 +128,7 @@ public class CreatePlanGraphicControllerGUI {
         }
         return !startDatePicker.getValue().isAfter(expireDatePicker.getValue()) && !startDatePicker.getValue().isBefore(LocalDate.now());
     }
-
+    @FXML
     public void createPlan()  {
         List<ExerciseBean> exercises=navigator.getExercises();
         try {

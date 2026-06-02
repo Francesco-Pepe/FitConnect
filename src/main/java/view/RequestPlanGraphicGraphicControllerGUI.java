@@ -138,6 +138,8 @@ public class RequestPlanGraphicGraphicControllerGUI {
     }
     public void start(){
         loadPersonalTrainers();
+        trainerComboBox.getSelectionModel().clearSelection();
+        fitnessGoalGroup.selectToggle(null);
     }
 
 
@@ -155,7 +157,7 @@ public class RequestPlanGraphicGraphicControllerGUI {
     private FitnessGoal mapTextToFitnessGoal(String text) {
         return switch(text) {
             case "Weight Loss" -> FitnessGoal.WEIGHT_LOSS;
-            case "Improve Strenght" -> FitnessGoal.STRENGHT;
+            case "Improve Strength" -> FitnessGoal.STRENGHT;
             case "Body Recomposition" ->FitnessGoal.BODY_RECOMPOSITION;
             default -> null;
         };
