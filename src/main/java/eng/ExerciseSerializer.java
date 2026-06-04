@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseSerializer {
-    private final static String DROP_SET="DROP_SET";
-    private final static  String REST_PAUSE="REST_PAUSE";
-    private final static String SLOW_ECCENTRIC="SLOW_ECCENTRIC";
-    private final static String ISOMETRIC_PAUSE="ISOMETRIC_PAUSE";
-    private final static String FORCED_REPS="FORCED_REPS";
+    private static final String DROP_SET="DROP_SET";
+    private static final String REST_PAUSE="REST_PAUSE";
+    private static final String SLOW_ECCENTRIC="SLOW_ECCENTRIC";
+    private static final String ISOMETRIC_PAUSE="ISOMETRIC_PAUSE";
+    private static final String FORCED_REPS="FORCED_REPS";
     private ExerciseSerializer(){}
 
     public static JSONObject serialize(Exercise ex) {
