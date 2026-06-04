@@ -24,5 +24,7 @@ module FitConnect {
     opens api;         // ← aggiunto (per reflection di JUnit)
     opens eng;
     exports view.boundary to javafx.graphics;
-    opens view.boundary to javafx.fxml, javafx.graphics;         // ← aggiunto (per reflection di JUnit)
+    opens view.boundary to javafx.fxml, javafx.graphics;
+    exports app;
+    opens app to javafx.graphics;         // ← aggiunto (per reflection di JUnit)
 }

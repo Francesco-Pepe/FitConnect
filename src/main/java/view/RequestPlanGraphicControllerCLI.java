@@ -1,7 +1,7 @@
 package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.BusinessException;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
@@ -19,11 +19,11 @@ public class RequestPlanGraphicControllerCLI {
 
     public void start(Scanner sc)  {
         printHeader("RICHIEDI PIANO");
-        ManageCustomPlanController ctrl;
+        ManageCustomPlanRequestController ctrl;
         List<PersonalTrainerBean> trainers;
         // Carica lista PT
         try {
-             ctrl = new ManageCustomPlanController();
+             ctrl = new ManageCustomPlanRequestController();
              trainers = ctrl.retrievePT();
         }catch (UnavailableServiceException e){
             System.out.println("Impossibile comunicare con il database degli esercizi,riprovare più tardi");
@@ -108,9 +108,9 @@ public class RequestPlanGraphicControllerCLI {
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < trainers.size()) return trainers.get(idx);
-                else System.out.print("[!] Numero fuori range. Riprova: ");
+                else System.out.print(" Numero fuori range. Riprova: ");
             } catch (NumberFormatException e) {
-                System.out.print("[!] Inserisci un numero valido: ");
+                System.out.print(" Inserisci un numero valido: ");
             }
         }
     }
@@ -122,9 +122,9 @@ public class RequestPlanGraphicControllerCLI {
             try {
                 int idx = Integer.parseInt(input) - 1;
                 if (idx >= 0 && idx < goals.length) return goals[idx];
-                else System.out.print("[!] Numero fuori range. Riprova: ");
+                else System.out.print(" Numero fuori range. Riprova: ");
             } catch (NumberFormatException e) {
-                System.out.print("[!] Inserisci un numero valido: ");
+                System.out.print(" Inserisci un numero valido: ");
             }
         }
     }

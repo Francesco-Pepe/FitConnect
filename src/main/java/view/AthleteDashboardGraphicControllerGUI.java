@@ -3,7 +3,7 @@ package view;
 import bean.AthleteBean;
 import bean.SessionBean;
 import bean.TrainingPlanBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
@@ -57,7 +57,7 @@ public class AthleteDashboardGraphicControllerGUI {
     public void logout()  {
         int id=navigator.getSession().getId();
         try {
-            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             ctrl.logout(id);
             navigator.goToLogin();
         }catch (UnavailableServiceException e){
@@ -67,7 +67,7 @@ public class AthleteDashboardGraphicControllerGUI {
 
     public void start()  {
         try {
-            ManageCustomPlanController controller = new ManageCustomPlanController();
+            ManageCustomPlanRequestController controller = new ManageCustomPlanRequestController();
             SessionBean session = navigator.getSession();
             AthleteBean athlete = session.getAthlete();
             setAthleteName(athlete.getName());

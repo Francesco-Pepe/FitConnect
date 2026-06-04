@@ -2,7 +2,7 @@ package view;
 
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
@@ -99,7 +99,7 @@ public class TrainerDashboardGraphicControllerGUI {
         String trainer = pt.getName()+" "+pt.getSurname();
         setTrainerName(trainer);
         try {
-            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             List<PlanRequestBean> requests = ctrl.getPendingRequests(pt.getEmail());
             populateRequests(requests);
         }catch (UnavailableServiceException e){
@@ -112,7 +112,7 @@ public class TrainerDashboardGraphicControllerGUI {
 
     public void logout() {
         try {
-            ManageCustomPlanController controller = new ManageCustomPlanController();
+            ManageCustomPlanRequestController controller = new ManageCustomPlanRequestController();
             controller.logout(navigator.getSession().getId());
             // FIX: naviga al login dopo aver invalidato la sessione
             navigator.goToLogin();
@@ -123,7 +123,7 @@ public class TrainerDashboardGraphicControllerGUI {
 
     private void handleDeclineAction(PlanRequestBean req, VBox requestBox) {
         try {
-            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             ctrl.declineRequest(req);
             // FIX: nasconde la card senza toccare il resto del container
            requestsContainer.getChildren().remove(requestBox);

@@ -1,4 +1,4 @@
-package model;
+package eng;
 
 public enum Persistence {
     FILESYSTEM,

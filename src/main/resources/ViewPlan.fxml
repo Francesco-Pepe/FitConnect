@@ -42,7 +42,7 @@
                     </padding>
                     <children>
 
-                        <!-- Main Card -->
+                        <!-- app.Main Card -->
                         <VBox maxWidth="800.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 15, 0, 0, 5);">
                             <children>
                                 <!-- Header Viola -->

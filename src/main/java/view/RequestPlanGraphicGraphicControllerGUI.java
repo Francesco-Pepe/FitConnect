@@ -1,7 +1,7 @@
 package view;
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.BusinessException;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
@@ -43,7 +43,7 @@ public class RequestPlanGraphicGraphicControllerGUI {
 
     private void loadPersonalTrainers() {
         try {
-            ManageCustomPlanController ctrl=new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl=new ManageCustomPlanRequestController();
             List<PersonalTrainerBean> trainers=ctrl.retrievePT();
 
             trainerComboBox.setItems(
@@ -116,8 +116,8 @@ public class RequestPlanGraphicGraphicControllerGUI {
             );
 
             // Invia al controller applicativo
-            ManageCustomPlanController appController =
-                new ManageCustomPlanController();
+            ManageCustomPlanRequestController appController =
+                new ManageCustomPlanRequestController();
             appController.sendPlanRequest(requestBean);
 
             // Mostra successo

@@ -3,7 +3,7 @@ package view;
 import bean.ExerciseBean;
 import bean.PlanRequestBean;
 import bean.TrainingPlanBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import java.time.LocalDate;
@@ -64,7 +64,7 @@ public class CreatePlanGraphicControllerCLI {
         LocalDate endDate = readDate(sc, "  Data scadenza (dd/MM/yyyy): ", startDate.plusDays(1), null);
         if (endDate == null) return false;
         try {
-            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             ctrl.acceptAndCreatePlan(navigator.getPlanRequest(), new TrainingPlanBean(startDate, endDate, exercises));
             return true;
         } catch (ControllerException | UnavailableServiceException e) {
@@ -84,8 +84,8 @@ public class CreatePlanGraphicControllerCLI {
                 boolean tooLate  = maxDate != null && date.isAfter(maxDate);
                 if (!tooEarly && !tooLate) return date;
                 System.out.print(tooEarly
-                        ? "[!] La data deve essere >= " + minDate.format(FMT) + ". Riprova: "
-                        : "[!] La data deve essere <= " + maxDate.format(FMT) + ". Riprova: ");
+                        ? " La data deve essere >= " + minDate.format(FMT) + ". Riprova: "
+                        : " La data deve essere <= " + maxDate.format(FMT) + ". Riprova: ");
             } catch (DateTimeParseException e) {
                 System.out.print(" Formato non valido. Usa dd/MM/yyyy: ");
             }

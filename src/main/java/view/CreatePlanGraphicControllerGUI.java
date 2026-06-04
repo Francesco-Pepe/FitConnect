@@ -3,7 +3,7 @@ package view;
 import bean.ExerciseBean;
 import bean.PlanRequestBean;
 import bean.TrainingPlanBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
@@ -135,7 +135,7 @@ public class CreatePlanGraphicControllerGUI {
 
 
             if (verifyDate() && !exercises.isEmpty()) {
-                ManageCustomPlanController controller = new ManageCustomPlanController();
+                ManageCustomPlanRequestController controller = new ManageCustomPlanRequestController();
                 TrainingPlanBean plan = new TrainingPlanBean(startDatePicker.getValue(), expireDatePicker.getValue(), navigator.getExercises());
                 PlanRequestBean req = navigator.getPlanRequest();
                 controller.acceptAndCreatePlan(req, plan);

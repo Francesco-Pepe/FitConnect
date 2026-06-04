@@ -51,7 +51,7 @@ public class ViewPlanGraphicControllerCLI {
                 navigator.goToAthleteDashboard();
                 return;
             } else {
-                System.out.print("[!] Scelta non valida: ");
+                System.out.print(" Scelta non valida: ");
             }
         }
     }

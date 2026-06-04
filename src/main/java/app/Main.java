@@ -1,7 +1,8 @@
-package view;
+package app;
 
 import eng.NavigatorFactory;
 import javafx.application.Platform;
+import view.Navigator;
 
 
 public class Main  {

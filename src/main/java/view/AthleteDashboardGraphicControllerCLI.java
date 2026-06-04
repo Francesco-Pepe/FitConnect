@@ -3,7 +3,7 @@ package view;
 import bean.AthleteBean;
 import bean.SessionBean;
 import bean.TrainingPlanBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import java.util.Scanner;
@@ -20,16 +20,16 @@ public class AthleteDashboardGraphicControllerCLI {
         SessionBean session = navigator.getSession();
         AthleteBean athlete = session.getAthlete();
         welcomeAthlete(athlete);
-        ManageCustomPlanController ctrl = loadPlanIfPresent(athlete);
+        ManageCustomPlanRequestController ctrl = loadPlanIfPresent(athlete);
         boolean hasPlan = ctrl != null && navigator.getPlan() != null;
         printMenu(hasPlan);
         handleLoop(sc, session, ctrl, hasPlan);
     }
 
-    private ManageCustomPlanController loadPlanIfPresent(AthleteBean athlete) {
+    private ManageCustomPlanRequestController loadPlanIfPresent(AthleteBean athlete) {
         if (athlete.getTrainer() == null) return null;
         try {
-            ManageCustomPlanController ctrl = new ManageCustomPlanController();
+            ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             TrainingPlanBean plan = ctrl.getAthletePlan(athlete.getEmail());
             if (plan != null) {
                 navigator.setPlan(plan);
@@ -53,30 +53,27 @@ public class AthleteDashboardGraphicControllerCLI {
         System.out.print("\n> Scelta: ");
     }
 
-    private void handleLoop(Scanner sc, SessionBean session, ManageCustomPlanController ctrl, boolean hasPlan) {
+    private void handleLoop(Scanner sc, SessionBean session, ManageCustomPlanRequestController ctrl, boolean hasPlan) {
         while (true) {
             switch (sc.nextLine().trim()) {
                 case "1" -> { if (hasPlan) { navigator.goToViewPLan(); return; }
-                else System.out.print("[!] Nessun piano disponibile. Scelta: "); }
+                else System.out.print(" Nessun piano disponibile. Scelta: "); }
                 case "2" -> { navigator.goToPlanRequest(); return; }
                 case "0" -> { logout(session, ctrl); return; }
-                default  -> System.out.print("[!] Scelta non valida: ");
+                default  -> System.out.print(" Scelta non valida: ");
             }
         }
     }
 
-    private void logout(SessionBean session, ManageCustomPlanController ctrl) {
+    private void logout(SessionBean session, ManageCustomPlanRequestController ctrl) {
         try {
             if (ctrl != null) ctrl.logout(session.getId());
         } catch (UnavailableServiceException e) {
-            System.out.println("[!] Servizio non disponibile.");
+            System.out.println(" Servizio non disponibile.");
         }
         navigator.goToLogin();
     }
 
-    // ==========================================
-    // UI helpers
-    // ==========================================
 
     private static void printHeader(String title) {
         System.out.println("\n╔══════════════════════════════╗");

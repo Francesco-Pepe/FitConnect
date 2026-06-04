@@ -2,7 +2,7 @@ package view;
 
 import bean.PersonalTrainerBean;
 import bean.PlanRequestBean;
-import controller.ManageCustomPlanController;
+import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
 import exception.UnavailableServiceException;
 import java.util.ArrayList;
@@ -21,23 +21,23 @@ public class TrainerDashboardGraphicControllerCLI {
         PersonalTrainerBean pt = navigator.getPt();
         navigator.setExercises(new ArrayList<>());
         printWelcome(pt);
-        ManageCustomPlanController ctrl = buildController();
+        ManageCustomPlanRequestController ctrl = buildController();
         if (ctrl == null) return;
         List<PlanRequestBean> requests = loadRequests(ctrl, pt.getEmail());
         printRequests(requests);
         handleLoop(sc, ctrl, new ArrayList<>(requests));
     }
 
-    private ManageCustomPlanController buildController() {
+    private ManageCustomPlanRequestController buildController() {
         try {
-            return new ManageCustomPlanController();
+            return new ManageCustomPlanRequestController();
         } catch (UnavailableServiceException e) {
             System.out.println("Impossibile contattare il database degli esercizi, riprovare più tardi");
             return null;
         }
     }
 
-    private List<PlanRequestBean> loadRequests(ManageCustomPlanController ctrl, String email) {
+    private List<PlanRequestBean> loadRequests(ManageCustomPlanRequestController ctrl, String email) {
         try {
             return ctrl.getPendingRequests(email);
         } catch (ControllerException e) {
@@ -52,7 +52,7 @@ public class TrainerDashboardGraphicControllerCLI {
         showCommands(requests);
     }
 
-    private void handleLoop(Scanner sc, ManageCustomPlanController ctrl, List<PlanRequestBean> requests) {
+    private void handleLoop(Scanner sc, ManageCustomPlanRequestController ctrl, List<PlanRequestBean> requests) {
         while (true) {
             String input = sc.nextLine().trim().toUpperCase();
             if ("0".equals(input)) {
@@ -68,7 +68,7 @@ public class TrainerDashboardGraphicControllerCLI {
         }
     }
 
-    private void handleAction(String input, ManageCustomPlanController ctrl, List<PlanRequestBean> requests) {
+    private void handleAction(String input, ManageCustomPlanRequestController ctrl, List<PlanRequestBean> requests) {
         char action = input.charAt(0);
         try {
             int idx = Integer.parseInt(input.substring(1)) - 1;

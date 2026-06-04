@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageCustomPlanController {
+public class ManageCustomPlanRequestController {
 
     private final DAOFactory factory         = DAOFactory.getInstance();
     private final AthleteDAO athleteDAO      = factory.getAthleteDAO();
@@ -33,7 +33,7 @@ public class ManageCustomPlanController {
     private final TrainingPlanDAO planDAO    = factory.getTrainingPlanDAO();
     private final ExerciseApiService api;
 
-    public ManageCustomPlanController() {
+    public ManageCustomPlanRequestController() {
         try {
             this.api=new RealExerciseApiService();
         } catch (IOException e) {
@@ -139,13 +139,12 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         if (pt == null) throw new ControllerException("PT non trovato");
         List<Exercise> exercises = buildExercises(plan.getExercises());
         TrainingPlan newPlan = new TrainingPlan(request.getAthleteEmail(),plan.getCreation(), plan.getExpiration(),exercises);
-        // 3. Aggiorna relazioni
         athlete.assignPlan(pt,newPlan);
         req.accept();
-        // 4. Salva TUTTO (ordine importante!)
+        //(ordine importante!)
+        planDAO.save(newPlan);      // ← Salva il piano prima dell'atleta
+        athleteDAO.update(athlete);
         requestDAO.update(req);
-        planDAO.save(newPlan);      // ← Salva il piano PRIMA dell'atleta
-        athleteDAO.update(athlete);  // ← Ora l'atleta può referenziare il piano
         NotificaBean notify=new NotificaBean(request.getAthlete(), request.getPtEmail(), LocalDateTime.now(),Event.PLAN_CREATED);
         AthleteBoundary athleteBoundary=new AthleteBoundary();
         athleteBoundary.sendNotification(notify);
@@ -156,13 +155,6 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
 }
 
 
-
-
-
-
-// ==========================================
-// LATO PT — rifiuta la richiesta
-// ==========================================
 public void declineRequest(PlanRequestBean req){
     try {
         PlanRequest request = requestDAO.getById(req.getId());
@@ -172,7 +164,7 @@ public void declineRequest(PlanRequestBean req){
         AthleteBoundary athlete=new AthleteBoundary();
         athlete.sendRejection(notify);
     }catch (DAOException d){
-        throw new ControllerException("errore nel recupero della richiesta",d);
+        throw new ControllerException("Errore nel recupero della richiesta",d);
     }
 }
 

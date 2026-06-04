@@ -3,6 +3,9 @@ import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExerciseSerializer {
 
     private ExerciseSerializer(){}
@@ -63,4 +66,39 @@ public class ExerciseSerializer {
 
         return exercise;
     }
+ // for DB version
+    public static List<String> extractTechniques(Exercise ex){
+        List<String> techniques = new ArrayList<>();
+        Exercise current = ex;
+        while (current instanceof ExerciseDecorator ed ) {
+            if (current instanceof DropSetDecorator )
+                techniques.add("DROP_SET");
+            else if (current instanceof RestPauseDecorator )
+                techniques.add("REST_PAUSE");
+            else if (current instanceof SlowEccentricDecorator )
+                techniques.add("SLOW_ECCENTRIC");
+            else if (current instanceof IsometricPauseDecorator )
+                techniques.add("ISOMETRIC_PAUSE");
+            else if (current instanceof ForcedRepsDecorator )
+                techniques.add("FORCED_REPS");
+
+            current = ed.getWrapperExercise();
+        }
+        return techniques;
+    }
+    public static Exercise applyTechniques(Exercise base, List<String> techniques) {
+        Exercise ex = base;
+        for (String t : techniques) {
+            ex = switch (t) {
+                case "DROP_SET"        -> new DropSetDecorator(ex);
+                case "REST_PAUSE"      -> new RestPauseDecorator(ex);
+                case "SLOW_ECCENTRIC"  -> new SlowEccentricDecorator(ex);
+                case "ISOMETRIC_PAUSE" -> new IsometricPauseDecorator(ex);
+                case "FORCED_REPS"     -> new ForcedRepsDecorator(ex);
+                default -> ex;
+            };
+        }
+        return ex;
+    }
+
 }

@@ -16,7 +16,7 @@ import model.*;
 
 public class LoginController {
 
-        public SessionBean logAsAthlete(AthleteBean athlete){
+        public SessionBean logAsAthlete(AthleteBean athlete)  {
             try {
                 AuthenticationDAO authDAO = DAOFactory.getInstance().getAuthenticationDAO();
                 AthleteDAO athleteDAO = DAOFactory.getInstance().getAthleteDAO();
@@ -45,7 +45,7 @@ public class LoginController {
             throw new ControllerException("Login failed");
         }
 
-        public SessionBean logAsPersonalTrainer(PersonalTrainerBean pt){
+        public SessionBean logAsPersonalTrainer(PersonalTrainerBean pt) {
 
             try {
                 AuthenticationDAO authDAO = DAOFactory.getInstance().getAuthenticationDAO();

@@ -1,6 +1,7 @@
 package dao.trainingplan;
 
 import eng.DBConnection;
+import eng.ExerciseSerializer;
 import exception.DAOException;
 import model.*;
 
@@ -50,28 +51,18 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     }
 
     private void saveExercise(Connection c, int planId, Exercise ex) throws SQLException {
-        Exercise current = ex;
-        List<String> techniques = new ArrayList<>();
-        while (current instanceof ExerciseDecorator ed) {
-            if      (current instanceof DropSetDecorator)        techniques.add("DROP_SET");
-            else if (current instanceof RestPauseDecorator)      techniques.add("REST_PAUSE");
-            else if (current instanceof SlowEccentricDecorator)  techniques.add("SLOW_ECCENTRIC");
-            else if (current instanceof IsometricPauseDecorator) techniques.add("ISOMETRIC_PAUSE");
-            else if (current instanceof ForcedRepsDecorator)     techniques.add("FORCED_REPS");
-            current = ed.getWrapperExercise();
-        }
-
+        List<String> techniques = ExerciseSerializer.extractTechniques(ex);
         String sqlEx = """
             INSERT INTO plan_exercise (plan_id, name, target, equipment, sets, reps)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
         try (PreparedStatement ps = c.prepareStatement(sqlEx, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, planId);
-            ps.setString(2, current.getName());
-            ps.setString(3, current.getTarget());
-            ps.setString(4, current.getEquipment());
-            ps.setInt(5, current.getSets());
-            ps.setInt(6, current.getReps());
+            ps.setString(2, ex.getName());
+            ps.setString(3, ex.getTarget());
+            ps.setString(4, ex.getEquipment());
+            ps.setInt(5, ex.getSets());
+            ps.setInt(6, ex.getReps());
             ps.executeUpdate();
 
             if (techniques.isEmpty()) return;
@@ -164,22 +155,16 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
     // Riapplica i decorator nell'ordine in cui sono stati salvati
     private Exercise applyTechniques(Connection c, Exercise ex, int exerciseId) throws SQLException {
         String sql = "SELECT technique FROM exercise_technique WHERE exercise_id = ?";
+        List<String> techniques = new ArrayList<>();
         try (PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, exerciseId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    ex = switch (rs.getString("technique")) {
-                        case "DROP_SET"          -> new DropSetDecorator(ex);
-                        case "REST_PAUSE"         -> new RestPauseDecorator(ex);
-                        case "SLOW_ECCENTRIC"     -> new SlowEccentricDecorator(ex);
-                        case "ISOMETRIC_PAUSE"    -> new IsometricPauseDecorator(ex);
-                        case "FORCED_REPS"        -> new ForcedRepsDecorator(ex);
-                        default -> ex;
-                    };
+                    techniques.add(rs.getString("technique"));
                 }
             }
         }
-        return ex;
+        return ExerciseSerializer.applyTechniques(ex, techniques);
     }
 
     private TrainingPlan buildPlan(ResultSet rs, List<Exercise> exercises) throws SQLException {

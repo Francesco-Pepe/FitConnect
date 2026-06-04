@@ -37,7 +37,7 @@ public class FileAthleteDAO extends AthleteDAO {
         List<Athlete> result = new ArrayList<>();
         for (int i = 0; i < all.length(); i++) {
             JSONObject obj = all.getJSONObject(i);
-            // salviamo solo l'email del PT nel file — confrontiamo quella
+            // salvo solo l'email del PT nel file
             if (obj.optString(PT_EMAIL, "").equals(ptEmail)) {
                 Athlete a = fetchByEmail(obj.getString(ATHLETE_EMAIL)); // passa per la cache
                 result.add(a);
@@ -47,8 +47,8 @@ public class FileAthleteDAO extends AthleteDAO {
     }
 
 
-    //For registration,not implement yet
-    //Note:the athlete file should be compliant with the credential file
+    //For registration,not implemented yet
+    //Note:the athlete file should be compliiant with the credential file
     public void save(Athlete athlete) {
         JSONArray all = readFile();
 
