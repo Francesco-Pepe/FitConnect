@@ -17,8 +17,6 @@ public class ExerciseSerializer {
     public static JSONObject serialize(Exercise ex) {
         JSONObject obj = new JSONObject();
         JSONArray techniques = new JSONArray();
-
-        // sbuccia i decoratori raccogliendo le tecniche applicate
         Exercise current = ex;
         while (current instanceof ExerciseDecorator ed ) {
             if (current instanceof DropSetDecorator )
@@ -35,7 +33,6 @@ public class ExerciseSerializer {
             current = ed.getWrapperExercise();
         }
 
-        // current è ora il BaseExercise
         obj.put("name",       current.getName());
         obj.put("target",     current.getTarget());
         obj.put("equipment",  current.getEquipment());
@@ -48,7 +45,6 @@ public class ExerciseSerializer {
 
 
     public static Exercise deserialize(JSONObject obj) {
-        // prima ricostruisci il BaseExercise
         Exercise exercise = new BaseExercise(
                 obj.getString("name"),
                 obj.getInt("reps"),
@@ -65,7 +61,7 @@ public class ExerciseSerializer {
                 case SLOW_ECCENTRIC -> new SlowEccentricDecorator(exercise);
                 case ISOMETRIC_PAUSE -> new IsometricPauseDecorator(exercise);
                 case FORCED_REPS    -> new ForcedRepsDecorator(exercise);
-                default -> exercise; // tecnica sconosciuta, la ignora
+                default -> exercise;
             };
         }
 
