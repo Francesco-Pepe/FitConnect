@@ -41,7 +41,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
 
     private JSONObject serializePlan(TrainingPlan plan){
         JSONObject obj=new JSONObject();
-        obj.put(ATHLETE_EMAIL,plan.getClient());
+        obj.put(ATHLETE_EMAIL,fetchKey(plan));
         obj.put("expiration",plan.getExpirationDate().toString());
         obj.put("creation",plan.getCreationDate().toString());
         JSONArray exercises=new JSONArray();
@@ -53,7 +53,6 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
     }
 
     private TrainingPlan buildPlan(JSONObject obj){
-        String athleteEmail=obj.getString(ATHLETE_EMAIL);
         LocalDate creation=LocalDate.parse(obj.getString("creation"));
         LocalDate expiration=LocalDate.parse(obj.getString("expiration"));
 
@@ -63,25 +62,12 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
             Exercise ex=ExerciseSerializer.deserialize(exercises.getJSONObject(i));
             exList.add(ex);
         }
-        return new TrainingPlan(athleteEmail,creation,expiration,exList);
+        //bo Athlete,the linking will be done by AthleteService
+        return new TrainingPlan(null,creation,expiration,exList);
 
     }
 
-    @Override
-    public void deleteFromStorage(TrainingPlan plan) {
-        JSONArray all=readFile();
-        if (searchByAthlete(plan.getClient())==null){
-            throw new DAOException("Il piano non è presente in memoria");
-        }
-        for (int i=0;i<all.length();i++){
-            JSONObject obj=all.getJSONObject(i);
-            if (obj.getString(ATHLETE_EMAIL).equals(plan.getClient())){
-                all.remove(i);
-                writeFile(all);
-                break;
-            }
-        }
-    }
+
 
     @Override
     public TrainingPlan searchByAthlete(String atEmail) {
@@ -95,19 +81,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         return null;
     }
 
-    @Override
-    public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
-        JSONArray all=readFile();
-        List<TrainingPlan> plans=new ArrayList<>();
-        JSONObject obj;
-        for (int i=0;i<all.length();i++){
-            obj=all.getJSONObject(i);
-            if (obj.getString("pt").equals(ptEmail)){
-                plans.add(fetchByAthlete(obj.getString(ATHLETE_EMAIL)));
-            }
-        }
-        return plans;
-    }
+
     @Override
     public void save(TrainingPlan plan) {
         JSONArray all = readFile();
@@ -119,7 +93,7 @@ public class FileTrainingPlanDAO extends TrainingPlanDAO{
         boolean found = false;
         for (int i = 0; i < all.length(); i++) {
             if (all.getJSONObject(i).getString(ATHLETE_EMAIL)
-                    .equals(plan.getClient())) {
+                    .equals(fetchKey(plan))) {
                 all.put(i, serializePlan(plan));
                 found = true;
                 break;

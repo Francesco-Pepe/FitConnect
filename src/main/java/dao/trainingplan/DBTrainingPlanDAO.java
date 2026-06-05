@@ -25,7 +25,8 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
         try {
             c.setAutoCommit(false);
             try (PreparedStatement ps = c.prepareStatement(sqlPlan, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, plan.getClient());
+                //key is athlete email
+                ps.setString(1, fetchKey(plan));
                 ps.setDate(2, Date.valueOf(plan.getCreationDate()));
                 ps.setDate(3, Date.valueOf(plan.getExpirationDate()));
                 ps.executeUpdate();
@@ -41,7 +42,6 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
                 }
             }
             c.commit();
-            addToCache(plan);
         } catch (SQLException e) {
             try { c.rollback(); } catch (SQLException ex) { /* ignore */ }
             throw new DAOException("Errore DB save training_plan", e);
@@ -107,23 +107,7 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
         }
     }
 
-    @Override
-    public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
-        // to be implemented for another uc
-        return List.of();
-    }
 
-    @Override
-    public void deleteFromStorage(TrainingPlan plan) {
-        Connection c = conn();
-        String sql = "DELETE FROM training_plan WHERE athlete_email = ?";
-        try (PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, plan.getClient());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException("Errore DB deleteFromStorage training_plan", e);
-        }
-    }
 
     // Carica gli esercizi (con tecniche) dato un plan_id
     private List<Exercise> fetchExercises(Connection c, int planId) throws SQLException {
@@ -166,10 +150,10 @@ public class DBTrainingPlanDAO extends TrainingPlanDAO {
         }
         return ExerciseSerializer.applyTechniques(ex, techniques);
     }
-
+    //no Athlete because th AthleteService will link Athlete and Plan
     private TrainingPlan buildPlan(ResultSet rs, List<Exercise> exercises) throws SQLException {
         return new TrainingPlan(
-                rs.getString("athlete_email"),
+                null,
                 rs.getDate("creation_date").toLocalDate(),
                 rs.getDate("expiration_date").toLocalDate(),
                 exercises

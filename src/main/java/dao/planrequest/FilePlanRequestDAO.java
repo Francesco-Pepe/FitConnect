@@ -1,5 +1,8 @@
 package dao.planrequest;
 
+import dao.athlete.AthleteDAO;
+import dao.personaltrainer.PersonalTrainerDAO;
+import eng.DAOFactory;
 import exception.DAOException;
 import model.*;
 import org.json.JSONArray;
@@ -56,7 +59,11 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         FitnessGoal goal=FitnessGoal.valueOf(obj.getString("goal"));
         String ptEmail=obj.getString(PT_EMAIL);
         String atEmail=obj.getString(ATHLETE_EMAIL);
-        return new PlanRequest(id,atEmail,ptEmail,goal,status);
+        AthleteDAO athleteDAO= DAOFactory.getInstance().getAthleteDAO();
+        PersonalTrainerDAO personalTrainerDAO=DAOFactory.getInstance().getPersonalTrainerDAO();
+        Athlete a=athleteDAO.fetchByEmail(atEmail);
+        PersonalTrainer pt=personalTrainerDAO.fetchPtByEmail(ptEmail);
+        return new PlanRequest(id,status,goal,pt,a);
     }
 
     private JSONObject serializeRequest(PlanRequest request){
@@ -64,8 +71,8 @@ public class FilePlanRequestDAO extends PlanRequestDAO{
         obj.put("id",request.getId());
         obj.put(REQUEST_STATUS,request.getStatus().name());
         obj.put("goal",request.getGoal().name());
-        obj.put(PT_EMAIL,request.getPtEmail());
-        obj.put(ATHLETE_EMAIL,request.getClientEmail());
+        obj.put(PT_EMAIL,request.getPt().getEmail());
+        obj.put(ATHLETE_EMAIL,request.getAthlete().getEmail());
         return obj;
     }
 

@@ -1,7 +1,7 @@
 package dao.athlete;
 
 import dao.personaltrainer.PersonalTrainerDAO;
-import dao.trainingplan.TrainingPlanDAO;
+import eng.AthleteService;
 import eng.DAOFactory;
 import exception.DAOException;
 import model.*;
@@ -108,23 +108,22 @@ public class FileAthleteDAO extends AthleteDAO {
 
         if (!ptEmail.isEmpty()) {
             PersonalTrainerDAO ptDAO   = DAOFactory.getInstance().getPersonalTrainerDAO();
-            TrainingPlanDAO    planDAO = DAOFactory.getInstance().getTrainingPlanDAO();
             pt   = ptDAO.fetchPtByEmail(ptEmail);
-            plan = planDAO.fetchByAthlete(email);
         }
         PhysicalTraits traits=new PhysicalTraits(
                 obj.getDouble("weight"),
                 obj.getInt("height"),
                 Gender.valueOf(obj.getString("gender"))
         );
-        return new Athlete(
+        Athlete a=new Athlete(
                 email,
                 obj.getString("name"),
                 obj.getString("surname"),
                 traits,
-                pt,    // può essere null
-                plan   // può essere null
+                null,    // può essere null
+                null   // può essere null
         );
+        return AthleteService.getAthleteWithPlan(a,pt);
     }
 
 

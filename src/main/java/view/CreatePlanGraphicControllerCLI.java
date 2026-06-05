@@ -5,6 +5,7 @@ import bean.PlanRequestBean;
 import bean.TrainingPlanBean;
 import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
+import exception.InvalidExerciseException;
 import exception.UnavailableServiceException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -67,10 +68,11 @@ public class CreatePlanGraphicControllerCLI {
             ManageCustomPlanRequestController ctrl = new ManageCustomPlanRequestController();
             ctrl.acceptAndCreatePlan(navigator.getPlanRequest(), new TrainingPlanBean(startDate, endDate, exercises));
             return true;
-        } catch (ControllerException | UnavailableServiceException e) {
+        } catch (ControllerException | UnavailableServiceException | InvalidExerciseException e) {
             System.out.println(" Errore salvataggio piano: " + e.getMessage());
             return false;
         }
+
     }
 
     private LocalDate readDate(Scanner sc, String prompt, LocalDate minDate, LocalDate maxDate) {

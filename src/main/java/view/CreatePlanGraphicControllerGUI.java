@@ -5,6 +5,7 @@ import bean.PlanRequestBean;
 import bean.TrainingPlanBean;
 import controller.ManageCustomPlanRequestController;
 import exception.ControllerException;
+import exception.InvalidExerciseException;
 import exception.UnavailableServiceException;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -142,10 +143,13 @@ public class CreatePlanGraphicControllerGUI {
                 showAlert("Success", "Plan created", "The training plan has been succesfully created!");
                 navigator.goToTrainerDashboard();
             } else {
-                showAlert("Errore", "Data not valid", "The fields cannot be empty");
+                showAlert("Error", "Data not valid", "The fields cannot be empty");
             }
         }catch (ControllerException  | UnavailableServiceException e){
             showAlert("Error","Plan creation has failed","Try later");
+        }
+        catch (InvalidExerciseException i){
+            showAlert("Error","Plan not created",i.getMessage());
         }
 
     }

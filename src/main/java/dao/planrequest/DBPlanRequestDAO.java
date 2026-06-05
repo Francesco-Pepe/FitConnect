@@ -1,13 +1,20 @@
 package dao.planrequest;
 
+import dao.athlete.AthleteDAO;
+import dao.personaltrainer.PersonalTrainerDAO;
+import eng.DAOFactory;
 import eng.DBConnection;
 import exception.DAOException;
 import model.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBPlanRequestDAO extends PlanRequestDAO {
+
+    private record RawRequest(int id, String goal, String status,
+                              String athleteEmail, String ptEmail) {}
 
     private Connection conn() {
         return DBConnection.getInstance().getConnection();
@@ -16,19 +23,21 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
     @Override
     public PlanRequest searchRequestById(int id) {
         String sql = """
-            SELECT id,goal,status,athlete_email,pt_email
+            SELECT id, goal, status, athlete_email, pt_email
             FROM plan_request pr
             WHERE pr.id = ?
             """;
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {return new PlanRequest(
-                        rs.getInt("id"),
-                        rs.getString("athlete_email"), rs.getString("pt_email"),
-                        FitnessGoal.valueOf(rs.getString("goal")),
-                        RequestStatus.valueOf(rs.getString("status")
-                                ));
+                if (rs.next()) {
+                    return buildRequest(new RawRequest(
+                            rs.getInt("id"),
+                            rs.getString("goal"),
+                            rs.getString("status"),
+                            rs.getString("athlete_email"),
+                            rs.getString("pt_email")
+                    ));
                 }
                 return null;
             }
@@ -44,8 +53,8 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
             VALUES (?, ?, ?, ?)
             """;
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
-            ps.setString(1, request.getClientEmail());
-            ps.setString(2, request.getPtEmail());
+            ps.setString(1, request.getAthlete().getEmail());
+            ps.setString(2, request.getPt().getEmail());
             ps.setString(3, request.getGoal().name());
             ps.setString(4, request.getStatus().name());
             ps.executeUpdate();
@@ -70,7 +79,7 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
     @Override
     public List<PlanRequest> fetchByAthlete(String athleteEmail) {
         String sql = """
-            SELECT id, goal, status,athlete_email,pt_email
+            SELECT id, goal, status, athlete_email, pt_email
             FROM plan_request pr
             WHERE pr.athlete_email = ?
             """;
@@ -80,7 +89,7 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
     @Override
     public List<PlanRequest> fetchPendingByTrainer(String trainerEmail) {
         String sql = """
-            SELECT id,goal,status,pt_email,athlete_email
+            SELECT id, goal, status, athlete_email, pt_email
             FROM plan_request pr
             WHERE pt_email = ? AND pr.status = 'PENDING'
             """;
@@ -88,38 +97,48 @@ public class DBPlanRequestDAO extends PlanRequestDAO {
     }
 
     private List<PlanRequest> fetchList(String sql, String param) {
-        List<PlanRequest> result = new ArrayList<>();
+        List<RawRequest> rows = new ArrayList<>();
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, param);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    result.add(buildRequest(rs));
+                    rows.add(new RawRequest(
+                            rs.getInt("id"),
+                            rs.getString("goal"),
+                            rs.getString("status"),
+                            rs.getString("athlete_email"),
+                            rs.getString("pt_email")
+                    ));
                 }
-            }
+            } // ResultSet chiuso — la connessione è libera per i sub-DAO
         } catch (SQLException e) {
             throw new DAOException("Error DB fetchList plan_request", e);
         }
+        List<PlanRequest> result = new ArrayList<>();
+        for (RawRequest row : rows)
+            result.add(buildRequest(row));
         return result;
     }
 
-    private PlanRequest buildRequest(ResultSet rs) throws SQLException {
-        return new PlanRequest(
-                rs.getInt("id"),
-                rs.getString("athlete_email"),
-                rs.getString("pt_email"),
-                FitnessGoal.valueOf(rs.getString("goal")),
-                RequestStatus.valueOf(rs.getString("status"))
-        );
+    private PlanRequest buildRequest(RawRequest r) {
+        PersonalTrainerDAO ptDAO  = DAOFactory.getInstance().getPersonalTrainerDAO();
+        AthleteDAO athleteDAO     = DAOFactory.getInstance().getAthleteDAO();
+        PersonalTrainer pt        = ptDAO.fetchPtByEmail(r.ptEmail());
+        Athlete a                 = athleteDAO.fetchByEmail(r.athleteEmail());
+        return new PlanRequest(r.id(), RequestStatus.valueOf(r.status()),
+                FitnessGoal.valueOf(r.goal()),
+                pt,
+                a);
     }
 
     @Override
     public int getMaxId() {
-        try (Connection conn = DBConnection.getInstance().getConnection();
-                 Statement st = conn.createStatement();
-                 ResultSet rs = st.executeQuery("SELECT MAX(id) FROM plan_request")) {
-                    return rs.next() ? rs.getInt(1) + 1 : 1;
+        String sql = "SELECT MAX(id) FROM plan_request";
+        try (PreparedStatement ps = conn().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            return rs.next() ? rs.getInt(1) + 1 : 1;
         } catch (SQLException e) {
             throw new DAOException("Error retrieving ID", e);
-            }
         }
     }
+}

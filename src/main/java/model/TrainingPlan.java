@@ -5,20 +5,29 @@ import java.util.List;
 
 public class TrainingPlan {
 
-    private final String client;
+
     private LocalDate creationDate;
     private LocalDate expirationDate; // Utile per sapere quando va rifatta la scheda
-    private List<Exercise> exercises;
 
-    public TrainingPlan(String client,LocalDate creationDate,LocalDate expirationDate,List<Exercise> exercises){
-        this.client=client;
-        this.creationDate=creationDate;
-        this.expirationDate=expirationDate;
-        this.exercises=exercises;
+    public TrainingPlan(Athlete athlete, LocalDate creationDate, LocalDate expirationDate, List<Exercise> exercises) {
+        this.athlete = athlete;
+        this.creationDate = creationDate;
+        this.expirationDate = expirationDate;
+        this.exercises = exercises;
     }
 
+    private List<Exercise> exercises;
+    private Athlete athlete;
 
-    public String getClient() { return client; }
+
+
+    public Athlete getAthlete() {
+        return athlete;
+    }
+
+    public void setAthlete(Athlete athlete) {
+        this.athlete = athlete;
+    }
 
     public LocalDate getCreationDate() { return creationDate; }
     public LocalDate getExpirationDate() { return expirationDate; }

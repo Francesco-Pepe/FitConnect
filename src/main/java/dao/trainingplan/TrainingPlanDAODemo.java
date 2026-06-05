@@ -14,18 +14,7 @@ public class TrainingPlanDAODemo extends TrainingPlanDAO {
     }
 
     @Override
-    public List<TrainingPlan> searchByPersonalTrainer(String ptEmail) {
-        //not used,to be implemented for another uc
-        return List.of();
-    }
-    @Override
     public void save(TrainingPlan plan) {
-        addToCache(plan);
     }
 
-    @Override
-    public void deleteFromStorage(TrainingPlan plan) {
-        //not used yet
-        plans.removeIf(p -> p.getClient().equals(plan.getClient()));
-    }
 }

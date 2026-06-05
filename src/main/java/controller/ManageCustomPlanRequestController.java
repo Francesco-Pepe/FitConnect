@@ -11,10 +11,7 @@ import dao.planrequest.PlanRequestDAO;
 import dao.trainingplan.TrainingPlanDAO;
 import eng.DAOFactory;
 import eng.ExerciseMapper;
-import exception.BusinessException;
-import exception.ControllerException;
-import exception.DAOException;
-import exception.UnavailableServiceException;
+import exception.*;
 import model.*;
 import view.boundary.AthleteBoundary;
 import view.boundary.TrainerBoundary;
@@ -45,8 +42,10 @@ public class ManageCustomPlanRequestController {
     //ATHLETE
     public void sendPlanRequest(PlanRequestBean bean) {
         Athlete athlete;
+        PersonalTrainer pt;
         try {
             athlete = athleteDAO.fetchByEmail(bean.getAthleteEmail());
+            pt=ptDAO.fetchPtByEmail(bean.getPtEmail()); //il pt non può essere null,per effettuare la richiesta i pt vengono presi dal layer di persistenza
         }catch (DAOException d){
             throw new ControllerException("Error retrieving the athlete");
         }
@@ -63,7 +62,7 @@ public class ManageCustomPlanRequestController {
                 }
             }
         }
-        PlanRequest request = new PlanRequest(requestDAO.getMaxId(), bean.getAthleteEmail(), bean.getPtEmail(), bean.getGoal());
+        PlanRequest request = new PlanRequest(requestDAO.getMaxId(),bean.getGoal(), pt,athlete);
         requestDAO.save(request);
         String athleteName=athlete.getName()+ " " +athlete.getSurname();
         NotificaBean notify=new NotificaBean(athleteName, bean.getPtEmail(), LocalDateTime.now(), Event.NEW_REQUEST);
@@ -77,7 +76,7 @@ public class ManageCustomPlanRequestController {
     public TrainingPlanBean getAthletePlan(String athleteEmail) {
         TrainingPlan plan;
         try {
-            plan = planDAO.fetchByAthlete(athleteEmail);
+            plan = planDAO.searchByAthlete(athleteEmail);
         }catch (DAOException e){
             throw new ControllerException("Error retrieving training plan");
         }
@@ -114,10 +113,10 @@ public List<PlanRequestBean> getPendingRequests(String ptEmail) {
 
     List<PlanRequestBean> beans=new ArrayList<>();
     for (PlanRequest req:requests){
-        Athlete a=athleteDAO.fetchByEmail(req.getClientEmail());
+        Athlete a=req.getAthlete();
         //non possono esserci errori,la richiesta viene necessariamente da un atleta presente nel sistema
         String athlete=a.getName()+" "+a.getSurname();
-        PlanRequestBean bean=new PlanRequestBean(req.getClientEmail(),req.getPtEmail(),req.getGoal());
+        PlanRequestBean bean=new PlanRequestBean(a.getEmail(),pt.getEmail(),req.getGoal());
         bean.setAthlete(athlete);
         bean.setId(req.getId());
         beans.add(bean);
@@ -138,11 +137,11 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         PersonalTrainer pt = ptDAO.fetchPtByEmail(request.getPtEmail());
         if (pt == null) throw new ControllerException("PT non trovato");
         List<Exercise> exercises = buildExercises(plan.getExercises());
-        TrainingPlan newPlan = new TrainingPlan(request.getAthleteEmail(),plan.getCreation(), plan.getExpiration(),exercises);
+        TrainingPlan newPlan = new TrainingPlan(athlete,plan.getCreation(), plan.getExpiration(),exercises);
         athlete.assignPlan(pt,newPlan);
         req.accept();
         //(ordine importante!)
-        planDAO.save(newPlan);      // ← Salva il piano prima dell'atleta
+        planDAO.save(newPlan);      //  Salva il piano prima dell'atleta
         athleteDAO.update(athlete);
         requestDAO.update(req);
         NotificaBean notify=new NotificaBean(request.getAthlete(), request.getPtEmail(), LocalDateTime.now(),Event.PLAN_CREATED);
@@ -173,6 +172,9 @@ private List<Exercise> buildExercises(List<ExerciseBean> exerciseBeans) {
     for (ExerciseBean bean : exerciseBeans) {
         try {
             ExternalApiExerciseDTO dto = api.fetchExerciseByName(bean.getExerciseName());
+            if (dto==null){
+                throw new InvalidExerciseException("Esercizio non trovato: "+bean.getExerciseName());
+            }
             Exercise exercise = ExerciseMapper.fromDTO(dto, bean.getSets(), bean.getReps());
             exercise = applyDecorators(exercise, bean.getTechniques());
             result.add(exercise);

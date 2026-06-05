@@ -2,6 +2,7 @@ package dao.athlete;
 
 import dao.personaltrainer.PersonalTrainerDAO;
 import dao.trainingplan.TrainingPlanDAO;
+import eng.AthleteService;
 import eng.DAOFactory;
 import eng.DBConnection;
 import exception.DAOException;
@@ -72,21 +73,20 @@ public class DBAthleteDAO extends AthleteDAO {
 
         if (ptEmail != null) {
             PersonalTrainerDAO ptDAO   = DAOFactory.getInstance().getPersonalTrainerDAO();
-            TrainingPlanDAO    planDAO = DAOFactory.getInstance().getTrainingPlanDAO();
             pt   = ptDAO.fetchPtByEmail(ptEmail);
-            plan = planDAO.fetchByAthlete(email);
         }
         PhysicalTraits traits=new PhysicalTraits( rs.getDouble("weight"),
                 rs.getInt("height"),
                 Gender.valueOf(rs.getString("gender")));
-        return new Athlete(
+        Athlete a=new Athlete(
                 email,
                 rs.getString("name"),
                 rs.getString("surname"),
                 traits,
-                pt,
-                plan
+                null,
+                null
         );
+        return AthleteService.getAthleteWithPlan(a,pt);
     }
 
     @Override
