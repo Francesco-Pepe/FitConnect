@@ -8,6 +8,7 @@ import exception.ControllerException;
 import exception.InvalidExerciseException;
 import exception.UnavailableServiceException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -60,7 +61,7 @@ public class CreatePlanGraphicControllerCLI {
             System.out.println(" Aggiungi almeno un esercizio prima di salvare.\n");
             return false;
         }
-        LocalDate startDate = readDate(sc, "  Data inizio (dd/MM/yyyy): ", LocalDate.now(), null);
+        LocalDate startDate = readDate(sc, "  Data inizio (dd/MM/yyyy): ", LocalDate.now(ZoneId.systemDefault()), null);
         if (startDate == null) return false;
         LocalDate endDate = readDate(sc, "  Data scadenza (dd/MM/yyyy): ", startDate.plusDays(1), null);
         if (endDate == null) return false;

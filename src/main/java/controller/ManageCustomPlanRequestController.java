@@ -18,6 +18,7 @@ import view.boundary.TrainerBoundary;
 import bean.PlanRequestBean;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class ManageCustomPlanRequestController {
         PlanRequest request = new PlanRequest(requestDAO.getMaxId(),bean.getGoal(), pt,athlete);
         requestDAO.save(request);
         String athleteName=athlete.getName()+ " " +athlete.getSurname();
-        NotificaBean notify=new NotificaBean(athleteName, bean.getPtEmail(), LocalDateTime.now(), Event.NEW_REQUEST);
+        NotificaBean notify=new NotificaBean(athleteName, bean.getPtEmail(), LocalDateTime.now(ZoneId.systemDefault()), Event.NEW_REQUEST);
         TrainerBoundary trainerBoundary=new TrainerBoundary();
         trainerBoundary.sendNotification(notify);
 
@@ -144,7 +145,7 @@ public void acceptAndCreatePlan(PlanRequestBean request, TrainingPlanBean plan) 
         planDAO.save(newPlan);      //  Salva il piano prima dell'atleta
         athleteDAO.update(athlete);
         requestDAO.update(req);
-        NotificaBean notify=new NotificaBean(request.getAthlete(), request.getPtEmail(), LocalDateTime.now(),Event.PLAN_CREATED);
+        NotificaBean notify=new NotificaBean(request.getAthlete(), request.getPtEmail(), LocalDateTime.now(ZoneId.systemDefault()),Event.PLAN_CREATED);
         AthleteBoundary athleteBoundary=new AthleteBoundary();
         athleteBoundary.sendNotification(notify);
 
@@ -159,7 +160,7 @@ public void declineRequest(PlanRequestBean req){
         PlanRequest request = requestDAO.getById(req.getId());
         request.decline();
         requestDAO.update(request);
-        NotificaBean notify=new NotificaBean(req.getPtEmail(),req.getAthleteEmail(),LocalDateTime.now(),Event.REQUEST_REJECTED);
+        NotificaBean notify=new NotificaBean(req.getPtEmail(),req.getAthleteEmail(),LocalDateTime.now(ZoneId.systemDefault()),Event.REQUEST_REJECTED);
         AthleteBoundary athlete=new AthleteBoundary();
         athlete.sendRejection(notify);
     }catch (DAOException d){

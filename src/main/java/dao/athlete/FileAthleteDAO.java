@@ -104,8 +104,6 @@ public class FileAthleteDAO extends AthleteDAO {
         String ptEmail = obj.optString(PT_EMAIL, "");
 
         PersonalTrainer pt   = null;
-        TrainingPlan    plan = null;
-
         if (!ptEmail.isEmpty()) {
             PersonalTrainerDAO ptDAO   = DAOFactory.getInstance().getPersonalTrainerDAO();
             pt   = ptDAO.fetchPtByEmail(ptEmail);

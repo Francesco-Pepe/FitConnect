@@ -21,12 +21,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class CreatePlanGraphicControllerGUI {
     private Navigator navigator;
     private Parent view;
     private static final String FONT_FAMILY="System";
+    private static final String ERROR_HEADER="Error";
     @FXML
     TextField athleteNameField;
     @FXML
@@ -127,7 +129,7 @@ public class CreatePlanGraphicControllerGUI {
         if (startDatePicker.getValue()==null || expireDatePicker.getValue()==null){
             return false;
         }
-        return !startDatePicker.getValue().isAfter(expireDatePicker.getValue()) && !startDatePicker.getValue().isBefore(LocalDate.now());
+        return !startDatePicker.getValue().isAfter(expireDatePicker.getValue()) && !startDatePicker.getValue().isBefore(LocalDate.now(ZoneId.systemDefault()));
     }
     @FXML
     public void createPlan()  {
@@ -143,13 +145,13 @@ public class CreatePlanGraphicControllerGUI {
                 showAlert("Success", "Plan created", "The training plan has been succesfully created!");
                 navigator.goToTrainerDashboard();
             } else {
-                showAlert("Error", "Data not valid", "The fields cannot be empty");
+                showAlert(ERROR_HEADER, "Data not valid", "The fields cannot be empty");
             }
         }catch (ControllerException  | UnavailableServiceException e){
-            showAlert("Error","Plan creation has failed","Try later");
+            showAlert(ERROR_HEADER,"Plan creation has failed","Try later");
         }
         catch (InvalidExerciseException i){
-            showAlert("Error","Plan not created",i.getMessage());
+            showAlert(ERROR_HEADER,"Plan not created",i.getMessage());
         }
 
     }

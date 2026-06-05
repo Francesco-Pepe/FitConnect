@@ -1,7 +1,6 @@
 package dao.athlete;
 
 import dao.personaltrainer.PersonalTrainerDAO;
-import dao.trainingplan.TrainingPlanDAO;
 import eng.AthleteService;
 import eng.DAOFactory;
 import eng.DBConnection;
@@ -69,8 +68,6 @@ public class DBAthleteDAO extends AthleteDAO {
         String ptEmail = rs.getString("pt_email");
 
         PersonalTrainer pt   = null;
-        TrainingPlan    plan = null;
-
         if (ptEmail != null) {
             PersonalTrainerDAO ptDAO   = DAOFactory.getInstance().getPersonalTrainerDAO();
             pt   = ptDAO.fetchPtByEmail(ptEmail);

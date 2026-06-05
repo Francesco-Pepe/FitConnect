@@ -6,6 +6,8 @@ import model.PersonalTrainer;
 import model.TrainingPlan;
 
 public class AthleteService {
+    private AthleteService() {
+    }
     private static TrainingPlanDAO daoPlan=DAOFactory.getInstance().getTrainingPlanDAO();
 
     public static Athlete getAthleteWithPlan(Athlete a, PersonalTrainer pt){
