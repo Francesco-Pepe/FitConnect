@@ -40,9 +40,8 @@ public class PlanRequestDAODemo extends PlanRequestDAO{
 
     @Override
     public List<PlanRequest> fetchPendingByTrainer(String trainerEmail) {
-        List<PlanRequest> reqs=new ArrayList<>();
-        reqs.add(fetchFromCache("1"));
-        return reqs;
+        PlanRequest req = getById(1); // cerca in cache, altrimenti costruisce la richiesta hardcoded
+        return req != null ? List.of(req) : List.of();
     }
     @Override
     public int getMaxId(){
