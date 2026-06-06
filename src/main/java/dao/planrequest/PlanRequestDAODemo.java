@@ -3,7 +3,6 @@ package dao.planrequest;
 import exception.DAOException;
 import model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlanRequestDAODemo extends PlanRequestDAO{
